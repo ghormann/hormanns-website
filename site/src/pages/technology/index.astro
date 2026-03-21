@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+
+const pages = (await getCollection('technology', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<PageLayout title="Christmas Technology — The Hormanns">
+  <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-amber);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-brown);">Christmas Technology</h1>
+  </div>
+
+  <ul class="space-y-4">
+    {pages.map(p => (
+      <li>
+        <a
+          href={`/technology/${p.id}/`}
+          class="font-semibold text-lg hover:underline"
+          style="color: var(--color-brown);"
+        >
+          {p.data.title}
+        </a>
+        {p.data.description && (
+          <p class="text-sm mt-0.5" style="color: var(--color-brown-light); font-family: var(--font-sans);">
+            {p.data.description}
+          </p>
+        )}
+      </li>
+    ))}
+  </ul>
+</PageLayout>

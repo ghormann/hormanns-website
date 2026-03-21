@@ -1,0 +1,38 @@
+---
+interface Props {
+  prev?: { year: number; slug: string };
+  next?: { year: number; slug: string };
+}
+
+const { prev, next } = Astro.props;
+---
+
+<nav class="flex justify-between items-center mt-10 pt-6 border-t" style="border-color: var(--color-amber);">
+  {prev ? (
+    <a
+      href={`/christmas/${prev.year}/`}
+      class="flex items-center gap-2 text-sm font-medium hover:underline"
+      style="font-family: var(--font-sans); color: var(--color-brown);"
+    >
+      ← {prev.year}
+    </a>
+  ) : <span />}
+
+  <a
+    href="/christmas/"
+    class="text-sm hover:underline"
+    style="font-family: var(--font-sans); color: var(--color-brown-light);"
+  >
+    All Years
+  </a>
+
+  {next ? (
+    <a
+      href={`/christmas/${next.year}/`}
+      class="flex items-center gap-2 text-sm font-medium hover:underline"
+      style="font-family: var(--font-sans); color: var(--color-brown);"
+    >
+      {next.year} →
+    </a>
+  ) : <span />}
+</nav>

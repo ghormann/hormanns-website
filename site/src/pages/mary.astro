@@ -1,0 +1,35 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+---
+
+<PageLayout title="Meet Mary Hormann" description="Mary Hormann — Greg's wife and partner in all things Christmas.">
+
+  <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-amber);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-brown);">Meet Mary Hormann</h1>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+    <div class="sm:col-span-2 leading-relaxed">
+      <p class="mb-4">
+        One of these days I'll add something, but for now check out my favorite displays at
+        <a href="http://cooldisplays.net" class="underline" style="color: var(--color-brown-light);">CoolDisplays.net</a>.
+      </p>
+      <p>
+        Mary graduated from <a href="http://www.iub.edu" class="underline" style="color: var(--color-brown-light);">Indiana University</a>
+        and met <a href="/greg/" class="underline" style="color: var(--color-brown-light);">Greg</a> there.
+        They moved to Cincinnati, OH after college and were married on November 4, 2000.
+      </p>
+    </div>
+    <div class="flex justify-center items-start">
+      <a href="/wedding/Honeymoon/mary_hair.jpg">
+        <img
+          src="/wedding/Honeymoon/_mary_hair.jpg"
+          alt="Mary Hormann"
+          class="rounded-lg shadow"
+          width="135"
+        />
+      </a>
+    </div>
+  </div>
+
+</PageLayout>

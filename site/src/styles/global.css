@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette */
+  --color-cream: #F8F5D6;
+  --color-amber: #EBBD82;
+  --color-amber-dark: #d4a060;
+  --color-brown: #6B3F1F;
+  --color-brown-light: #8B5A2B;
+  --color-green-deep: #1A3C2A;
+  --color-card: #FEFCF5;
+  --color-text: #1C1410;
+
+  /* Typography */
+  --font-serif: "Lora", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+}
+
+/* Base styles */
+body {
+  background-color: var(--color-cream);
+  color: var(--color-text);
+  font-family: var(--font-serif);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--color-brown);
+  font-family: var(--font-serif);
+}
+
+/* Smooth focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-brown);
+  outline-offset: 2px;
+}

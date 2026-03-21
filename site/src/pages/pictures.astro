@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+
+const christmasYears = (await getCollection('christmas', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.year - a.data.year);
+---
+
+<PageLayout title="Our Pictures" description="Christmas display photos and family pictures from the Hormanns.">
+
+  <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-amber);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-brown);">Pictures</h1>
+  </div>
+
+  <p class="mb-8 leading-relaxed">
+    We have a few pictures available, but if you have some you would like to contribute, please
+    <a href="mailto:ghormann@gmail.com" class="underline" style="color: var(--color-brown-light);">let us know</a>.
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+
+    <div>
+      <h2 class="text-xl font-semibold mb-4" style="color: var(--color-brown);">Christmas Pictures</h2>
+      <ul class="space-y-1 text-sm" style="font-family: var(--font-sans);">
+        {christmasYears.map(year => (
+          <li>
+            <a href={`/christmas/${year.data.year}/`} class="underline" style="color: var(--color-brown-light);">
+              {year.data.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="text-xl font-semibold mb-4" style="color: var(--color-brown);">Family Pictures</h2>
+      <div class="leading-relaxed">
+        <p class="mb-4">
+          Our family pictures are password protected. Need a password? Then
+          <a href="mailto:ghormann@gmail.com" class="underline" style="color: var(--color-brown-light);">email us</a>.
+        </p>
+        <a href="/wedding/reception/cake3.jpg">
+          <img
+            src="/wedding/reception/_cake3.jpg"
+            alt="Wedding Cake"
+            width="174"
+            class="rounded shadow"
+          />
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+</PageLayout>

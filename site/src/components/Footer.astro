@@ -1,0 +1,23 @@
+---
+const year = new Date().getFullYear();
+---
+<footer style="background-color: var(--color-green-deep); color: #d4e8dc;" class="mt-16 py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
+      <div>
+        <p class="font-semibold" style="font-family: var(--font-serif);">Greg &amp; Mary Hormann</p>
+        <a href="mailto:ghormann@gmail.com" class="text-sm hover:underline" style="color: #a8d4b8;">
+          ghormann@gmail.com
+        </a>
+        <br />
+        <a href="http://www.thehormanns.net" class="text-sm hover:underline" style="color: #a8d4b8;">
+          thehormanns.net
+        </a>
+      </div>
+      <div class="text-sm text-right" style="color: #a8d4b8;">
+        <p>Copyright &copy; 2000&ndash;{year}</p>
+        <p>All Rights Reserved</p>
+      </div>
+    </div>
+  </div>
+</footer>

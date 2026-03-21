@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import YearCard from '../../components/YearCard.astro';
+
+const allYears = (await getCollection('christmas', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.year - b.data.year);
+
+const decades = ['2000-2009', '2010-2019', '2020-Today'] as const;
+---
+
+<PageLayout title="Christmas Display — The Hormanns" description="25 years of animated Christmas lights at the Hormann house in Liberty Township, Ohio.">
+  <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-amber);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-brown);">Christmas Display</h1>
+    <p class="mt-2 text-sm" style="color: var(--color-brown-light); font-family: var(--font-sans);">
+      25 years of animated RGB lights, music, and Christmas magic in Liberty Township, Ohio.
+    </p>
+  </div>
+
+  {decades.map(decade => {
+    const decadeYears = allYears.filter(y => y.data.decade === decade);
+    if (decadeYears.length === 0) return null;
+    return (
+      <section class="mb-10">
+        <h2
+          class="text-lg font-semibold mb-4 pb-1 border-b"
+          style="color: var(--color-brown); border-color: var(--color-amber); font-family: var(--font-sans);"
+        >
+          {decade}
+        </h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {decadeYears.map(y => (
+            <YearCard
+              year={y.data.year}
+              heroImage={y.data.heroImage}
+              highlight={
+                y.data.stats?.lights_smart
+                  ? `${Number(y.data.stats.lights_smart).toLocaleString()} smart lights`
+                  : undefined
+              }
+            />
+          ))}
+        </div>
+      </section>
+    );
+  })}
+</PageLayout>

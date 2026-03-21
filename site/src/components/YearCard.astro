@@ -1,0 +1,48 @@
+---
+interface Props {
+  year: number;
+  heroImage?: string;
+  highlight?: string; // one key stat to show
+}
+
+const { year, heroImage, highlight } = Astro.props;
+---
+
+<a
+  href={`/christmas/${year}/`}
+  class="group block rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow"
+  style="background-color: var(--color-card);"
+>
+  {heroImage ? (
+    <div class="relative aspect-video overflow-hidden">
+      <img
+        src={heroImage}
+        alt={`Christmas ${year}`}
+        loading="lazy"
+        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      />
+      <div
+        class="absolute inset-0 flex items-end p-2"
+        style="background: linear-gradient(to top, rgba(107,63,31,0.7) 0%, transparent 60%);"
+      >
+        <span class="text-2xl font-bold text-white drop-shadow" style="font-family: var(--font-serif);">
+          {year}
+        </span>
+      </div>
+    </div>
+  ) : (
+    <div
+      class="aspect-video flex items-center justify-center"
+      style="background-color: var(--color-amber);"
+    >
+      <span class="text-4xl font-bold" style="color: var(--color-brown); font-family: var(--font-serif);">
+        {year}
+      </span>
+    </div>
+  )}
+  {highlight && (
+    <p class="text-xs px-3 py-2" style="font-family: var(--font-sans); color: var(--color-brown-light);">
+      {highlight}
+    </p>
+  )}
+</a>

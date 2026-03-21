@@ -1,0 +1,49 @@
+---
+interface Video {
+  id: string;
+  title: string;
+  thumb?: string;
+}
+
+interface Props {
+  videos: Video[];
+}
+
+const { videos } = Astro.props;
+---
+
+{videos.length > 0 && (
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 my-4">
+    {videos.map(v => {
+      const thumb = v.thumb ?? `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`;
+      return (
+        <a
+          href={`https://www.youtube.com/watch?v=${v.id}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex flex-col rounded overflow-hidden shadow hover:shadow-md transition-shadow"
+          style="background-color: var(--color-card);"
+        >
+          <div class="relative overflow-hidden aspect-video bg-gray-200">
+            <img
+              src={thumb}
+              alt={v.title}
+              loading="lazy"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+            />
+            <!-- Play overlay -->
+            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                 style="background: rgba(107,63,31,0.3);">
+              <svg class="w-12 h-12 text-white drop-shadow" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            </div>
+          </div>
+          <p class="text-xs px-2 py-1 leading-snug" style="font-family: var(--font-sans); color: var(--color-brown);">
+            {v.title}
+          </p>
+        </a>
+      );
+    })}
+  </div>
+)}

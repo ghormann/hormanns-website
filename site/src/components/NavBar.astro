@@ -1,0 +1,192 @@
+---
+import { getCollection } from 'astro:content';
+
+const years = (await getCollection('christmas', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.year - b.data.year);
+
+const decades = ['2000-2009', '2010-2019', '2020-Today'] as const;
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav
+  class="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-4 py-2"
+  style="background-color: var(--color-amber);"
+>
+  <!-- Brand -->
+  <a
+    href="/"
+    class="text-2xl font-bold italic shrink-0"
+    style="color: var(--color-brown); font-family: var(--font-serif);"
+  >
+    The Hormanns
+  </a>
+
+  <!-- Mobile toggle -->
+  <details class="group md:hidden">
+    <summary
+      class="list-none cursor-pointer px-3 py-1 rounded text-sm font-medium select-none"
+      style="color: var(--color-brown); background: var(--color-amber-dark);"
+    >
+      <span class="group-open:hidden">☰ Menu</span>
+      <span class="hidden group-open:inline">✕ Close</span>
+    </summary>
+    <!-- Mobile menu panel -->
+    <div
+      class="absolute top-full left-0 right-0 shadow-lg p-4 flex flex-col gap-2"
+      style="background-color: var(--color-amber);"
+    >
+      <a href="/" class="nav-link">Home</a>
+      <a href="/greg/" class="nav-link">Greg</a>
+      <a href="/mary/" class="nav-link">Mary</a>
+      <hr style="border-color: var(--color-amber-dark);" />
+      <a href="/christmas/" class="nav-link font-semibold">Christmas Display</a>
+      {decades.map(decade => (
+        <div class="pl-3">
+          <div class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: var(--color-brown-light);">{decade}</div>
+          <div class="flex flex-wrap gap-x-3">
+            {years.filter(y => y.data.decade === decade).map(y => (
+              <a href={`/christmas/${y.data.year}/`} class="nav-link text-sm">{y.data.year}</a>
+            ))}
+          </div>
+        </div>
+      ))}
+      <hr style="border-color: var(--color-amber-dark);" />
+      <a href="/technology/" class="nav-link font-semibold">Technology</a>
+      <a href="/technology/clock/" class="nav-link pl-3 text-sm">The Clock</a>
+      <a href="/technology/snowmen/" class="nav-link pl-3 text-sm">The Snowmen</a>
+      <a href="/technology/grid/" class="nav-link pl-3 text-sm">The Grid</a>
+      <a href="/technology/dmx/" class="nav-link pl-3 text-sm">DMX / E1.31</a>
+      <a href="/technology/text-message/" class="nav-link pl-3 text-sm">Texting Your Name</a>
+      <a href="/technology/voting/" class="nav-link pl-3 text-sm">Voting for Songs</a>
+      <a href="/technology/info-board/" class="nav-link pl-3 text-sm">Information Board</a>
+      <hr style="border-color: var(--color-amber-dark);" />
+      <a href="/sitemap/" class="nav-link">Site Map</a>
+    </div>
+  </details>
+
+  <!-- Desktop nav -->
+  <ul class="hidden md:flex items-center gap-1" style="font-family: var(--font-sans);">
+    <!-- Meet Us -->
+    <li class="group relative">
+      <button
+        class="nav-btn"
+        aria-haspopup="true"
+      >
+        Meet Us ▾
+      </button>
+      <ul class="dropdown">
+        <li><a href="/" class="dropdown-item">Home</a></li>
+        <li><a href="/greg/" class="dropdown-item">Greg</a></li>
+        <li><a href="/mary/" class="dropdown-item">Mary</a></li>
+      </ul>
+    </li>
+
+    <!-- Christmas Display -->
+    <li class="group relative">
+      <button class="nav-btn" aria-haspopup="true">
+        Christmas Display ▾
+      </button>
+      <div class="dropdown p-4 w-72">
+        <a href="/christmas/" class="dropdown-item font-semibold mb-2 block">Overview</a>
+        <hr class="mb-2" style="border-color: var(--color-amber-dark);" />
+        {decades.map(decade => (
+          <div class="mb-3">
+            <div class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: var(--color-brown-light);">{decade}</div>
+            <div class="flex flex-wrap gap-x-2">
+              {years.filter(y => y.data.decade === decade).map(y => (
+                <a href={`/christmas/${y.data.year}/`} class="dropdown-item text-sm px-1">{y.data.year}</a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </li>
+
+    <!-- Technology -->
+    <li class="group relative">
+      <button class="nav-btn" aria-haspopup="true">
+        Technology ▾
+      </button>
+      <ul class="dropdown">
+        <li><a href="/technology/" class="dropdown-item">Overview</a></li>
+        <li><a href="/technology/clock/" class="dropdown-item">The Clock</a></li>
+        <li><a href="/technology/snowmen/" class="dropdown-item">The Snowmen</a></li>
+        <li><a href="/technology/grid/" class="dropdown-item">The Grid</a></li>
+        <li><hr style="border-color: var(--color-amber-dark);" /></li>
+        <li><a href="/technology/dmx/" class="dropdown-item">DMX / E1.31</a></li>
+        <li><a href="/technology/text-message/" class="dropdown-item">Texting Your Name</a></li>
+        <li><a href="/technology/voting/" class="dropdown-item">Voting for Songs</a></li>
+        <li><a href="/technology/info-board/" class="dropdown-item">Information Board</a></li>
+        <li><hr style="border-color: var(--color-amber-dark);" /></li>
+        <li><a href="/technology/parallel-8/" class="dropdown-item text-sm">Simple Controller (Legacy)</a></li>
+        <li><a href="/technology/parallel-320/" class="dropdown-item text-sm">320 Controller (Legacy)</a></li>
+      </ul>
+    </li>
+
+    <li>
+      <a href="/sitemap/" class="nav-btn">Site Map</a>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  .nav-link {
+    color: var(--color-brown);
+    text-decoration: none;
+    font-family: var(--font-sans);
+  }
+  .nav-link:hover {
+    color: var(--color-brown-light);
+    text-decoration: underline;
+  }
+
+  .nav-btn {
+    color: var(--color-brown);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.4rem 0.6rem;
+    border-radius: 0.25rem;
+    font-size: 0.9rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .nav-btn:hover {
+    background-color: var(--color-amber-dark);
+  }
+
+  /* Dropdown panel — hidden by default, shown on group hover */
+  .dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 12rem;
+    background-color: var(--color-amber);
+    border: 1px solid var(--color-amber-dark);
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    list-style: none;
+    margin: 0;
+    padding: 0.25rem 0;
+    z-index: 100;
+  }
+  /* Show on hover (CSS-only, no JS needed on desktop) */
+  .group:hover .dropdown {
+    display: block;
+  }
+
+  .dropdown-item {
+    display: block;
+    padding: 0.3rem 0.75rem;
+    color: var(--color-brown);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-family: var(--font-sans);
+  }
+  .dropdown-item:hover {
+    background-color: var(--color-amber-dark);
+  }
+</style>
