@@ -13,7 +13,7 @@ const { videos } = Astro.props;
 ---
 
 {videos.length > 0 && (
-  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 my-4">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 my-4">
     {videos.map(v => {
       const thumb = v.thumb ?? `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`;
       return (
@@ -39,7 +39,7 @@ const { videos } = Astro.props;
               </svg>
             </div>
           </div>
-          <p class="text-xs px-2 py-1 leading-snug" style="font-family: var(--font-sans); color: var(--color-brown);">
+          <p class="text-sm px-2 py-1 leading-snug" style="font-family: var(--font-sans); color: var(--color-brown);">
             {v.title}
           </p>
         </a>
