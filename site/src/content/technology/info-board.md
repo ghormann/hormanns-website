@@ -25,6 +25,7 @@ photos:
     caption: "Under Construction"
   - src: "christmas/power_box/sign_daytime.jpg"
     caption: "Daytime Picture"
+showFavDisplays: true
 ---
 
 In 2020, we added a new P10 panel display to provide information to viewers about our display. Measuring 12ft wide and 2ft tall, the sign displays information of interest including the radio station we broadcast on, the near real-time power consumption for the display, the phone number for interacting with the display, and periodically the total amount of power the display has consumed for the season.

@@ -1,0 +1,11 @@
+---
+// Renders Mary's favorite displays from CoolDisplays.net via their favToolV2 widget.
+---
+
+<h3 class="text-lg font-semibold mt-8 mb-2" style="color: var(--color-brown);">Our Favorite Light Displays</h3>
+<div id="favHere"></div>
+
+<script is:inline src="https://cooldisplays.net/favToolV2.php?u=f2f814292ee8f9276575a81a8d6137e8i2i555fae263f725f3ad15c3a4dfaf7347137805780"></script>
+<script is:inline>
+  coolTool.showFav('favHere');
+</script>

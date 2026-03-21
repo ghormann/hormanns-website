@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import YouTubeGrid from '../../components/YouTubeGrid.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
+import FavDisplays from '../../components/FavDisplays.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('technology', ({ data }) => !data.draft);
@@ -14,7 +15,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, videos, photos } = entry.data;
+const { title, videos, photos, showFavDisplays } = entry.data;
 ---
 
 <PageLayout title={`${title} — The Hormanns`}>
@@ -39,6 +40,8 @@ const { title, videos, photos } = entry.data;
       <PhotoGallery photos={photos} />
     </>
   )}
+
+  {showFavDisplays && <FavDisplays />}
 
   <div class="mt-8 pt-4 border-t" style="border-color: var(--color-amber);">
     <a href="/technology/" class="text-sm hover:underline" style="font-family: var(--font-sans); color: var(--color-brown-light);">

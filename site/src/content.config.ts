@@ -25,6 +25,7 @@ const christmas = defineCollection({
     videos: z.array(videoSchema).default([]),
     photos: z.array(photoSchema).default([]),
     draft: z.boolean().default(false),
+    showFavDisplays: z.boolean().default(false),
   }),
 });
 
@@ -37,6 +38,7 @@ const technology = defineCollection({
     videos: z.array(videoSchema).default([]),
     photos: z.array(photoSchema).default([]),
     draft: z.boolean().default(false),
+    showFavDisplays: z.boolean().default(false),
   }),
 });
 

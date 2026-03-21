@@ -33,3 +33,36 @@ h1, h2, h3, h4, h5, h6 {
   outline: 2px solid var(--color-brown);
   outline-offset: 2px;
 }
+
+
+img.DisplaySummary {
+  width:90px;
+  float:left;
+  margin:4px;
+  border:0px;
+}
+
+h1.DisplaySummary {
+  margin:5px 0px 0px 0px;
+  font-size:20px;
+}
+
+table.DisplaySummary {
+  margin:0px 0px 0px 0px;
+  border-width: 0px;
+  border-spacing: 2px;
+  border-style: none;
+}
+
+td.DisplaySummary {
+  border-width: 0px;
+  border-spacing: 2px;
+  border-style: none;
+  vertical-align:text-top;
+}
+
+.dispVote {
+  color: green;
+  font-style:italic;
+  font-size: 12px;
+}

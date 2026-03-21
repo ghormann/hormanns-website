@@ -5,6 +5,7 @@ import YouTubeGrid from '../../components/YouTubeGrid.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import StatBlock from '../../components/StatBlock.astro';
 import YearPrevNext from '../../components/YearPrevNext.astro';
+import FavDisplays from '../../components/FavDisplays.astro';
 
 export async function getStaticPaths() {
   const entries = await getCollection('christmas', ({ data }) => !data.draft);
@@ -26,7 +27,7 @@ export async function getStaticPaths() {
 
 const { entry, prev, next } = Astro.props;
 const { Content } = await render(entry);
-const { title, year, heroImage, heroImageAlt, stats, videos, photos } = entry.data;
+const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisplays } = entry.data;
 ---
 
 <ChristmasLayout title={title}>
@@ -101,6 +102,8 @@ const { title, year, heroImage, heroImageAlt, stats, videos, photos } = entry.da
       coolMap.showMap(1, 10, 'map');
     }
   </script>
+
+  {showFavDisplays && <FavDisplays />}
 
   <YearPrevNext prev={prev} next={next} />
 </ChristmasLayout>
