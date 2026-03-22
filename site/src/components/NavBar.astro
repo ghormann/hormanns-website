@@ -47,7 +47,8 @@ const currentPath = Astro.url.pathname;
           <a href={`/christmas/${y.data.year}/`} class="nav-link text-sm">{y.data.year}</a>
         ))}
       </div>
-      <a href="/christmas/" class="nav-link pl-3 text-sm">Older years</a>
+      <a href="/christmas/" class="nav-link pl-3 text-sm">All Years</a>
+      <a href="/christmas/our-story/" class="nav-link pl-3 text-sm">Our Story</a>
       <hr style="border-color: var(--color-amber-dark);" />
       <a href="/technology/" class="nav-link font-semibold">Technology</a>
       <a href="/technology/clock/" class="nav-link pl-3 text-sm">The Clock</a>
@@ -90,7 +91,8 @@ const currentPath = Astro.url.pathname;
           <li><a href={`/christmas/${y.data.year}/`} class="dropdown-item">{y.data.year}</a></li>
         ))}
         <li><hr style="border-color: var(--color-amber-dark);" /></li>
-        <li><a href="/christmas/" class="dropdown-item">Older years</a></li>
+        <li><a href="/christmas/" class="dropdown-item">All Years</a></li>
+        <li><a href="/christmas/our-story/" class="dropdown-item">Our Story</a></li>
       </ul>
     </li>
 

@@ -1,0 +1,164 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+---
+
+<style>
+  .prose p {
+    margin-bottom: 1.25rem;
+  }
+</style>
+
+<PageLayout title="Our Story — Christmas Display — The Hormanns" description="The history of the Hormann animated Christmas light display, from 2001 to today.">
+
+  <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-amber);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-brown);">Our Story</h1>
+    <p class="mt-2 text-sm" style="color: var(--color-brown-light); font-family: var(--font-sans);">
+      25 years of animated Christmas lights — how it all began.
+    </p>
+  </div>
+
+  <div class="prose brown-links" style="max-width: none;">
+
+    <h2 class="text-2xl font-bold mt-8 mb-4">A Little History</h2>
+
+    <p>
+      Both of us are big on Christmas. Mary likes the shopping, baking, and interior decorating,
+      and Greg always wanted a big outdoors Christmas like his grandfather's displays. Once we
+      purchased our first house in <a href="/christmas/2001/">2001</a>, Greg got a chance to work
+      on that display and experimented with animated displays controlled by a computer. That year
+      Greg built two <a href="/technology/parallel-8/">parallel port controllers</a> that could
+      control 8 circuits each. These were simple to build and control, but didn't provide much
+      growth potential.
+    </p>
+
+    <div class="my-6 flex justify-center">
+      <a href="https://www.youtube.com/watch?v=Nd7ADGezo3s" target="_blank" rel="noopener" class="block relative rounded-lg overflow-hidden" style="max-width: 560px; width: 100%;">
+        <img
+          src="https://img.youtube.com/vi/Nd7ADGezo3s/maxresdefault.jpg"
+          alt="Video History of our Display"
+          class="w-full rounded-lg"
+        />
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div style="width:68px;height:48px;background:rgba(0,0,0,0.75);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+            <div style="width:0;height:0;border-top:14px solid transparent;border-bottom:14px solid transparent;border-left:22px solid white;margin-left:4px;"></div>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <p>
+      For 2002, Greg started in January trying to find a design that would allow us to control
+      many more circuits without purchasing expensive Digital I/O boards used by a few others
+      around the United States. After a bit of searching, he found
+      <a href="/technology/parallel-320/">Hill Robertson's design</a> for a
+      <a href="/technology/parallel-320/">320-circuit device</a> that could be controlled by a
+      parallel port, and spent much of the year building our own
+      <a href="/technology/parallel-320/">version</a>. At the time the device was rather amazing
+      and allowed up to 320 AC circuits to be switched on and off using a single parallel port on
+      a PC.
+    </p>
+
+    <p>
+      In 2008, we purchased some <a href="/christmas/2016/">Light-o-Rama CTB08 controllers</a>.
+      Although each device only controlled 8 AC circuits, they were the first solution we ever had
+      that allowed for dimming. This opened up a completely new world as we could cross-fade
+      between colors in the display. Although LOR solutions are a bit on the expensive side
+      compared to other do-it-yourself solutions, they remain a great way to get started on your
+      own animated Christmas light display. (Greg, being who he is, refused to purchase the LOR
+      software and instead reverse-engineered the protocol and continued to run custom software.)
+    </p>
+
+    <p>
+      By 2014, it was finally time to retire the <a href="/technology/parallel-320/">320
+      Controller</a>. We invested heavily in DIY <a href="/technology/dmx/">DMX and E1.31
+      solutions</a>. As we moved to this new technology, we also started converting to
+      <a href="/technology/dmx/">pixels</a> — allowing each individual light to be individually
+      controlled, bringing a whole new world of possibilities. In 2016, we retired the last of
+      the LOR controllers. 2016 also marked the year we converted from custom software to
+      <a href="http://xlights.org">xLights</a>, a great open-source project created by the
+      holiday lighting community. And 2016 finally marked the year Greg gave in to the family
+      demands and started synchronizing the lights to music played over a low-power FM
+      transmitter — mostly because xLights was so easy to use that both Mary and the kids
+      could help with programming the lights.
+    </p>
+
+    <hr />
+
+    <h2 class="text-2xl font-bold mt-8 mb-4">The Star</h2>
+
+    <div class="flex flex-col sm:flex-row gap-6 items-start">
+      <div class="flex-1">
+        <p>
+          The odd-looking object on the right has been passed through the Hormann family for
+          generations. No matter which direction you look at it from, you can always see a 5-point
+          star! Made entirely of copper and colored glass, this one-of-a-kind decoration weighs a
+          ton. The Star was designed and built by Greg's great-great uncle and given to his
+          grandfather to be hung outside their Fort Wayne home, where it was placed every Christmas
+          for many years. Upon his passing, the Star was given to Greg's father, who presented it
+          to Greg in 1998.
+        </p>
+        <p>
+          Greg's grandparents always hung the Star outside on the porch until the year it
+          disappeared while they were attending church. After placing articles in the local paper
+          explaining the family significance of the star, it mysteriously reappeared a few days
+          later. Since that incident, the Star is now proudly displayed every Thanksgiving through
+          New Year's in our front window.
+        </p>
+      </div>
+      <a href="/images/star.jpg" class="shrink-0">
+        <img
+          src="/images/_star.jpg"
+          alt="The Hormann family star"
+          class="rounded-lg"
+          style="width: 180px;"
+        />
+      </a>
+    </div>
+
+    <hr />
+
+    <h2 class="text-2xl font-bold mt-8 mb-4">Some References</h2>
+
+    <p>For those interested in creating their own computer-controlled Christmas light displays, here are the resources we've found most valuable over the years:</p>
+
+    <dl class="space-y-4">
+      <div>
+        <dt class="font-semibold"><a href="http://www.CoolDisplays.net">CoolDisplays.net</a></dt>
+        <dd>Looking for impressive holiday displays near you? CoolDisplays.net is a great tool for locating holiday displays across the United States.</dd>
+      </div>
+      <div>
+        <dt class="font-semibold"><a href="http://doityourselfchristmas.com">DoItYourselfChristmas.com</a></dt>
+        <dd>Our de-facto source for keeping up with others who do computer-controlled Christmas light displays. The forums are a great resource for learning about the hobby.</dd>
+      </div>
+      <div>
+        <dt class="font-semibold">
+          <a href="http://diylightanimation.com">DiyLightAnimation</a> ·
+          <a href="http://falconchristmas.com/forum/index.php">FalconChristmas</a> ·
+          <a href="http://nutcracker123.com/forum/index.php">xLights Forum</a>
+        </dt>
+        <dd>Community-based websites with good information for those interested in different aspects of computer-controlled Christmas displays.</dd>
+      </div>
+      <div>
+        <dt class="font-semibold">
+          <a href="https://www.pixelcontroller.com">PixelController.com</a> ·
+          <a href="https://kulplights.com">Kulp Lights</a> ·
+          <a href="http://HolidayCoro.com">Holiday Coro</a> ·
+          <a href="https://www.boscoyostudio.com/">Boscoyo Studios</a> ·
+          <a href="http://www.lightorama.com">Light-O-Rama</a>
+        </dt>
+        <dd>
+          Really interested in creating your own animated displays but unsure where to start?
+          These vendors offer both the hardware and software you need to control your lights and
+          set them to music. These are the vendors we've primarily leveraged and know to be
+          reliable.
+        </dd>
+      </div>
+      <div>
+        <dt class="font-semibold"><a href="http://www.planetchristmas.com">Planet Christmas</a></dt>
+        <dd>The original home of computer-controlled Christmas lights. Chuck Smith was the father of the hobby and a key driver in making it so popular.</dd>
+      </div>
+    </dl>
+
+  </div>
+
+</PageLayout>
