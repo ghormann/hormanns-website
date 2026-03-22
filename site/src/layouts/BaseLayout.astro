@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import LightboxModal from '../components/LightboxModal.astro';
 
 interface Props {
   title: string;
@@ -38,5 +39,6 @@ const { title, description = 'The Hormann Family Website' } = Astro.props;
 </head>
 <body>
   <slot />
+  <LightboxModal />
 </body>
 </html>
