@@ -1,6 +1,7 @@
 ---
 title: "The Snowmen"
 description: "Two animated snowmen having a snowball fight — from rope lights to 13,000 RGB pixels."
+heroImage: https://img.youtube.com/vi/0W53e9QcRPk/maxresdefault.jpg
 order: 2
 videos:
   - id: "0W53e9QcRPk"

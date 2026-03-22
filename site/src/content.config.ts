@@ -35,6 +35,8 @@ const technology = defineCollection({
     title: z.string(),
     description: z.string().optional(),
     order: z.number().default(99),
+    heroImage: z.string().nullish(),
+    heroImageAlt: z.string().nullish(),
     videos: z.array(videoSchema).default([]),
     photos: z.array(photoSchema).default([]),
     draft: z.boolean().default(false),

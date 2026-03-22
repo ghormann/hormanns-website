@@ -11,22 +11,49 @@ const pages = (await getCollection('technology', ({ data }) => !data.draft))
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-brown);">Christmas Technology</h1>
   </div>
 
-  <ul class="space-y-4">
-    {pages.map(p => (
-      <li>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    {pages.map(p => {
+      const abs = (s: string) => (s.startsWith('/') || s.startsWith('http') ? s : `/${s}`);
+      const firstPhoto = p.data.photos?.[0];
+      const img = p.data.heroImage ?? (firstPhoto ? (firstPhoto.thumb ?? firstPhoto.src) : null);
+      const imgSrc = img ? abs(img) : null;
+      return (
         <a
           href={`/technology/${p.id}/`}
-          class="font-semibold text-lg hover:underline"
-          style="color: var(--color-brown);"
+          class="group block rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow"
+          style="background-color: var(--color-card);"
         >
-          {p.data.title}
+          {imgSrc ? (
+            <div class="relative aspect-video overflow-hidden">
+              <img
+                src={imgSrc}
+                alt={p.data.title}
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+              <div
+                class="absolute inset-0 flex items-end p-2"
+                style="background: linear-gradient(to top, rgba(107,63,31,0.7) 0%, transparent 60%);"
+              >
+                <span class="text-base font-bold text-white drop-shadow" style="font-family: var(--font-serif);">
+                  {p.data.title}
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div class="aspect-video flex items-center justify-center px-4 text-center" style="background-color: var(--color-amber);">
+              <span class="text-lg font-bold" style="color: var(--color-brown); font-family: var(--font-serif);">
+                {p.data.title}
+              </span>
+            </div>
+          )}
+          {p.data.description && (
+            <p class="text-xs px-3 py-2" style="font-family: var(--font-sans); color: var(--color-brown-light);">
+              {p.data.description}
+            </p>
+          )}
         </a>
-        {p.data.description && (
-          <p class="text-sm mt-0.5" style="color: var(--color-brown-light); font-family: var(--font-sans);">
-            {p.data.description}
-          </p>
-        )}
-      </li>
-    ))}
-  </ul>
+      );
+    })}
+  </div>
 </PageLayout>
