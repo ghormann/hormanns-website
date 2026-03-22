@@ -142,6 +142,43 @@ const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisp
 
   {showFavDisplays && <FavDisplays />}
 
+  <!-- Bottom year navigation (duplicate of top strip) -->
+  <nav class="grid grid-cols-3 items-center mt-10 pt-6 border-t text-sm" style="font-family: var(--font-sans); border-color: var(--color-amber);">
+    <div>
+      {prev && (
+        <a
+          href={`/christmas/${prev.year}/`}
+          class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80 w-fit"
+          style="background-color: var(--color-amber); color: var(--color-brown);"
+        >
+          ← {prev.year}
+        </a>
+      )}
+    </div>
+
+    <div class="flex justify-center">
+      <a
+        href="/christmas/"
+        class="font-medium px-3 py-1 rounded-full border transition-opacity hover:opacity-80"
+        style="border-color: var(--color-amber); color: var(--color-brown-light);"
+      >
+        All Years
+      </a>
+    </div>
+
+    <div class="flex justify-end">
+      {next && (
+        <a
+          href={`/christmas/${next.year}/`}
+          class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80"
+          style="background-color: var(--color-amber); color: var(--color-brown);"
+        >
+          {next.year} →
+        </a>
+      )}
+    </div>
+  </nav>
+
 </ChristmasLayout>
 
 <style>
