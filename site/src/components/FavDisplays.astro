@@ -1,12 +1,23 @@
 ---
-// Renders Mary's favorite displays from CoolDisplays.net via their favToolV2 widget.
+// Renders favorite displays from CoolDisplays.net via their favToolV2 widget.
+// wide: if true, allows display cards to wrap into 2 columns on wider screens.
+// token: the CoolDisplays.net user token (u= parameter). Defaults to Greg's token.
+interface Props {
+  wide?: boolean;
+  token?: string;
+}
+const {
+  wide = false,
+  token = 'f2f814292ee8f9276575a81a8d6137e8i2i555fae263f725f3ad15c3a4dfaf7347137805780',
+} = Astro.props;
+const scriptSrc = `https://cooldisplays.net/favToolV2.php?u=${token}`;
 ---
 
 <h3 class="text-lg font-semibold mt-8 mb-2" style="color: var(--color-brown);">Our Favorite Light Displays</h3>
-<div id="favHere"></div>
+<div id="favHere" class={wide ? 'fav-wide' : ''}></div>
 
 <link rel="stylesheet" href="https://cooldisplays.net/favToolV2.css" />
-<script is:inline src="https://cooldisplays.net/favToolV2.php?u=f2f814292ee8f9276575a81a8d6137e8i2i555fae263f725f3ad15c3a4dfaf7347137805780"></script>
+<script is:inline src={scriptSrc}></script>
 <script is:inline>
   coolTool.showFav('favHere');
 </script>
@@ -16,5 +27,15 @@
   .cool-title a {
     color: #007bff;
     text-decoration: underline;
+  }
+
+  /* Wide (2-column) layout */
+  .fav-wide .cool-list-displays {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .fav-wide .cool-summary {
+    min-width: 380px;
+    flex: 1 1 380px;
   }
 </style>
