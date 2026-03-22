@@ -1,0 +1,42 @@
+<h2>Lightbox Approach Options</h2>
+<p class="subtitle">Three ways to implement the photo popup — pick the one that feels right</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Pure CSS + Vanilla JS (inline)</h3>
+      <p>Self-contained within <code>PhotoGallery.astro</code>. No dependencies. A dark overlay fills the viewport; the image is centered with prev/next arrow buttons on the sides and an ✕ close button in the top-right corner. Keyboard navigation (←/→/Esc) included. Caption shown below image.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul><li>Zero new dependencies</li><li>Fastest to ship</li><li>Fits the existing Astro + Tailwind stack perfectly</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>More code inside the component</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Separate LightboxModal component</h3>
+      <p>Extract the overlay into its own <code>LightboxModal.astro</code> component, keeping <code>PhotoGallery.astro</code> lean. The gallery renders thumbnails; the modal handles display, navigation, and accessibility. Shared via a tiny global JS event bus (<code>openLightbox(photos, index)</code>).</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul><li>Clean separation of concerns</li><li>Modal reusable across other galleries</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Slightly more files</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Third-party lightbox library (e.g. GLightbox)</h3>
+      <p>Drop in a polished library like GLightbox or PhotoSwipe via npm. Handles animations, touch swipe, zoom, and accessibility out of the box. Wire it up with a <code>data-gallery</code> attribute on the existing anchors.</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>Pros</h4><ul><li>Feature-rich (swipe, zoom, animations)</li><li>Battle-tested accessibility</li></ul></div>
+        <div class="cons"><h4>Cons</h4><ul><li>Adds a JS dependency</li><li>External library styling may clash with brand</li></ul></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:1.5rem">💡 <strong>Recommendation: B</strong> — separate component keeps things clean and the modal stays reusable if you add photo galleries elsewhere on the site.</p>
