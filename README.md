@@ -12,7 +12,7 @@ This is a rebuild of the original PHP+Bootstrap 4 site as a fully static Astro 6
 | Styling | Tailwind CSS v4 (CSS-first config) |
 | Interactivity | Vue 3 (photo lightbox) |
 | Images | Astro `<Image />` for build-time resizing |
-| Hosting | Static files — FreeBSD server or Cloudflare Pages |
+| Hosting | Static files for linux server |
 
 ## Prerequisites
 
