@@ -98,6 +98,7 @@
   }
 
   function doClose() {
+    if (dialog.classList.contains('closing')) return;
     dialog.classList.add('closing');
     dialog.addEventListener('transitionend', () => {
       dialog.classList.remove('closing');
