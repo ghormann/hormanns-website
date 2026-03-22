@@ -5,7 +5,8 @@ heroImage: https://img.youtube.com/vi/z0MqBhNhmZU/maxresdefault.jpg
 order: 1
 videos:
   - id: "MnXRQG9p0ps"
-    title: "Original Version"
+    title: "Original Version (2009)"
+    thumb: https://img.youtube.com/vi/MnXRQG9p0ps/hqdefault.jpg
   - id: "qFUG5f9jvME"
     title: "Hitting Zero (2010)"
   - id: "u8uZSKy_S0k"
@@ -21,7 +22,7 @@ videos:
   - id: "pPuGSIxpJIA"
     title: "Oops… (2016)"
   - id: "z0MqBhNhmZU"
-    title: "Current Version"
+    title: "Current Version (all pixels)"
   - id: "aGOOmF0B3fM"
     title: "GUI Program (Current)"
   - id: "IPzWfIm7C5c"

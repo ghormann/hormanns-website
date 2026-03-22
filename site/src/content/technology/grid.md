@@ -4,16 +4,17 @@ description: "An 18ft × 8ft RGB pixel grid of 4,876 individually controlled pix
 heroImage: https://img.youtube.com/vi/LVqmA2NZAa4/maxresdefault.jpg
 order: 3
 videos:
-  - id: "HjcuMDTyxBY"
-    title: ""
   - id: "9T0EQ4NDi6g"
-    title: ""
-  - id: "57d6a8jikfk"
-    title: ""
-  - id: "LVqmA2NZAa4"
-    title: ""
+    title: "Full Grid (2020)"
+    thumb: https://img.youtube.com/vi/9T0EQ4NDi6g/hqdefault.jpg
   - id: "EhCaSn63lMk"
     title: "Names on the Big Grid"
+  - id: "HjcuMDTyxBY"
+    title: "Construction (2015)"
+  - id: "57d6a8jikfk"
+    title: "First Year (2015)"
+  - id: "LVqmA2NZAa4"
+    title: "Testing in Basement (2015)"
 photos:
   - src: "images/20151019_pixel.jpg"
     caption: "Single Bullet Node"

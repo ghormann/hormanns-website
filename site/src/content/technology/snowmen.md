@@ -7,7 +7,7 @@ videos:
   - id: "0W53e9QcRPk"
     title: "2020 (Voter Selectable)"
   - id: "GPOL_nibIAU"
-    title: "2019 (Digital)"
+    title: "2019 (all pixels)"
   - id: "PEzZA8v5mrQ"
     title: "2019 Daytime"
   - id: "YY1jnphglgw"
@@ -16,9 +16,10 @@ videos:
     title: "2010 (Original)"
   - id: "Z6t6t1zBcxU"
     title: "2008 (Original)"
+    thumb: https://img.youtube.com/vi/Z6t6t1zBcxU/hqdefault.jpg
 photos:
   - src: "christmas/2016/snowman_card.jpg"
-    caption: "Thank You Letter from Neighborhood Kids"
+    caption: "Thank You Letter"
     thumb: "christmas/2016/snowman_card_thumb.jpg"
   - src: "christmas/2019/Snowman_Day/day1.jpg"
     caption: "Daytime"
