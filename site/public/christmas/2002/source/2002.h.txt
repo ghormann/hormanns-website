@@ -1,0 +1,69 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
+#include <pthread.h>
+
+#ifndef _2002_H
+#define _2002_H
+
+#define ON        1
+#define OFF       0
+
+#define RIGHT 1
+#define LEFT  2
+
+#include "320controller.h"
+
+/*
+ * Set color of bush in memory
+ */
+
+void set_bush(int bush, int red, int green, int blue, int white);
+
+
+/* 
+ * Write all pending box changes out to relays
+ * and pause current thread for amount of time 
+ * specified via "pause" parameter
+ */
+
+void write_data(float pause);     
+
+/*
+ * Global functions for sign thread
+ */
+void do_it_sign(void);
+void *sign_main(void *args);
+
+/*
+ * Global functions for bushes thread
+ */
+void do_it_bushes(void);
+void *bushes_main(void *args);
+
+/*
+ * Global function for snowmen thread
+ */
+void do_it_snowmen(void);
+void *snowmen_main(void *args);
+
+
+extern int boxs[41];       /* State of boxes (to be written out)     */
+extern int copy_boxs[41];  /* State of boxes (at last write )        */
+extern int global_time;    /* Global var to display clock            */
+extern char message[500];  /* What are the bushes currently doing?   */
+extern char message2[500]; /* What are the snowmen currently doing?  */
+
+/*
+ * Tracks state of snowmen.
+ * (Only done so that snowmen code isn't
+ * specific to controller layout
+ */
+extern int snowmen[5][10];
+
+#endif
+
+/*  LocalWords:  stdlib unistd pthread ifndef int args boxs var endif
+ */

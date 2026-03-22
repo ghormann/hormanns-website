@@ -1,0 +1,12 @@
+
+CC_LIBS= -lcurses -pthread 
+CFLAGS= -g
+
+all: 2004
+	@echo "Done."
+
+2004: bushes.o clock.o ../lib/320controller.o ../lib/320controller.h main.h main.o snowmen.o sign.o ../lib/lor.o ../lib/lor.c
+	cc $(CC_LIBS) -o 2004 clock.o 320controller.o main.o bushes.o snowmen.o sign.o lor.o
+
+clean:
+	@rm *.o 2004 *.core *~

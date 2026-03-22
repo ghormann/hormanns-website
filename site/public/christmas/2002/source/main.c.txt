@@ -1,0 +1,455 @@
+
+#include "320controller.h"
+#include "2002.h"
+
+int boxs[41];         /* Holds master copy of boxes to be written out */
+int boxs_old[41];     /* Boxes last time written                      */
+int copy_boxs[41];    /* Should be replaced by boxs_old               */
+int global_time;      /* Holds sec remaining to display on screen     */
+int show_display;     /* If True then show screen output.             */
+char message[500];    /* Message Displayed on Screen (bushes)         */
+char message2[500];   /* Message Displayed on Screen (snowmen)        */
+
+
+/*
+ * This is a multi-threaded application.
+ * Need to make sure that one thread doesn't
+ * start set_box while another thread is in
+ * the middle of this function.
+ */
+pthread_mutex_t protect_interface;
+
+
+main(int argc, char *argv[])
+{
+  pthread_t sign_t;
+  pthread_t bushes_t;
+  pthread_t snowmen_t;
+  
+  int i;
+  int ch;
+
+  show_display = OFF;  
+  
+  /*
+   * Parse Arguments
+   */
+  while ((ch = getopt(argc, argv, "dD")) != -1)
+    switch (ch) {
+    case 'd':
+    case 'D':
+      show_display = ON;
+      break;
+    case '?':
+    default:
+      printf("Usage: %s [-d] [-D]\n", argv[0]);
+      exit(1);
+    }
+  argc -= optind;
+  argv += optind;
+
+
+  /*
+   * For FreeBSD, this is the trick needed
+   * to allow this program to write directly
+   * to IO ports
+   */
+  open("/dev/io", O_RDONLY);
+  
+  global_time = 0;
+  
+  /*
+   *  Set boxes so that the two don't match.
+   *  This is important starting out because we only
+   *  write out boxes that have changed.
+   */
+  for (i=0; i <= 40; i++)
+  {
+    boxs_old[i] = -1;
+    boxs[i] = 0;
+  }
+  write_data(0);
+  
+
+  /*
+   * Create threads for the display
+   */
+
+  pthread_create(&sign_t, NULL, sign_main, NULL);
+  pthread_create(&bushes_t, NULL, bushes_main, NULL); 
+  pthread_create(&snowmen_t, NULL, snowmen_main, NULL);
+  
+  pthread_mutex_init(&protect_interface, NULL); 
+  
+  
+  /*
+   * This program only ends if all of these
+   * threads die.  (Not going to happen because
+   * all of the threads have infinite loops
+   */
+  pthread_join(sign_t, NULL);
+  pthread_join(bushes_t, NULL); 
+  pthread_join(snowmen_t, NULL);
+  
+} /* End main() */
+
+/* ---------------- */
+
+
+/*
+ * This function writes out all boxes with
+ * pending changes and then pauses the calling
+ * thread for the time specified.
+ *
+ * If run in display_mode, then the program also
+ * updates the local representation of the boxes
+ * displayed on the screen.  This can't be done 
+ * in production mode because my P75 is two slow.
+ */
+
+void write_data(float pause)
+{
+  int i;
+  
+  if (show_display)     /* If in Display_mode */
+  {
+    
+    /*
+     * Clear Screen
+     *
+     * (I really need to learn how to do ncursors
+     * to do this more efficiently, but for now, this
+     * works when debugging.
+    */
+    system("clear");
+    
+    /*
+     * Print out messages
+     */
+
+    printf("M1: %s\n", message);
+    printf("M2: %s\n", message2);
+   
+    /*
+     *Bush 1
+     */
+  
+    if (boxs[3] & 1)
+      printf("R");
+    else
+      printf(" ");
+    
+    if (boxs[3] & 2)
+      printf("G");
+    else
+      printf(" ");
+  
+    if (boxs[3] & 4)
+      printf("B");
+    else
+      printf(" ");
+  
+    if (boxs[3] & 8)
+      printf("W");
+    else
+      printf(" ");
+  
+    printf("  ");
+  
+    /*
+     * Bush 2
+     */
+  
+    if (boxs[3] & 16)
+      printf("R");
+    else
+      printf(" ");
+  
+    if (boxs[3] & 32)
+      printf("G");
+    else
+      printf(" ");
+  
+    if (boxs[3] & 64)
+      printf("B");
+    else
+      printf(" ");
+  
+    if (boxs[2] & 1)
+      printf("W");
+    else
+      printf(" ");
+  
+    printf("  ");
+  
+    /*
+     * Bush 3
+     */
+  
+    if (boxs[2] & 2)
+      printf("R");
+    else
+      printf(" ");
+    
+    if (boxs[2] & 4)
+      printf("G");
+    else
+      printf(" ");
+  
+    if (boxs[2] & 8)
+      printf("B");
+    else
+      printf(" ");
+  
+    if (boxs[2] & 16)
+      printf("W");
+    else
+      printf(" ");
+  
+    printf("  ");
+  
+    /*
+     * Bush 4
+     */
+  
+    if (boxs[1] & 1)
+      printf("R");
+    else
+      printf(" ");
+  
+    if (boxs[1] & 2)
+      printf("G");
+    else
+      printf(" ");
+  
+    if (boxs[1] & 4)
+      printf("B");
+    else
+      printf(" ");
+  
+    if (boxs[1] & 8)
+      printf("W");
+    else
+      printf(" ");
+  
+    printf("  ");
+  
+    /*
+     * Bush 5
+     */
+  
+    if (boxs[1] & 16)
+      printf("R");
+    else
+      printf(" ");
+  
+    if (boxs[1] & 32)
+      printf("G");
+    else
+      printf(" ");
+  
+    if (boxs[1] & 64)
+      printf("B");
+    else
+      printf(" ");
+  
+    if (boxs[4] & 1)
+      printf("W");
+    else
+      printf(" ");
+  
+    printf("  ");
+  
+    /*
+     * Bush 6
+     */
+  
+    if (boxs[4] & 2)
+      printf("R");
+    else
+      printf(" ");
+  
+    if (boxs[4] & 4)
+      printf("G");
+    else
+      printf(" ");
+  
+    if (boxs[4] & 8)
+      printf("B");
+    else
+      printf(" ");
+  
+    if (boxs[4] & 16)
+      printf("W");
+    else
+      printf(" ");
+  
+  /*
+   * Show house colors
+   */
+  
+    printf(" | ");
+    
+    if (boxs[2] & 32)
+      printf("R");
+    else
+      printf(" ");
+    
+    if (boxs[2] & 64)
+      printf("G");
+    else
+      printf(" ");
+    
+    printf("  ");
+    
+    
+    if (boxs[4] & 32)
+      printf("R");
+    else
+      printf(" ");
+    
+    if (boxs[4] & 64)
+      printf("G");
+    else
+      printf(" ");
+    
+  
+  /*
+   *  Print Time
+   */
+  
+    printf("  |  %d", global_time);
+  
+    printf("\n\n\n");
+  
+  /*
+   *
+   * Snow men
+   *
+   */
+
+    if (snowmen[LEFT][7])
+      printf("\t\tX");
+    
+    printf("\n\n");
+    
+    if (snowmen[LEFT][5])
+      printf("\tX");
+    else
+      printf("\t");
+
+    if (snowmen[RIGHT][7])
+      printf("\tX");
+    else
+      printf("\t");
+
+    if (snowmen[RIGHT][5])
+      printf("\tX");
+    else
+      printf("\t");
+
+    printf ("\n");
+  
+    if (snowmen[LEFT][1])
+      printf("L");
+    else
+      printf(" ");
+  
+    if (snowmen[LEFT][2])
+      printf("/");
+    else
+      printf(" ");
+
+    if(snowmen[LEFT][3])
+      printf("H");
+    else
+      printf(" ");
+
+    if(snowmen[LEFT][4])
+      printf("S");
+    else
+      printf(" ");
+      
+    printf ("\t");
+
+    if(snowmen[LEFT][6])
+      printf("X");
+    else
+      printf(" ");
+
+    printf("\t\t");
+
+
+    if(snowmen[RIGHT][6])
+      printf("X");
+    else
+      printf(" ");
+
+
+    printf ("\t");
+
+    if(snowmen[RIGHT][4])
+      printf("S");
+    else
+      printf(" ");
+
+    if(snowmen[RIGHT][3])
+      printf("H");
+    else
+      printf(" ");
+
+  
+    if (snowmen[RIGHT][2])
+      printf("\\");
+    else
+      printf(" ");
+
+    if (snowmen[RIGHT][1])
+      printf("J");
+    else
+      printf(" ");
+
+
+    printf("\n\n");
+    
+  }  /* End if (show_display) */
+
+  
+  /*
+   * Set Lock - Can't let multiple threads 
+   * into this area
+   */
+
+  pthread_mutex_lock(&protect_interface);
+  
+  /*
+   * Change Boxes
+   */
+  for (i = 1; i <= 40; i++)
+  {
+    if (boxs[i] != boxs_old[i])
+    {
+      set_box(i, boxs[i]);
+      boxs_old[i] = boxs[i];
+    }
+  }
+  
+  /*
+   * UnSet Lock
+   */
+  pthread_mutex_unlock(&protect_interface);
+  
+  /*
+   * Sleep amount of time specified
+   */
+  usleep(pause * 1000000);
+}   
+
+
+
+
+
+/*  LocalWords:  int boxs pthread mutex argc argv ch getopt dD printf optind tX
+ */
+/*  LocalWords:  FreeBSD RDONLY init ncursors UnSet usleep
+ */

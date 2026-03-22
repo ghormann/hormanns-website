@@ -1,0 +1,413 @@
+
+#include "../lib/320controller.h"
+#include "main.h"
+
+/*
+ * Code in this file handles the Merry Christmas sign above the
+ * Door
+ */
+
+void test_sign(void);
+void set_letter(int letter, int data);
+void build_right(double pause);
+void flash_sign(int cnt, double pause);
+void slide_left(double duration);
+void alternate(int count, double duration);
+void all_on(double duration);
+void random_disappear(double duration);
+void random_appear(double duration);
+void slide_back_and_forth(double duration);
+void all_off(double duration);
+void every_other_one(int count, double duration);
+
+void *sign_main( void *args)
+{
+   time_t now_t;
+   struct tm *now;
+
+   while(1)
+   {
+      set_box(SIGN_BOX_1,0);
+      set_box(SIGN_BOX_2,0);
+      sprintf(message_sign, "Checking Clock\n");
+      write_data(1);
+
+      //test_sign();
+     
+      time(&now_t);
+      now = localtime(&now_t);
+
+      while (now->tm_hour > 8 && now->tm_hour < 17 && !skip_time_check)
+      {
+	 sprintf(message_sign, 
+		 "Sign: Sleeping 10 minutes (%d:%d)\n", now->tm_hour,
+		  now->tm_min);
+
+         set_box(SIGN_BOX_1,0);
+         set_box(SIGN_BOX_2,0);
+         write_data(600);
+         time(&now_t);
+         now = localtime(&now_t);
+      }
+
+      do_it_sign();
+   }
+}
+
+
+void test_sign(void)
+{
+   while(1)
+   {
+      int i, j;
+
+      sprintf(message_sign, "Testing");
+      for( i=1; i<15; i++)
+      {
+         set_letter(i,0);
+      }
+      write_data(1);
+
+      for( i=1; i<3; i++)
+      {
+	 for (j = 0; j<2; j++)
+         {
+            set_letter(1,1-j);
+	    write_data(1);
+         }
+      }
+
+      sprintf(message_sign, "Starting");
+
+      for (i = 1; i < 15; i++)
+      {
+         set_letter(i,1);
+         write_data(1);
+      }
+   }
+}
+
+/*
+||
+|| Actually DO the cool stuff
+||
+*/
+void do_it_sign(void)
+{
+
+   int i, j;
+
+   boxs[SIGN_BOX_1] = 0;
+   boxs[SIGN_BOX_2] = 0;
+
+   slide_back_and_forth(.07);
+   all_on(5);
+
+   all_off(0);
+   build_right(.5);
+   all_on(2);
+   all_off(0);
+   build_right(.3);
+   all_on(2);
+   all_off(0);
+   build_right(.1);
+   all_on(.1);
+   all_off(0);
+   build_right(.1);
+   all_on(.1);
+   all_off(0);
+   build_right(.1);
+   all_on(.1);
+   all_on(5);
+
+   alternate(6, .5);
+   all_on(5);
+
+   flash_sign(1, .8);
+   flash_sign(1, .7);
+   flash_sign(1, .6);
+   flash_sign(1, .5);
+   flash_sign(1, .4);
+   flash_sign(1, .3);
+   flash_sign(1, .2);
+   flash_sign(1, .1);
+   flash_sign(1, .09);
+   flash_sign(1, .08);
+   flash_sign(1, .07);
+   flash_sign(1, .05);
+   flash_sign(1, .05);
+   flash_sign(1, .05);
+   flash_sign(1, .05);
+   all_on(5);
+
+   slide_left(.125);
+   all_on(5);
+
+   alternate(2, .5);
+   alternate(2, .4);
+   alternate(2, .3);
+   alternate(2, .2);
+   alternate(2, .1);
+   alternate(2, .09);
+   alternate(2, .08);
+   alternate(2, .07);
+   alternate(2, .06);
+   alternate(2, .05);
+   all_on(5);
+
+   random_disappear(.3);
+   write_data(3);
+   random_appear(.3);
+   all_on(4);
+}
+
+
+/*
+||
+|| Set (in memory) the value for a single letter
+||
+*/
+
+void set_letter(int letter, int data)
+{
+
+   int box;
+   int position;
+
+   if (letter < 8)
+   {
+      box = SIGN_BOX_1; 
+      position = letter - 1;
+   }
+   else
+   {
+      box = SIGN_BOX_2;
+      position = letter  - 8;
+   }
+
+  
+   if (data > 0)
+   {
+      boxs[box] = boxs[box] | (1 << position); 
+   }
+   else
+   {
+      boxs[box] = boxs[box] & ~ (1 << position); 
+   }
+
+}   
+
+
+ /*
+ ||  Build Right
+ ||  ----------
+ || .5 is a good pause
+ */
+
+void build_right(double pause) 
+{
+   int i;
+
+   sprintf(message_sign, "Build Right");
+   for (i = 1; i < 15; i++)
+   {
+      set_letter(i, 1);
+      write_data(pause);
+   }
+}
+
+/*
+|| Flash
+*/
+void flash_sign(int count, double pause)
+{
+   int i;
+
+   sprintf(message_sign, "Flash");
+   for (i = 1; i <= count; i++)
+   {
+
+      boxs[SIGN_BOX_1] = 0;
+      boxs[SIGN_BOX_2] = 0;
+      write_data(pause);
+
+      boxs[SIGN_BOX_1] = 127;
+      boxs[SIGN_BOX_2] = 127;
+      write_data(pause);
+   }
+}
+
+/*
+|| Slide Left
+*/
+void slide_back_and_forth(double duration)
+{
+   int i, j;
+
+   sprintf(message_sign, "Slide Back and Forth");
+   boxs[SIGN_BOX_1] = 0;
+   boxs[SIGN_BOX_2] = 0;
+   write_data(0);
+   
+   for (i=14; i > 0; i--)
+   {
+      //set_letter(15,1);
+      //write_data(duration);
+
+      for (j=0; j <= i; j++)
+      {
+	 if (j > 0)
+            set_letter(j-1, 0);
+	 set_letter(j, 1);
+         write_data(duration);
+      }
+
+      for (j=i-1; j>=1; j--)
+      {
+         set_letter(j+1, 0);
+	 set_letter(j, 1);
+         write_data(duration);
+      }
+
+      for (j=2; j <= i; j++)
+      {
+         set_letter(j-1, 0);
+	 set_letter(j, 1);
+         write_data(duration);
+      }
+   }
+}
+
+/*
+|| Every Other one is one.
+*/
+
+void every_other_one(int count, double duration)
+{
+   int i, j;
+   sprintf(message_sign, "Every other one");
+
+   for (i = 0; i < count; i++)
+   {
+      for (j=1; j< 15; j++)
+      {
+	 set_letter(j, (j+i)%2);
+      }
+      write_data(duration);
+   }
+}
+
+/*
+|| Slide Left
+*/
+void slide_left(double duration)
+{
+   int i, j;
+
+   sprintf(message_sign, "Slide Left");
+   boxs[SIGN_BOX_1] = 0;
+   boxs[SIGN_BOX_2] = 0;
+   write_data(0);
+   
+   for (i=1; i < 15; i++)
+   {
+      set_letter(15,1);
+      write_data(duration);
+
+      for (j=14; j >= i; j--)
+      {
+         set_letter(j+1, 0);
+	 set_letter(j, 1);
+         write_data(duration);
+      }
+   }
+}
+
+/*
+|| Flash MERRY then CHRISTMAS
+*/
+
+void alternate(int count, double duration)
+{
+   int i;
+   sprintf(message_sign, "Flash MERRY then CHRISTMAS");
+   for (i = 1; i <= count; i++)
+   {
+
+      boxs[SIGN_BOX_1] = 31;
+      boxs[SIGN_BOX_2] = 0;
+      write_data(duration);
+
+      boxs[SIGN_BOX_1] = 127 - 31;
+      boxs[SIGN_BOX_2] = 127;
+      write_data(duration);
+   }
+}
+
+/*
+|| Turn sign off
+*/
+void all_off(double duration)
+{
+   sprintf(message_sign, "All off");
+   boxs[SIGN_BOX_1] = 0;
+   boxs[SIGN_BOX_2] = 0;
+   write_data(duration);
+}
+
+/*
+|| Turn sign on
+*/
+void all_on(double duration)
+{
+   sprintf(message_sign, "All on");
+   boxs[SIGN_BOX_1] = 127;
+   boxs[SIGN_BOX_2] = 127;
+   write_data(duration);
+}
+
+/*
+|| Disappear
+*/
+void random_disappear(double duration)
+{
+   int i, j;
+
+   sprintf(message_sign, "Random Disappear");
+   for (i = 1; i < 15; i++ )
+   {
+      copy_boxs[SIGN_BOX_1] = boxs[SIGN_BOX_1];
+      copy_boxs[SIGN_BOX_2] = boxs[SIGN_BOX_2];
+      j = 0;
+
+      while (copy_boxs[SIGN_BOX_1] == boxs[SIGN_BOX_1] &&
+	     copy_boxs[SIGN_BOX_2] == boxs[SIGN_BOX_2] )
+      {
+         set_letter(random() %15, 0);
+      } 
+      write_data(duration);
+    }
+}
+
+/*
+||  Appear
+*/
+void random_appear(double duration)
+{
+   int i, j;
+
+   sprintf(message_sign, "Random Appear");
+   for (i = 1; i < 15; i++ )
+   {
+      copy_boxs[SIGN_BOX_1] = boxs[SIGN_BOX_1];
+      copy_boxs[SIGN_BOX_2] = boxs[SIGN_BOX_2];
+      j = 0;
+
+      while (copy_boxs[SIGN_BOX_1] == boxs[SIGN_BOX_1] &&
+	     copy_boxs[SIGN_BOX_2] == boxs[SIGN_BOX_2] )
+      {
+         set_letter(random() %15, 1);
+      } 
+      write_data(duration);
+    }
+}

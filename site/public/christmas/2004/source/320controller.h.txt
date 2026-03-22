@@ -1,0 +1,17 @@
+
+#ifndef _320CONTROL_H
+#define _320CONTROL_H
+
+#include <sys/types.h>
+#include <machine/cpufunc.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <time.h>
+#include <ctype.h>
+
+#define BASE 888
+#define CONTROL BASE+2
+
+void set_box (int box, int data);
+
+#endif

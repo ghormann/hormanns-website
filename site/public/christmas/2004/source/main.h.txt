@@ -1,0 +1,103 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
+#include <pthread.h>
+
+#ifndef _2002_H
+#define _2002_H
+
+#define ON        1
+#define OFF       0
+
+#define RIGHT 1
+#define LEFT  2
+
+#define RED	0
+#define GREEN	1
+#define BLUE	2
+#define WHITE	3
+
+#define SIGN_BOX_1	2
+#define SIGN_BOX_2	4
+
+#define FADE_UP		200
+#define FADE_DN		-99
+
+/*
+ * Constants for ncurser
+ */
+#define SIGN_LINE       1
+#define CLOCK_LINE      2
+#define BUSHES_LINE     4
+#define SNOWMEN_LINE    12
+#define TAB_STOP        5
+
+
+#include "../lib/320controller.h"
+#include <curses.h>
+
+/*
+ * Set color of bush in memory
+ */
+
+void set_bush(int bush, int color, int intensity);
+void fade_bush(int bush, int color, int s_intensity, int f_intensity, double duration);
+
+
+/* 
+ * Write all pending box changes out to relays
+ * and pause current thread for amount of time 
+ * specified via "pause" parameter
+ */
+
+void write_data(float pause);     
+
+/*
+ * Global functions for clock thread
+ */
+void do_it_clock(void);
+void *clock_main(void *args);
+
+/*
+ * Global functions for bushes thread
+ */
+void do_it_bushes(void);
+void *bushes_main(void *args);
+
+/*
+ * Global functions for sign thread
+ */
+void do_it_sign(void);
+void *sign_main(void *args);
+
+/*
+ * Global function for snowmen thread
+ */
+void do_it_snowmen(void);
+void *snowmen_main(void *args);
+
+
+extern int boxs[41];       /* State of boxes (to be written out)     */
+extern int copy_boxs[41];  /* State of boxes (at last write )        */
+extern int bushes[10][6];  /* Traces the bushes                      */
+extern int flood_lights[6][6];
+extern int global_time;    /* Global var to display clock            */
+extern int skip_time_check;/* If True, then run regardless of hour   */
+extern char message[500];  /* What are the bushes currently doing?   */
+extern char message2[500]; /* What are the snowmen currently doing?  */
+extern char message3[500]; /* What is the clock doing?               */
+extern char message_sign[500]; /* What is the sign doing?            */
+
+/*
+ * Tracks state of snowmen.
+ * (Only done so that snowmen code isn't
+ * specific to controller layout
+ */
+extern int snowmen[5][10];
+
+#endif
+
+/*  LocalWords:  stdlib unistd pthread ifndef int args boxs var endif
+ */

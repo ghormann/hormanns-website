@@ -1,0 +1,28 @@
+#include <stdlib.h>
+#include <unistd.h>
+#include <time.h>
+#include <term.h>
+#include <stdio.h>
+#include <fcntl.h>
+#include <string.h>
+#include <pthread.h>
+
+#ifndef _LOR_H
+#define _LOR_H
+
+#define FULL	100
+#define OFF	0
+
+#define RIGHT 1
+#define LEFT  2
+#define BUFFER_SIZE	8192
+#define SLEEP_BETWEEN	1000
+#define SLEEP_OVERFLOW  SLEEP_BETWEEN*10
+
+void setIntensity(u_char box, u_char circuit, u_char intensity);
+void fadeLOR(u_char box, u_char circuit, u_char s_intensity, u_char f_intensity, double duration);
+void initLOR(int send_signals);
+
+#define convertIntensity(i) ( (i) <= 0 ? 240 : ( (i) >= 100 ? 1 : 228 - 2*(i) ) )
+
+#endif
