@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import FavDisplays from '../components/FavDisplays.astro';
 ---
 
 <PageLayout title="Meet Mary Hormann" description="Mary Hormann — Greg's wife and partner in all things Christmas.">
@@ -19,6 +20,8 @@ import PageLayout from '../layouts/PageLayout.astro';
         and met <a href="/greg/" class="underline" style="color: var(--color-brown-light);">Greg</a> there.
         They moved to Cincinnati, OH after college and were married on November 4, 2000.
       </p>
+    </div>
+    <div class="flex justify-center items-start">
       <a href="/wedding/Honeymoon/mary_hair.jpg">
         <img
           src="/wedding/Honeymoon/_mary_hair.jpg"
@@ -28,44 +31,8 @@ import PageLayout from '../layouts/PageLayout.astro';
         />
       </a>
     </div>
-    <div>
-      <div id="favHere"></div>
-    </div>
   </div>
 
-  <script is:inline src="https://cooldisplays.net/tools.php?u=2d1093076abd3bd9d58dd9a3ee698b5ci3idb88fe3e8035e3ed6da0ccd6dbb238cb44f35565"></script>
-  <script is:inline>
-    coolTool.showFav('favHere');
-  </script>
+  <FavDisplays />
 
 </PageLayout>
-
-<style>
-  img.DisplaySummary {
-    width: 90px;
-    float: left;
-    margin: 4px;
-    border: 0;
-  }
-  h1.DisplaySummary {
-    margin: 5px 0 0 0;
-    font-size: 20px;
-  }
-  table.DisplaySummary {
-    margin: 0;
-    border-width: 0;
-    border-spacing: 2px;
-    border-style: none;
-  }
-  td.DisplaySummary {
-    border-width: 0;
-    border-spacing: 2px;
-    border-style: none;
-    vertical-align: text-top;
-  }
-  .dispVote {
-    color: green;
-    font-style: italic;
-    font-size: 12px;
-  }
-</style>
