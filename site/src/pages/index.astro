@@ -58,35 +58,30 @@ const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display'
         <a href="https://github.com/FalconChristmas/fpp" class="underline" style="color: var(--color-brown-light);" target="_blank" rel="noopener noreferrer">FPP</a>,
         and <a href="/technology/dmx/" class="underline" style="color: var(--color-brown-light);">pixels controlled by E1.31</a>.
       </p>
+      <h2 class="text-lg font-semibold mb-3" style="color: var(--color-brown);">Recent Displays</h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-2">
+        {recentYears.map(y => (
+          <YearCard
+            year={y.data.year}
+            heroImage={y.data.heroImage}
+          />
+        ))}
+      </div>
+      <p class="text-sm" style="font-family: var(--font-sans);">
+        <a href="/christmas/" class="underline" style="color: var(--color-brown-light);">See all years →</a>
+      </p>
     </div>
     <div>
       <a href="/christmas/">
         <img
-          class="rounded-lg shadow w-full"
+          class="rounded-lg shadow w-full mb-4"
           src="https://cooldisplays.net/picture.php?v=1732283181&pictid=226&width=400"
           alt="Hormann Christmas Display"
         />
       </a>
+      <YouTubeGrid videos={historyVideo} cols={1} />
     </div>
   </div>
-
-  <!-- Video history -->
-  <h2 class="text-lg font-semibold mb-3" style="color: var(--color-brown);">Video History</h2>
-  <YouTubeGrid videos={historyVideo} />
-
-  <!-- Recent years strip -->
-  <h2 class="text-lg font-semibold mt-10 mb-4" style="color: var(--color-brown);">Recent Displays</h2>
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 mb-8">
-    {recentYears.map(y => (
-      <YearCard
-        year={y.data.year}
-        heroImage={y.data.heroImage}
-      />
-    ))}
-  </div>
-  <p class="text-sm" style="font-family: var(--font-sans);">
-    <a href="/christmas/" class="underline" style="color: var(--color-brown-light);">See all years →</a>
-  </p>
 
   <!-- More section -->
   <h2 class="text-lg font-semibold mt-10 mb-2" style="color: var(--color-brown);">Looking for more?</h2>
