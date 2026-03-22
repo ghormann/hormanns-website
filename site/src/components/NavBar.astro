@@ -2,9 +2,9 @@
 import { getCollection } from 'astro:content';
 
 const years = (await getCollection('christmas', ({ data }) => !data.draft))
-  .sort((a, b) => a.data.year - b.data.year);
+  .sort((a, b) => b.data.year - a.data.year);
 
-const decades = ['2000-2009', '2010-2019', '2020-Today'] as const;
+const decades = ['2020-Today', '2010-2019', '2000-2009'] as const;
 
 const currentPath = Astro.url.pathname;
 ---
