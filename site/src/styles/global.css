@@ -83,16 +83,19 @@ dialog#lightbox {
   align-items: center;
   justify-content: center;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.2s ease;
 }
 
 dialog#lightbox[open] {
   display: flex;
   opacity: 1;
+  pointer-events: auto;
 }
 
 dialog#lightbox.closing {
   opacity: 0;
+  pointer-events: none;
 }
 
 dialog#lightbox::backdrop {
