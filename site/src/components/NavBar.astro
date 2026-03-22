@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 const years = (await getCollection('christmas', ({ data }) => !data.draft))
   .sort((a, b) => b.data.year - a.data.year);
 
-const decades = ['2020-Today', '2010-2019', '2000-2009'] as const;
+const recentYears = years.slice(0, 6);
 
 const currentPath = Astro.url.pathname;
 ---
@@ -40,17 +40,13 @@ const currentPath = Astro.url.pathname;
       <a href="/greg/" class="nav-link">Greg</a>
       <a href="/mary/" class="nav-link">Mary</a>
       <hr style="border-color: var(--color-amber-dark);" />
-      <a href="/christmas/" class="nav-link font-semibold">Christmas Display</a>
-      {decades.map(decade => (
-        <div class="pl-3">
-          <div class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: var(--color-brown-light);">{decade}</div>
-          <div class="flex flex-wrap gap-x-3">
-            {years.filter(y => y.data.decade === decade).map(y => (
-              <a href={`/christmas/${y.data.year}/`} class="nav-link text-sm">{y.data.year}</a>
-            ))}
-          </div>
-        </div>
-      ))}
+      <span class="nav-link font-semibold">Christmas Display</span>
+      <div class="pl-3 flex flex-wrap gap-x-3">
+        {recentYears.map(y => (
+          <a href={`/christmas/${y.data.year}/`} class="nav-link text-sm">{y.data.year}</a>
+        ))}
+      </div>
+      <a href="/christmas/" class="nav-link pl-3 text-sm">Older years</a>
       <hr style="border-color: var(--color-amber-dark);" />
       <a href="/technology/" class="nav-link font-semibold">Technology</a>
       <a href="/technology/clock/" class="nav-link pl-3 text-sm">The Clock</a>
@@ -87,20 +83,13 @@ const currentPath = Astro.url.pathname;
       <button class="nav-btn" aria-haspopup="true">
         Christmas Display ▾
       </button>
-      <div class="dropdown p-4 w-72">
-        <a href="/christmas/" class="dropdown-item font-semibold mb-2 block">Overview</a>
-        <hr class="mb-2" style="border-color: var(--color-amber-dark);" />
-        {decades.map(decade => (
-          <div class="mb-3">
-            <div class="text-xs font-semibold uppercase tracking-wide mb-1" style="color: var(--color-brown-light);">{decade}</div>
-            <div class="flex flex-wrap gap-x-2">
-              {years.filter(y => y.data.decade === decade).map(y => (
-                <a href={`/christmas/${y.data.year}/`} class="dropdown-item text-sm px-1">{y.data.year}</a>
-              ))}
-            </div>
-          </div>
+      <ul class="dropdown">
+        {recentYears.map(y => (
+          <li><a href={`/christmas/${y.data.year}/`} class="dropdown-item">{y.data.year}</a></li>
         ))}
-      </div>
+        <li><hr style="border-color: var(--color-amber-dark);" /></li>
+        <li><a href="/christmas/" class="dropdown-item">Older years</a></li>
+      </ul>
     </li>
 
     <!-- Technology -->
