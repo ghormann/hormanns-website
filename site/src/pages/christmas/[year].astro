@@ -54,9 +54,6 @@ const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisp
     <Content />
   </div>
 
-  <!-- Stats -->
-  {stats && <StatBlock stats={stats} />}
-
   <!-- Videos -->
   {videos.length > 0 && (
     <>
@@ -72,6 +69,10 @@ const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisp
       <PhotoGallery photos={photos} />
     </>
   )}
+
+    <!-- Stats -->
+  {stats && <StatBlock stats={stats} />}
+
 
   <!-- Location section (shown on all Christmas year pages) -->
   <h2 class="text-xl font-semibold mt-10 mb-2" id="house_address" style="color: var(--color-brown);">Location</h2>
