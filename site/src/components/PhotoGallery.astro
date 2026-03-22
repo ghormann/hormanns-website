@@ -7,11 +7,18 @@ interface Photo {
 
 interface Props {
   photos: Photo[];
-  id?: string; // used by lightbox to scope
+  id?: string;
 }
 
 const { photos, id = 'gallery' } = Astro.props;
 const abs = (p: string) => (p.startsWith('/') || p.startsWith('http') ? p : `/${p}`);
+
+// Normalize for the client-side script (absolute paths only)
+const clientPhotos = photos.map(p => ({
+  src: abs(p.src),
+  caption: p.caption,
+  thumb: p.thumb ? abs(p.thumb) : undefined,
+}));
 ---
 
 {photos.length > 0 && (
@@ -24,6 +31,7 @@ const abs = (p: string) => (p.startsWith('/') || p.startsWith('http') ? p : `/${
             href={abs(p.src)}
             target="_blank"
             rel="noopener noreferrer"
+            data-lightbox-index={i}
             class="block rounded overflow-hidden shadow hover:shadow-md transition-shadow"
           >
             <img
@@ -43,3 +51,18 @@ const abs = (p: string) => (p.startsWith('/') || p.startsWith('http') ? p : `/${
     })}
   </div>
 )}
+
+<script define:vars={{ clientPhotos, galleryId: id }}>
+  const gallery = document.getElementById(galleryId);
+  if (gallery) {
+    gallery.addEventListener('click', (e) => {
+      const anchor = e.target.closest('a[data-lightbox-index]');
+      if (!anchor) return;
+      e.preventDefault();
+      const index = parseInt(anchor.dataset.lightboxIndex, 10);
+      window.dispatchEvent(new CustomEvent('openLightbox', {
+        detail: { photos: clientPhotos, index, opener: anchor }
+      }));
+    });
+  }
+</script>
