@@ -15,7 +15,7 @@ const { videos } = Astro.props;
 {videos.length > 0 && (
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 my-4">
     {videos.map(v => {
-      const thumb = v.thumb ?? `https://img.youtube.com/vi/${v.id}/mqdefault.jpg`;
+      const thumb = v.thumb ?? `https://img.youtube.com/vi/${v.id}/sddefault.jpg`;
       return (
         <a
           href={`https://www.youtube.com/watch?v=${v.id}`}
