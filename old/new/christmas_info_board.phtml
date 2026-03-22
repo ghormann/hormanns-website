@@ -1,0 +1,84 @@
+<?php 
+$title="Christmas Info Board";
+$subTitle="Christmas Info Board";
+include "intro.phtml" ?>
+
+<style>
+figure {display: inline-block;}
+figcaption {text-align: center;}
+
+</style>
+
+
+<center>
+<?php Christmas_years(); ?>
+</center>
+<div class="row">
+<div class="col-sm-8">
+<h1>Information Board</h1>
+
+<p>
+In 2020, we added a new P10 panel display to provide information to viewers about our display. Measuring 12ft wide and 2ft tall, the sign displays information of interest include the radio
+station we broadcast on, the near real-time power power consumption for the display, the phone number for interacting with the display, and periodically the total amount of power the display has consumed for the season.
+
+</p>
+
+<figure class="youtubeVideo" style="margin-left:auto; margin-right:auto; display:block">
+   <center>
+   <a href="https://www.youtube.com/watch?v=ksmsWpjH3jE">
+      <img class="img-fluid" src="https://img.youtube.com/vi/ksmsWpjH3jE/0.jpg">
+       <figcaption>Information Board in Action</figcaption></a>
+   </center>
+</figure>
+
+<h2>How it Works</h2>
+
+Our display is powered by four 20Amp breakers.  We break this down into eight power runs (each less than 10 Amps).  All of these power runs feed though a custom-made box that consist of an Arduino Mega, an Arduino Ethernet shield, and a
+ bunch of ACS712 current sensors.  These current sensors monitor the electrical field produced in each circuit, and estimate the number of Amps currently being pulled.  These power sensors are continuously monitored by the Arduino and it
+calculates the total wattage consumed each second for each of the eight power runs.  The Arduino then takes this information and publishes it via MQTT where it can be consumed by our a number of different tools including our custom C p
+program that controls the Information Board mounted above the garage and an influx database for logging and statistics.
+<br><br>  
+When it comes to displaying the information on the 12ft sign board, our Custom C++ program monitors the MQTT messages and decides what to display on the sign board. It draws out each pixel in memory and then used the DDP protocol to push the information to a Beagle Bone Black in the back of the board running Falcon Pi Player.   The FPP software actually controls the 33 P10 panels making up the board.
+
+
+<br><br>
+
+<?php
+   labledPicture("christmas-thumb", "christmas/power_box/box_closed.jpg", "Power Monitoring Box", "christmas/power_box/box_closed.jpg");
+   labledPicture("christmas-thumb", "christmas/power_box/box_open.jpg", "Power Monitoring Box (Inside)", "christmas/power_box/box_open.jpg");
+   labledPicture("christmas-thumb", "christmas/power_box/sensor_large.jpg", "Sensor and Adruino", "christmas/power_box/sensor_small.jpg");
+   labledPicture("christmas-thumb", "christmas/power_box/grafana_detailed.jpg", "Chart of Amps for each Circuit", "christmas/power_box/grafana_detailed.jpg");
+   labledPicture("christmas-thumb", "christmas/power_box/grafana_summary.jpg", "Average Amps/sec by Song", "christmas/power_box/grafana_summary.jpg");
+   labledPicture("christmas-thumb", "christmas/power_box/board_construction.jpg", "Under Construction", "christmas/power_box/board_construction.jpg");
+   labledPicture("christmas-thumb", "christmas/power_box/sign_daytime.jpg", "Daytime Picture", "christmas/power_box/sign_daytime.jpg");
+?>
+
+<h2>Construction Videos</h2>
+
+<figure class="youtubeVideo">
+   <a href="https://www.youtube.com/watch?v=8WGW7Ky4HIU">
+      <img src="https://img.youtube.com/vi/8WGW7Ky4HIU/0.jpg">
+       <figcaption>Initial Concept</figcaption></a>
+</figure>
+<figure class="youtubeVideo">
+   <a href="https://www.youtube.com/watch?v=kgoQNgluk2M">
+      <img src="https://img.youtube.com/vi/kgoQNgluk2M/0.jpg">
+       <figcaption>How it works</figcaption></a>
+</figure>
+
+
+<h2>Source Code</h2>
+<ul>
+   <li><a href="https://github.com/ghormann/GregsLights/blob/master/GregsLights/src/GarageSign.cpp">Controlling the Sign</a>
+   <li><a href="https://github.com/ghormann/ChristmasPowerMonitor">Source code for Arduino sensors that monitor power consumption</a>
+</ul>
+
+</div><!--sm-8-->
+
+<div class="col-sm-4">
+<?php include "favDisplays.phtml" ?>
+</div><!-- Sm-4 -->
+</div><!-- row -->
+
+
+<?php include "footer.phtml" ?>

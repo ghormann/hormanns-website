@@ -1,6 +1,7 @@
 ---
 title: "The Large Grid"
 description: "An 18ft × 8ft RGB pixel grid of 4,876 individually controlled pixels mounted over the front door."
+heroImage: https://img.youtube.com/vi/LVqmA2NZAa4/maxresdefault.jpg
 order: 3
 videos:
   - id: "HjcuMDTyxBY"

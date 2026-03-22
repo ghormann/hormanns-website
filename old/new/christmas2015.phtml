@@ -1,0 +1,70 @@
+<?php 
+$title="Christmas 2015 at the Hormanns";
+$subTitle="Christmas 2015";
+include "intro.phtml" ?>
+
+<?php
+require_once 'christmasBase.phtml';
+
+class Page extends ChristmasPage
+{
+   public function intro()
+   {
+
+?>
+
+2015 is our fifteenth year for an animated Christmas display.  This year there were a number of changes.  The biggest was the addtion of the 18ftx8ft pixal gridon the house this grid has 4876 indivually controlled RGB Pixals.  In addition we doubled the with of the more dense pixal grid below the clock. Finally, the yard is now covered with 44 Coro stars that are individually controlled by RGB modules to be any color.<br><br>
+
+Behind the scenes, the programing was greatly updated to support the additional pixals and allow the different elements (stars, bushes, and grid) to remain syncronized.  This year we are leverage 6 LOR (Light-o-Rama) boards to control the bushes and the snowmen, 2 Alpha Pix controllers for the large Grid and to convert E1.31 to DMX,  multiple DMX based controllers for the stars in the yard and RGB floods shining up on th house and  a PixLite 4 board to control the Grid below the clock as well as provide DMX signal for the clock itself.
+
+<br><br>
+For the last 10 years or so, number of neighbors have
+braved the cold to watch the clock hit mid-night and welcome Christmas. 
+
+This year, we had over 35 neighbors came and watch the clock hit zero. Hopefully you'll join us next year!
+
+<?php
+   } // body
+
+   public function getMovies()
+   {
+
+      return array(
+             array("_DgewHQc-Bc", "Yard"),
+             array("YY1jnphglgw", "Snowmen"), 
+             array("RfnnOA3iYeo", "Sign above Door"),
+             array("mP79h1WHwHs", "Clock"),
+             array("UdQGn5WxL0I", "Clock hits Zero"));
+   }
+
+
+   public function stats()
+   {
+?>
+
+<ul>
+<li> ~13,000 lights + over 5,000 RGB lights (Pixels + nodes)
+<li> 40 LOR Circuits 
+<li> too much electrical and control Wire to count
+</ul>
+
+
+<font color=brown>
+<b><font size=5>Source Code</font></b><br>
+</font>
+<br>
+
+All of the source code used in the display is licensed under the GPLv3 and published on 
+<a href = "https://bitbucket.org/ghormann/gregslights/src/final_2015/">Bitbucket</a>.
+
+<?php
+   } //stats
+} // class
+
+$me = new Page();
+$me->render();
+
+?>
+
+<?php include "footer.phtml" ?>
+

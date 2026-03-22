@@ -1,0 +1,491 @@
+<?php 
+$title="Christmas Technology - 8 Port Parallel Controller";
+$subTitle="8 Port Parallel Controller";
+include "intro.phtml" ?>
+
+
+
+<center>
+<?php Christmas_years(); ?>
+</center>
+
+<em>NOTE:The informaion on this page is extremely old. Although this can technically still be done today, there 
+are much better solutions now days.  This page is kept for reference only.
+</em>
+<br><br>
+
+<h1>Building Parallel Port Boxes</h1>
+
+<table width=100% align="center" border=0 cellpadding=5>
+<tr>
+<td valign="top">
+
+There are multiple ways to control Christmas lights via a Computer. If you
+are just getting started, using the Parallel port is a good starting point in 
+my opinion. (X-10 is another option. X-10 is probably a little cheaper and
+easier, but there are issues with speed and scalability.)   With just a 
+little bit of electrical knowledge and some fairly common equipment, you 
+can control up to 8 circuits per parallel port (max of 3 ports per computer)
+without needing to know anything about integrated circuits. <b>Plus</b>, 
+if you do plan to upgrade to a more complex parallel port control 
+method (or use digital I/O boards), all you need to do is change out
+the 5Vdc interface and these boxes are ready to go in your new environment.
+
+
+</td>
+
+<!--############# End left body of table ##########-->
+<td align="center" width=170 valign="middle">
+<a href="christmas/2001/boxes/full_box.jpg">
+<img  src = "christmas/2001/boxes/_full_box.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a>
+
+</td>
+</table>
+
+<br>
+
+<h2>The Parts</h2>
+
+<center>
+<table border =1 width = "100%" cellpadding=5>
+<tr>
+    <td><b>Solid State Relays (SSRs)</b></td>
+    <td>I use 10A 120V Relays.  You can usually find them for $3-$10
+    a piece, used. You'll need 8 of them. Since you local hardware
+    probably doesn't carry these, you might want to check out
+    <a href="http://www.allelectronics.com"> All Electronics</a> or
+    <a href="http://www.mpja.com">MJPA, Inc</a></td>
+    <td>$40</td>
+</tr>
+
+
+<tr>
+ <td><b>Bulk Wire (14 gauge)</b>  </td>
+ <td>5 feet of black, 5 feet of white is plenty. 
+     I usually find this at about $.10/ft</td>
+ <td> $1</td>
+</tr>
+
+
+<tr>
+    <td><b>14-3 Wire (I prefer Rubber coated.)</b></td>
+    <td> $.60/ft or so. Depends on what you get. 10ft or less. </td>
+    <td>$6</td>
+</tr>
+
+
+<tr>
+    <td><b>Pig Tail (14 gauge)</b></td>
+    <td>Be careful. Don't go smaller that 14 Gauge. If you shop around
+	you can usually find a good deal on these. Alternatively, 
+	you can make your own.</td>
+    <td>$3</td>
+</tr>
+
+
+<tr>
+    <td><b>Crimp Connectors</b></td>
+    <td>These are really optional.  I just prefer them to wrapping
+	wires around terminals. </td>
+    <td> $5 </td>
+
+</tr>
+
+<tr>
+    <td><b>Machine Bolts with nuts</b></td>
+    <td>Or something else for connecting your SSRs to your project box.</td>
+    <td> $5 </td>
+</tr>
+
+
+<tr>
+    <td><b>120V Indicator (optional)</b></td>
+    <td>Lots of people place these on each box they build.
+        I personally just have 8 wired to some electrical plugs for debugging.
+	That way I can easily move them from box to box for testing SSRs.</td>
+    <td>$8</td>
+</tr>
+
+
+<tr>
+    <td><b>1/2" Wire clamps</b></td>
+    <td>Depending on your exact configuration, you might use 5-10 of these
+    guys.  (The are used for clamping the wires to your project and metal
+    boxes.) A bag of 10 cost about $6.</td>
+    <td>$6</td>
+</tr>
+
+
+<tr>
+    <td><b>two 4x4 electrical boxes to hold the outlets</b></td>
+    <td>Cost will depend on meta vs. plastic.  My metal boxes with 
+	covers cost about $4.50 a piece. </td>
+    <td>$8</td>
+</tr>
+
+
+<tr>
+    <td><b>4 outlets</b></td>
+    <td> White, brown, black, whatever</td>
+    <td>$4</td>
+</tr>
+
+
+<tr>
+    <td><b>Box to hold the SSRs</b></td>
+    <td>Projects boxes can really range in price.  I got lucky and 
+    found a number of perfectly sized boxes for $1.50 a piece.
+    Normally, I would pay $8-$20 for a x-large Project box.</td>
+    <td>$12</td>
+</tr>
+
+<tr>
+    <td><b>DB-25 Wire</b></td>
+    <td>As long as one end fits the computer, it really doesn't matter
+	what is on the other end. (Your going to cut it off unless of course 
+	you want to solder a connector onto your control box.) </td>
+    <td>$5</td>
+</tr>
+
+<tr>
+    <td><b>Tools</b></td>
+    <td>Screw Divers, Drill (doesn't need to be power), pliers, wire 
+	stripping/crimping tool, knife, and an ohms meter all 
+	assisted me. </td>
+    <td> - </td>
+</tr>
+<tr>
+    <td colspan=2><b>Total:</b></td>
+    <td>~&nbsp;$100</td>
+</tr>
+</table>
+</center>
+
+<p>
+$100 is probably a a high water mark. Buying in bulk or shop around for
+deals can really lower the price.  Also, SSRs can be built a lot cheaper 
+than they can be purchased, but that requires some knowledge of integrated 
+circuits; something this how-to is trying to avoid.
+
+<p>
+<font color="red"><b>
+Standard disclaimer: I'm not responsible for anyone hooking these circuits 
+up and the results that follow their use. </b></font>
+<br><br>
+<br><br>
+
+<h2>Schematic</h2>
+
+Here is the end wiring result.  Pins 2-9 are the control (positive)
+wires going to the box., while pins 18-25 can all be used for grounding.<br>
+
+<center><img src = "christmas/2001/boxes/schematic.jpg" border=0></center>
+
+<p>
+
+<table width=100% align="center" border=0 cellpadding=5>
+<tr>
+<td valign="top">
+<h2>Solid State Relays</h2>
+
+Solid State Relays (SSRs) are the heart of Parallel Port Control Boxes.
+I find it easier to purchase pre-built SSRs, but you can build them 
+(rather cheaply) if you know what your doing.  
+<a href="http://drew.hickmans.net">Drew Hickman</a>
+provides some good information on his 
+
+<a href="http://drew.christmascave.com">Christmas site </a>
+for 
+<a href="http://drew.hickmans.net/switching_110VAC.htm">building SSRs</a>.
+
+If you shop around, you can usually find <i>used</i> 110V 10A SSRs that will 
+work with 5 vdc input for under $5 a piece (sometimes $3). 
+
+<br><br>
+All a Solid State Replay really does is allow the 110V AC current to pass
+through when 3-8V DC is applied, and opens the AC circuit when the
+direct current is not present.
+
+</td>
+
+<!--############# End left body of table ##########-->
+<td align="center" width=170 valign="middle">
+<a href="christmas/2001/boxes/ssrs.jpg">
+<img src = "christmas/2001/boxes/_ssrs.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a>
+
+</td> </tr>
+
+
+
+
+<!-- ################# Row 2 ##################### -->
+<tr>
+<td valign="top"> <br>
+<h2>Relay Boxes</h2>
+
+You'll need a box (plastic or metal, it really doesn't matter) to hold your
+eight solid state relays. I've seen others use large boxes (14" x 14") and 
+some (like me) use small (9" x 5" x 1.5") boxes. I found a good deal at
+<a href="http://www.allelectronics.com"> All Electronics</a> on some
+used boxes ($1.50), so I went with those.
+
+</td>
+
+<!--############# End left body of table ##########-->
+<td align="center" width=170 valign="middle">
+<a href="christmas/2001/boxes/empty_box.jpg">
+<img width=60 src = "christmas/2001/boxes/_empty_box.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a>
+
+<br>
+
+<a href="christmas/2001/boxes/empty_box_open.jpg">
+<img width=60 src = "christmas/2001/boxes/_empty_box_open.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a>
+</td></tr>
+
+<!-- ################# Row 3 ##################### -->
+<tr>
+<td valign="top"><br>
+<h2>Electrical Boxes</h2>
+
+You'll need an electrical box or two (I recommand metal) to hold
+your outlets. If you <a href="christmas/2001/boxes/metal_box.jpg">look</a>
+at the way the outlets are wired, you notice that the NEUTRAL (right side)
+of each outlet is connected together. For the NEUTRAL side, it is important 
+that the tabs between the top and bottom outlet are not broken, but since
+we want each outlet to be controlled individually, the tab on the hot 
+(left side) <a href="christmas/2001/boxes/tab.jpg">is broken</a>.
+
+<br>
+
+I used 14-3 rubber coated wire because 
+<ul>
+<li> The wire is very flexible and much easier to work with than
+     14-3 solid wire.
+
+<li> Each wire (Back, White, and Green) is covered. 
+
+<li> Bringing in 3 sets of coated wire provides 9 individual wires
+which is exactly what is needed to control 8 outlets (8 hot wires and one
+common ground). 
+
+</ul>
+
+<i>Note: The picture of the wiring can be really confusing because I'm
+using Green wires as HOT and the white wires can either be HOT or NEUTRAL.
+When doing odd things like this, the correct way to denote these 
+changes is to Mark any HOT Green and White wires with back electrical tape.
+I didn't have any tape near by when I did the wiring, so I skipped
+that step.</i>
+<br><br>
+
+<i>Note: It would have been nice if 10 wires could have been easily
+brought in so that a common ground wire could have been used to ground
+the entire box.  This can be accomplished by having the 110V pig tail 
+that brings the AC current from your house, go directly into the boxes 
+that hold the outlets rather than into the box that holds the relays. If
+wired this way, the ground and NEUTRAL wires from the pig tail can be 
+connect to one of the outlets and then the hot (black) wire could be sent
+up to the relay box though on of the nine wires that connect the outlets
+to the relay box.  In that case, 8 of the 9 wires could carry the individual 
+hot circuits down to the outlets, and the other wire would care the common
+hot circuit up to the relay box. Unfortunately, I build my demo box before
+thinking of this solution.</i>
+
+</td>
+
+<!--############# End left body of table ##########-->
+<td align="center" width=170 valign="top"><br>
+<a href="christmas/2001/boxes/metal_box_closed.jpg">
+<img width=165 src = "christmas/2001/boxes/_metal_box_closed.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a>
+
+<br>
+
+<a href="christmas/2001/boxes/tab.jpg">
+<img width=165 src = "christmas/2001/boxes/tab.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a>
+
+<br>
+
+<a href="christmas/2001/boxes/metal_box.jpg">
+<img width=165 src = "christmas/2001/boxes/_metal_box.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a> 
+
+<br>
+
+<a href="christmas/2001/boxes/wires.jpg">
+<img width=165 src = "christmas/2001/boxes/_wires.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a> 
+
+
+</td>
+
+<!-- ################# Row 4 ##################### -->
+<tr>
+<td valign="top"><br>
+<h2>The Tools</h2>
+
+It doesn't take very many tools to put all of this together.  All you really
+need is a few screwdrivers, a knife, wire scripts, electrical meter (testing),
+pliers, and possible a drill for drilling holes in your relay box.
+
+
+</td>
+
+
+<!--############# End left body of table ##########-->
+<td align="center" width=170 valign="middle">
+<a href="christmas/2001/boxes/tools.jpg">
+<img width=165 src = "christmas/2001/boxes/_tools.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a>
+
+</td></tr>
+
+<!-- ################# Row 5 ##################### -->
+<tr>
+<td valign="top"><br>
+<h2>The Wired Relay Box</h2>
+
+When wiring the relays into the box, the NEUTRAL terminals of the low voltage
+side can all be wired together (white wire). 
+(I really should have used a much smaller wire
+since only 5vdc is being carried across, but I didn't have any handy. 
+Surprisingly, the voltage drop by using 14 gauge wire is hardly noticeable.)
+
+<br><br>
+
+The incoming terminals of 110V AC sides can all be wired together too (black
+wire). This way 110V is available at each SSR, ready to be switch on. 
+
+<br><br>
+If you want to 
+include indicator lights in your boxes, make sure you get 120V indicators and 
+connect them across the 120V AC side of your SSR. It is better to do it
+this way rather than using a low volage LED because (1) the indicator won't
+light if the SSR burns out, and (2) you aren't pulling amps from the 
+computer's power supply to power to indicators.
+
+</td>
+
+
+<!--############# End left body of table ##########-->
+<td align="center" width=170 valign="middle">
+<a href="christmas/2001/boxes/little_parts.jpg">
+<img width=165 src = "christmas/2001/boxes/_little_parts.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a>
+
+<br>
+
+<a href="christmas/2001/boxes/wired_ssrs.jpg">
+<img width=165 src = "christmas/2001/boxes/_wired_ssrs.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a>
+
+
+
+</td></tr>
+
+<!-- ################# Row 5 ##################### -->
+<tr>
+<td valign="top"><br>
+<h2>The Control Wires</h2>
+
+The last piece of the puzzle is adding the control wires for the parallel port.
+All I did is take a printer cable, and cut off the end that goes to the 
+printer. Pins 2-9 on the parallel port cable should go to the individual
+SSRs (HOT side)and the ground wire (usually back with white stripe) 
+should connect to the NEUTRAL side of the SSRs.
+
+</td>
+
+<!--############# End left body of table ##########-->
+<td align="center" width=170 valign="middle">
+<a href="christmas/2001/boxes/wired_box.jpg">
+<img width=165 src = "christmas/2001/boxes/_wired_box.jpg" border=0>
+<center><font size = "-2"> Full Size</font></center></a>
+
+</td>
+
+
+
+</table>
+
+<h1>Controlling the Interface</h1>
+<table  border = 0 cellpadding=5>
+<tr>
+<td valign="top">
+If you are not interested in rolling your own software, check out
+<a href="http://www.vixenlights.com/">Vixen</a>. The Basic Parallel plug-in
+works just fine with this design.
+<br><br>
+Controlling the parallel port interface is really easy. Each of the 8 bits
+controls a circuit.  Each bit has a number (bit 1=1, bit 2=2, bit 3=4,
+bit 4=8, bit 5=16, bit 6=32, bit 7=64, bit8=128). The only other piece
+of information you need is the I/O address for the parallel port.  Normally,
+this is port 0x378 (888 in base 10). To turn on bits 3, 4, and 6 the
+basic code would be:
+
+<br><br>
+
+<code class="code">
+out 888, 44 '4+8+32 = 44</code>
+
+<br><br>
+
+Some sample QBasic code is listed to the right. If you have Win3.1 or 
+Win95, QBasic should automatically be installed on your PC.  If you have
+a new version of windows, you can download a program called "First Basic" 
+from http://www.qbasic.com/c1.shtml
+<p>
+
+<b>Note</b>: New versions of Windows (> 3.1) don't allow direct 
+control of the parallel port just by writing to the memory address.
+For Windows 95/98, your best bet is to boot your machine 
+into DOS mode (opening up a DOS window while Windows is still running
+won't work.) For Windows NT, 2000, or XP, controlling the parallel port
+is even more difficult. Initially, at least, I recommend making a DOS 5.0 
+boot disk, booting your machine into DOS 5.0, and using QBasic to test
+your device. There are utilities available via the web (such as
+<a href="http://www.oldstuff.myagora.net/powerload/bootdisk.htm">The
+BootDisk Project</a> for creating old Boot disk.  Once you get your device 
+working via that method, you can either build your entire program in
+QBasic and run your computer from a boot disk, or you can look into more
+complicated solutions that actually working while windows is running. 
+<em>(More information on those to be posted soon.)</em>
+
+</td>
+
+
+
+<td width=330 valign="top">
+<code class="code">
+'Parallel port 1 is port 888<br>
+'Each bit is a circuit<br>
+'Examples<br>
+'out 888, 0 = all off<br>
+'out 888, 4 = #3 on<br>
+'out 888, 3 = #1,#2 on<br>
+<br>
+randomize timer <br> 
+Defint A-Z <br>
+A=0<br>
+<br>
+do<br>
+&nbsp;&nbsp;&nbsp;
+out 888, A 'Reset lights.<br>
+&nbsp;&nbsp;&nbsp;
+A = 256*RND 'Random sequence<br>
+&nbsp;&nbsp;&nbsp;
+delay 1 'Wait 1 second <br>
+loop 'Loop back 
+
+
+
+</td>
+</tr>
+</table>
+<?php include "footer.phtml" ?>
+

@@ -1,0 +1,99 @@
+<?php 
+$title="Christmas 2021 at the Hormanns";
+$subTitle="Christmas 2021";
+include "intro.phtml" ?>
+
+<?php
+require_once 'christmasBase.phtml';
+
+class Page extends ChristmasPage
+{
+   public function intro()
+   {
+
+?>
+
+2021 was our 21th year for an animated Christmas Lights Display. This year we added two new songs (
+<a href="https://www.youtube.com/watch?v=yYflTRQp4Bg">You make it feel like Christmas</a> and <a href="https://www.youtube.com/watch?v=dYW9W9nW_WM">Christmas Can Can</a>)
+ along with Tom Nook as a possible <a href="snowmen.php">snowmen</a>. 
+We also added two additional <a href="christmas_info_board.phtml">information panels</a> on either side of the display to communicate the donation drop off point
+as well as the radio station. 
+We 
+planned to add some more elements above the garage, but the pixels we ordered were significantly delayed and didn't arrive in time.
+
+<br><br>
+For the last sixteen years or so, a number of neighbors have braved the cold to watch the clock hit midnight and welcome Christmas.
+
+<!--
+We hope you'll join us this year.  If you are not sure where we are located, we have a nice <a href="christmas.phtml">map available</a>.
+-->
+
+This year was amazing with over 45 neighbors joining to celebrate as the clock hit zero. Hopefully you'll join us next year!
+
+<p>
+
+<?php 
+   } // body
+
+   public function getMovies()
+   {
+
+   $movies = array(
+             array("yYflTRQp4Bg", "You make it feel like Christmas"),
+             array("dYW9W9nW_WM", "Christmas Can Can"),
+             array("ZqcX-DwMBcQ", "I Got The Joy (Go Fish)"),
+	     array("Nd7ADGezo3s", "Video History of our Display"),
+             array("ImTdbdrqfok", "Hot Chocolate from Polar Express"),
+             array("Bp_bAw_6luI", "Christmas Everyday (Simple Plan)"),
+             array("owQQIQTuKWU", "The Grinch"),
+             array("KaPiWEdYy0o", "The Peanuts"),
+             array("WNX7di7yUOI", "12 Days of Christmas (Drone)"),
+             array("qKlvn1HOvPs", "Christmas Cannon (Drone)"),
+             array("RAzyyV-Gtpo", "EDM Carol of the Bells (Sauniks)"),
+             array("4gOUaJnbIuo", "I Want a Hippopotamus for Christmas"),
+             array("FqKw8tO_xlY", "House on Christmas Street"),
+             array("plRMYxv636g", "Light of Christmas"),
+             array("KhODj5q_kz0", "Jingle Dogs (Drone)"),
+             array("nGgtz1Q6uZI", "I heard the bells on Christmas Day"),
+             array("bkg0-Q3mMzU", "Little Drummer Boy"),
+             array("Z-uH736zc94", "Amazing Grace (Drone)"),
+             array("OC9ok86wrYI", "Sugar Plum Fairy"),
+             array("k8twoPfAkWc", "Joy to the World"),
+             array("t5KOCj1krJw", "Christmas Minions"),
+             array("oEVqY96ajgQ", "Here comes Santa Claus"),
+             array("2HlfBcIesGA", "Take down: Day 1"),
+             array("AE1Dv8B2nQg", "Take down: Day 2"),
+             array("_uQ9g8VDPIs", "Take down: Day 3"),
+   );
+
+   return $movies;
+   }
+
+   public function stats()
+   {
+
+?>
+<ul>
+<li> 41,535 "Smart" RGB lights that can be set to any color individually
+<li> 880 "Dumb" RGB light bulbs (20 in each of the Stars on the ground)
+<li> 87 P10 panels in the sign above the Garage door (equivalent of 27,840 pixels)
+<li> 11 Pixel Controllers (AlphaPix 4 + Falcon16v3, Kulp K8-B)
+<li> 5 "Dumb" RGB Controllers (Stars in yard)
+<li> 63 DC Power Supplies
+<li> 1 Raspberry Pi running FPP to control the show
+<li> 4 Beagle Bone Black running FPP to control the P10s and some pixels
+<li> 2 Virtual Machines to handle interactive elements of display
+<li> Too many electrical and control wire to count
+</ul>
+
+
+
+<?php 
+   } //stats
+} // class
+
+$me = new Page();
+$me->render();
+
+include "footer.phtml" ?>
+

@@ -1,0 +1,434 @@
+<?php 
+$title="Christmas Technology - 320 Parallel Port Controller";
+$subTitle="320 Parallel Port Controller";
+include "intro.phtml" ?>
+
+
+<center>
+<?php Christmas_years(); ?>
+</center>
+
+<em>NOTE:The informaion on this page is rather old and never completed. Although this can technically still be build and used today, there
+are much better solutions now days.  This page is kept for reference only. If you are looking inexpensive DYI AC solutions that 
+also supports dimming, 
+I suggest checking out the <a href="http://doityourselfchristmas.com/wiki/index.php?title=Renard_Main_Page">Renard</a> set of solutions.
+</em>
+<br><br>
+
+
+<h1>320 Parallel Port Controller</h1>
+
+<br>
+<table border=0 cellpadding=0 cellspacing=0>
+<tr><td>
+<td aligh="center">
+<img src = "images/under-construction.gif" border = 0 width=200>
+</td><td>
+<font color="red"><b>
+Please pardon the dust. This particular page is under construction. 
+Much more description is being developed.
+</b></font>
+<td align="center">
+<img src = "images/under-construction.gif" border = 0 width=200>
+</td>
+</TR></TABLE>
+
+<br><br><br>
+<font color="red"><b>
+Standard disclaimer: I'm not responsible for anyone hooking these circuits 
+up and the results that follow their use. </b></font>
+
+<br><br><br>
+
+After the 2001 season, I wasn't sure how to expand beyond the 
+<a href="parallel_boxes.phtml">original 8 port</a>. Luckly, I came accross
+<a href="http://computerchristmas.com/index.phtml?link=how_to&HowToId=4">
+Hill Robertson's design</a> that can control up to 320 individual 
+circuits.  A modified it slightly, but it is really still the same design.
+
+(<em>Note: If you need a much smaller number of circuits, check out
+my <a href="parallel_boxes.phtml">original design</a>. These can always
+be convered to work with this design with little effort.</em>)
+
+<br><br><br>
+
+<!--- Table to produce left and right windows --->
+
+<table border=0>
+<tr>
+<!--- Left side --->
+<td valign="center" align="left">
+
+The parallel port is a great way to interface the PC to external devices
+because (1) every PC has one, and (2) its easy to program. The parallel
+port has 8 output wires (OUTPUT), 5 input wires (STATUS), and 4 that 
+are bi-directional (CONTROL).
+
+<br>
+<br> <i>Note: Today, most machines support different "modes" of the parallel 
+port ("Standard", "Enhanced" (EPP), and "Extended" (ECP). Everything discussed
+here applys to "Standard" mode. </i>
+
+<br><br>
+<center>
+<table BORDER="5" CELLSPACING="3">
+    <tr>
+	<th>PIN NO.</th>
+	<th>LABEL</th>
+	<th>FUNCTION</th>
+	<th>TYPE</th>
+    </tr>
+    <tr>
+        <td>1</td>
+	<td>C0 (~)</td>
+        <td>STROBE</td>
+        <td>CONTROL</td>
+    </tr>
+    <tr>
+	<td>2</td>
+	<td>D0</td>
+	<td>DATA BIT 0</td>
+	<td>OUTPUT</td>
+    </tr>
+    <tr>
+	<td>3</td>
+	<td>D1</td>
+	<td>DATA BIT 1</td>
+	<td>OUTPUT</td>
+    </tr>
+    <tr>
+	<td>4</td>
+	<td>D2</td>
+	<td>DATA BIT 2</td>
+	<td>OUTPUT</td>
+    </tr>
+    <tr>
+	<td>5</td>
+	<td>D3</td>
+	<td>DATA BIT 3</td>
+	<td>OUTPUT</td>
+    </tr>
+    <tr>
+	<td>6</td>
+	<td>D4</td>
+	<td>DATA BIT 4</td>
+	<td>OUTPUT</td>
+    </tr>
+    <tr>
+	<td>7</td>
+	<td>D5</td>
+	<td>DATA BIT 5</td>
+	<td>OUTPUT</td>
+    </tr>
+    <tr>
+	<td>8</td>
+	<td>D6</td>
+	<td>DATA BIT 6</td>
+	<td>OUTPUT</td>
+    </tr>
+    <tr>
+	<td>9</td>
+	<td>D7</td>
+	<td>DATA BIT 7</td>
+	<td>OUTPUT</td>
+    </tr>
+    <tr>
+	<td>10</td>
+	<td>S6</td>
+	<td>ACKNOWLEDGE</td>
+	<td>STATUS</td>
+    </tr>
+    <tr>
+	<td>11</td>
+	<td>S7 (~)</td>
+	<td>BUSY</td>
+	<td>STATUS</td>
+    </tr>
+    <tr>
+	<td>12</td>
+	<td>S5</td>
+	<td>PE: PAPER TRAY EMPTY</td>
+	<td>STATUS</td>
+    </tr>
+    <tr>
+	<td>13</td>
+	<td>S4</td>
+	<td>PRINTER ON-LINE</td>
+	<td>STATUS</td>
+    </tr>
+    <tr>
+	<td>14</td>
+	<td>C1 (~)</td>
+	<td>AUTO LINEFEED AFTER (CR) CARRIAGE RETURN</td>
+	<td>CONTROL</td>
+    </tr>
+    <tr>
+	<td>15</td>
+	<td>S3</td>
+	<td>PRINTER ERROR</td>
+	<td>STATUS</td>
+    </tr>
+    <tr>
+	<td>16</td>
+	<td>C2 </td>
+	<td>INITIALIZE PRINTER</td>
+	<td>CONTROL</td>
+    </tr>
+    <tr>
+	<td>17</td>
+	<td>C3 (~)</td>
+	<td>SELECT/DESELECT PRINTER</td>
+	<td>CONTROL</td>
+    </tr>
+    <tr>
+	<td>18-25</td>
+	<td>&nbsp;</td>
+	<td>UNUSED/GROUND</td>
+	<td>&nbsp;</td>
+    </tr>
+</table>
+</center>
+</td>
+<!--- Right side --->
+<td align="center" valign="center" width="330">
+<img src = "images/parallel_port.jpg">
+<br><br><br>
+<img src = "images/pinout.gif">
+</td>
+</tr>
+<!--------- ROW 2 --------->
+<tr>
+<td align="left">
+<!--- Left Side --->
+<br><br><br>
+In "Standard" mode, both the 8 data bits and the 4 control bits work as
+latched output pins. This means all 12 bits stay "on" or "off" until they 
+are set differently which makes very simple circuits for controlling 
+our lights. The control bits are a little bit more complicated than the 
+data bits since three of them are inverted. This means that if you want 
+the signal to go high (+5V), you must send a zero (0V) to the bit and it 
+will automatically be inverted (notted) and output a 1 (+5V).  
+<p>
+The control
+bits are always two positions above the base address of the parallel
+port.  For example, if your parallel port is at port 888 (0x378 hex) then
+the control address is at 890 (0x37A hex). This means pins 2-8 are controlled
+by setting the 8 bits on port 888, while pin 1, 14, 16, 17 are attached
+to the lower 4 bits on port 890.
+</td>
+
+<td width="330">
+<!---       Right Side     --->
+<code class="code">
+Each bit in a byte is assigned a number. To figure out what number to 
+set a byte to, you just add up the numbers of each bit you want on:  <br>
+Bit #1 = 1 <br> 
+Bit #2 = 2 <br>
+Bit #3 = 4 <br>
+Bit #4 = 8 <br>
+Bit #5 = 16 <br>
+Bit #6 = 32 <br>
+Bit #7 = 64 <br>
+Bit #8 = 128  <p>
+<b>Example:</b><br>
+Bits 1 and 2 ==> 1 + 2 = <b>3</b> <br>
+Bits 2, 4, and 6 ==> 2 + 8 + 32 ==> <b>42</b>
+</code>
+</td>
+</tr>
+<!--------- ROW 3 --------->
+<tr>
+<!---        Left Side      --->
+<td align="left">
+<br>
+My current design works exactly like Hill's. It consists of 40 
+<a href = "parallel_boxes.phtml">8 circuit boxes</a> for a total of
+320 individually switchable circuits. It requires 6 writes (6 clock
+cycles) to change a single box (or 240 to change all boxes). Even 
+a very slow Pentium 75 is able to change all 40 boxes in a 
+blink of an eye.
+
+The design for the main board only requires two types of integrated
+circuits: the 138 decoder and the 374 flip-flop. 
+</td>
+<!---     Right Side     --->
+<td width="330">
+&nbsp;
+</td>
+</tr>
+<!--------- ROW 4 --------->
+<tr>
+<!---       Left Side      --->
+<td>
+<br>
+<p>
+<table border=0>
+<tr>
+<td>
+The 374 flip-flop is really just a single chip with
+8-bits of memory. There are eight "D" pins that represent
+the input, and 8 "Q" pins that are the output. The chip
+works by continuing to put out on the "Q" pins what ever
+was present on the coropsonding "D" pin when a clock signal
+was received.  (A clock signal occurs when pin 1 goes from 
+Low to High).
+</td>
+<td>
+<img src = "images/74ACT374_tab.gif"> <br>
+</td>
+</tr>
+</table>
+</td>
+
+<!---       Right Side      --->
+<td width="330" align="center">
+<img src="images/74ACT374.gif"><br>
+</td>
+</tr>
+
+<!--------- ROW 5 --------->
+<tr>
+<!---       Left Side       --->
+<td>
+The pupose of a 138 decoder is to take the binary
+representation of 3 bits(zero = 000, 7 = 111) and
+set the output pin that matches that value to Low.
+For example, if pins 1-3 are given 010, then pin 12 (Y3)
+will be set Low, and all other Y pins will be set to
+High (the default). <br>
+<center><img src = "images/74HCT138_tab.gif"></center>
+
+</td>
+<!--- Right Side --->
+<td width="330" align="center">
+<img src="images/74HCT138.gif"><br>
+</td>
+</tr>
+
+<!--------- ROW 6 --------->
+<tr>
+<!--- Left Side --->
+<td>
+The way it works is as follows. The 374 chips are basically "memory" in the board for which circuits are turned on, and then we use the
+138 decoder to "direct" which block of memory gets updated. The picture to the write (shamefully stollen from ComputerChristmas.com, while
+the site was still funcitonal) shows an annimgation of the different steps and how things are wired together.
+
+<ol>
+<li>The first data byte (8 bits) is put into a tempory 374 "memory buffer".  Each bit represents one of 8 differnt AC circutis as to wether
+it should be on or off.   The 8 bits are all for one of the control boxes (since we write each box as one unit).
+
+<li>The next step is to set that control bit (pin 1) is set low (0V) which is inverted. This latches the data in the flip flop and is stored (like memory). This will allow us to use the 8-bits on the parallel port to set routing information and not keep the data we wish to write stored "in memory".
+
+<li>The flip flop control bit is set back to high (+5V). THis is because the data is actually stored in the flip flop on the swich form high to low, so we need to reset it for next time.
+
+<li> Routing information is sent via the normal data channel.  3 of the bits to to all 138 decoders, but the other 5 actually
+only go to one of the decoders.  I think of the 5 as which "row" of 374 chips to write to, while the three bits specify which of the 8 "
+columns" of 374 chips we sholud actually update. (8*5 = 40 different 374 "memory" chips. and since each chip stores 8 bits for 8 differnt outputs, the 8*40 = 320 unique outputs that can be controlled.
+
+<li>The decoder control bit (pin 14) is set high to send out a clock (low) to the specific box flip flop. This locks the data in the 138 so
+that the the data from the original 374 "buffer chip flows will be locked into the correct final 374 "memory" chip.
+
+<li>Finally, the destination flip flop latches the data and turns on or off the lights via the 8 circuit boxes and holds it's state until the next instruction is sent to change it.
+</ol>
+</td>
+<!--- Right Side --->
+<td width="330" align="center">
+<img src="images/320write.gif" width=320>
+</td>
+</tr>
+
+</table>
+<!--- End that splits sides --->
+
+<br><br><br>
+
+<h2>Behind the Scenes</h2>
+<a href="christmas/2002/2002_board1.jpg">
+	<IMG SRC="christmas/2002/_2002_board1.jpg" border="1" alt="2002_board1.jpg">
+</a>
+<a href="christmas/2002/2002_board2.jpg">
+	<IMG SRC="christmas/2002/_2002_board2.jpg" border="1" alt="2002_board2.jpg">
+</a>
+<a href="christmas/2002/2002_board_3.jpg">
+	<IMG SRC="christmas/2002/_2002_board_3.jpg" border="1" alt="2002_board_3.jpg">
+</a>
+<a href="christmas/2002/2002_box_1.jpg">
+	<IMG SRC="christmas/2002/_2002_box_1.jpg" border="1" alt="2002_box_1.jpg">
+</a>
+<a href="christmas/2002/2002_box_2.jpg">
+	<IMG SRC="christmas/2002/_2002_box_2.jpg" border="1" alt="2002_box_2.jpg">
+</a>
+<a href="christmas/2002/2002_box_3.jpg">
+	<IMG SRC="christmas/2002/_2002_box_3.jpg" border="1" alt="2002_box_3.jpg">
+
+</a>
+<a href="christmas/2002/2002_computer_1.jpg">
+	<IMG SRC="christmas/2002/_2002_computer_1.jpg" border="1" alt="2002_computer_1.jpg">
+</a>
+<a href="christmas/2002/2002_computer_2.jpg">
+	<IMG SRC="christmas/2002/_2002_computer_2.jpg" border="1" alt="2002_computer_2.jpg">
+</a>
+<a href="christmas/2002/2002_computer_3.jpg">
+	<IMG SRC="christmas/2002/_2002_computer_3.jpg" border="1" alt="2002_computer_3.jpg">
+</a>
+<a href="christmas/2002/2002_computer_4.jpg">
+	<IMG SRC="christmas/2002/_2002_computer_4.jpg" border="1" alt="2002_computer_4.jpg">
+
+</a>
+<a href="christmas/2002/2002_connector.jpg">
+	<IMG SRC="christmas/2002/_2002_connector.jpg" border="1" alt="2002_connector.jpg">
+</a>
+<a href="christmas/2002/wire_connectors.jpg">
+	<IMG SRC="christmas/2002/_wire_connectors.jpg" border="1" alt="wire_connectors.jpg">
+</a>
+<a href="christmas/2002/wires_2.jpg">
+	<IMG SRC="christmas/2002/_wires_2.jpg" border="1" alt="wires_2.jpg">
+
+</a>
+<a href="christmas/2002/2002_wires_1.jpg">
+	<IMG SRC="christmas/2002/_2002_wires_1.jpg" border="1" alt="2002_wires_1.jpg">
+</a>
+<a href="christmas/2002/box_closed_1.jpg">
+	<IMG SRC="christmas/2002/_box_closed_1.jpg" border="1" alt="box_closed_1.jpg">
+</a>
+<a href="christmas/2002/box_closed_2.jpg">
+	<IMG SRC="christmas/2002/_box_closed_2.jpg" border="1" alt="box_closed_2.jpg">
+</a>
+<a href="christmas/2002/box_closed_3.jpg">
+	<IMG SRC="christmas/2002/_box_closed_3.jpg" border="1" alt="box_closed_3.jpg">
+</a>
+<a href="christmas/2002/box_open_1.jpg">
+	<IMG SRC="christmas/2002/_box_open_1.jpg" border="1" alt="box_open_1.jpg">
+</a>
+<a href="christmas/2002/box_open_2.jpg">
+	<IMG SRC="christmas/2002/_box_open_2.jpg" border="1" alt="box_open_2.jpg">
+</a>
+
+<br><br>
+
+
+<h2>Source Code</h2>
+The following source code controlled this year's display from a P-75
+running the FreeBSD 4.7 OS.
+<br> <br><br>
+
+<center>
+<table border = 0 cellpadding=20>
+<tr>
+  <td>
+	<a href="christmas/2002/source/Makefile.txt">Makefile</a> <br>
+	<a href="christmas/2002/source/main.c.txt">Main.c</a> <br>
+	<a href="christmas/2002/source/2002.h.txt">2002.h</a> <br>
+	<a href="christmas/2002/source/320controller.h.txt">320controller.h</a> <br>
+  <td>
+	<a href="christmas/2002/source/320controller.c.txt">320controller.c</a> <br>
+	<a href="christmas/2002/source/bushes.c.txt">bushes.c</a> <br>
+	<a href="christmas/2002/source/sign.c.txt">sign.c</a> <br>
+	<a href="christmas/2002/source/snowmen.c.txt">snowmen.c</a> <br>
+</tr>
+</table>
+</center>
+<br><br>
+
+<?php include "footer.phtml" ?>
+

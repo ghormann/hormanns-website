@@ -1,0 +1,78 @@
+<?php 
+$title="Christmas 2018 at the Hormanns";
+$subTitle="Christmas 2018";
+include "intro.phtml" ?>
+
+<?php
+require_once 'christmasBase.phtml';
+
+class Page extends ChristmasPage
+{
+   public function intro()
+   {
+
+?>
+
+2018 is our eighteenth year for an animated Christmas Lights Display. This year we added the 43 mini-trees in the front lawn. As each one of the 90 pixels on each tree is individually controllable, we've added a number of more enjoyable effects on the yard. In addition, we added a feature where viewers could <a href="text_message.phtml">send their first name via text message</a> and have it display below the clock and on the big grid.
+
+<br><br>
+For the last thirteen years or so, a number of neighbors have braved the cold to watch the clock hit midnight and welcome Christmas. (<a href="https://youtu.be/mzx8egIFU8U">Video</a>)
+
+<!--
+We hope you'll join us this year.
+
+-->
+
+This year was amazing with over 48 neighbors joining to celebrate as the clock hit zero. Hopefully you'll join us next year!
+
+
+<?php 
+} // intro
+   public function getMovies() 
+   {
+   $movies = array(
+             array("0PlP6d6zvng", "Sugar Plum Fairy"),
+             array("tFRDprIr__M", "EDM Carol of the Bells (Sauniks)"),
+             array("a8G98AZizjI", "I Want a Hippopotamus for Christmas"),
+             array("SrLvq451Bm0", "House on Christmas Street"),
+             array("XWU-PpLbR-E", "Light of Christmas"),
+             array("eYGNr7bRvFA", "12 Days of Christmas"),
+             array("oJm8gxn4lcc", "Jingle Dogs"),
+             array("uN1v0yVfK6w", "I heard the bells on Christmas Day"),
+             array("n9Dcgp-UoJc", "Little Drummer Boy"),
+             array("L56tnHJqQ8o", "Amazing Grace"),
+             array("TMS9L4olceo", "Christmas Minions"),
+             array("8xtIlmzI2iU", "Here comes Santa Claus"),
+             array("N48ugZcfK20", "Christmas Cannon"),
+             array("mzx8egIFU8U", "Clock Hitting zero")
+   );
+
+   return $movies;
+   } // getmovies
+
+   public function stats()
+   {
+?>
+
+
+<ul>
+<li> 17,239 RGB lights that can be set to any color individually.
+<li> 16 LOR Circuits switching "Normal" Christmas lights on and off (Snowmen)
+<li> 8 Pixel Controllers (AlphaPix + Falcon)
+<li> 5 "Dumb" RGB Controllers (Stars in yard.)
+<li> 33 DC Power Supplies
+<li> Too many electrical and control wire to count
+</ul>
+
+<?php
+   } //stats
+} // class
+
+$me = new Page();
+$me->render();
+
+?>
+
+
+<?php include "footer.phtml" ?>
+

@@ -1,0 +1,93 @@
+
+#include "320controller.h"
+
+
+void set_box(int box, int data){
+    
+    // set_box function by Hill Robertson
+    //         Modified by Greg Hormann for performance.
+    //  
+    // This function sends the 6 writes for each parallel port instruction
+    // to CONTROL (currently) 40 8-circuit Christmas light SSR CONTROLler
+    // boxes.  The box and bank data are selected and then the write sequence
+    // begins.
+        
+    int bank;
+    int bankbox;
+
+    char temp[500];
+
+/*     printf("Box %d ==> %d\n", box, data); */
+
+    if (box <=0 || box > 40)
+    {
+       printf("Invalid box %d\n", box);
+       return;
+    }
+    
+    if      (box<=8)   { bank=8; bankbox=box-1; }
+    else if (box<=16)  { bank=16; bankbox=box-9; } 
+    else if (box<=24)  { bank=32; bankbox=box-17; }
+    else if (box<=32)  { bank=64; bankbox=box-25; }
+    else               { bank=128; bankbox=box-33; }
+    
+    // BASE=0x378 for first parallel port BASE address
+    // CONTROL=BASE+2 for first parallel port CONTROL address
+
+    outb(BASE, data);          // Write 1:
+                               //   Outputs data byte (D0-D7) on pins 2-9
+                               //   of parallel port
+
+#ifdef DEBUG_BOX    
+    printf("S1: Base  = data (%d)\n", data);
+    gets(temp);
+#endif
+
+    outb(CONTROL, 0);          // Write 2:
+                               //   Outputs a 1 (high) on C0 and C1
+                               //   (pins 1 and 14) since they are inverted 
+                               //   without changing any states on the data pins
+#ifdef DEBUG_BOX    
+    printf("S2: CONTROL  = 0 (C0/C1 ON) \n");
+    gets(temp);
+#endif
+
+    outb(CONTROL, 1);          // Write 3:
+                               //   Outputs a 0 (low) on C0 and a 1 (high) on
+                               //   C1 since they are inverted. Again, not
+                               //   changing any states on the data pins
+
+#ifdef DEBUG_BOX    
+    printf("S3: CONTROL  = 1 (C0 (low) C1 (high) \n");
+    gets(temp);
+#endif
+    
+    outb(BASE, bankbox+bank);  // Write 4:
+                               //   Outputs the steering (addressing) data on
+                               //   the data pins
+
+#ifdef DEBUG_BOX    
+    printf("S4: BASE = bankbox+bank (%d)\n", bankbox+bank);
+    gets(temp);
+#endif
+    
+    outb(CONTROL, 3);          // Write 5:
+                               //   Outputs a 0 (low) on both C0 and C1
+                               //   since they are inverted
+
+#ifdef DEBUG_BOX    
+    printf("S5: CONTROL = 3 (LOW C0, C1)\n");
+    gets(temp);
+#endif
+    
+    outb(CONTROL, 1);          // Write 6:
+                               //   Outputs a 0 (low) on C0 and a 1 (high) on
+                               //   C1 since they are inverted. Again, not
+                               //   changing any states on the data pins
+
+#ifdef DEBUG_BOX    
+    printf("S6: CONTROL = 1 (LOW C0, HIGH C1)\n") ;
+    gets(temp);
+#endif
+}
+

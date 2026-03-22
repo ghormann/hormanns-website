@@ -1,0 +1,115 @@
+<?php 
+$title="Christmas 2024 at the Hormanns";
+$subTitle="Christmas 2024";
+include "intro.phtml" ?>
+
+<?php
+require_once 'christmasBase.phtml';
+
+class Page extends ChristmasPage
+{
+   public function intro()
+   {
+
+?>
+
+<br><br>
+2024 is our 24th year for an animated Christmas Lights Display. With over 65,125 lights synchronized to 68 minutes of Christmas music (26 songs), it is well worth the trip to
+Liberty Township to see it in person (we are located on <a href="#house_address">Devon Drive</a>).  We are still adding the videos for those out of town, but
+the videos don't capture the nearly as well as being in person.  This year we updated the effects on about half of the songs, added push button controls to the tunnel,
+and added the song <a href="https://youtu.be/-dVyRL2xsIk">Sounding Joy</a> to the list.
+
+<br>
+<br>
+We welcomed in Christmas morning with 50 neighbors by counting down the last seconds to Christmas in front of the <a href="clock.php">countdown clock</a> 
+The <a href="https://www.youtube.com/watch?v=ceJZGeCeO78">video</a> of the evening shows the excitement.  Make your plans now to join us next year!
+
+
+
+<p>
+
+<?php 
+   } // body
+
+   public function getMovies()
+   {
+
+   $movies = array(
+             array("r-fTPtaM_8o", "I got the Joy (Drone)"),
+             array("7w_onQxbsy4", "Sounding Joy (Drone)"),
+             array("RzcCiXwvtcg", "Little Drummer Boy"),
+             array("0HYUCZZlxXg", "Jingle Bells (Drone)"),
+             array("aFw_iIjXpyc", "The Grinch (Drone)"),
+             array("-4m2c_vW6Jc", "Mary did you Know (Drone)"),
+             array("RfEplkIyD4o", "Naughty or Nice"),
+             array("ceJZGeCeO78", "Clock hits Zero"),
+             array("IXfZjwJpgBw", "Hippopotamus for Christmas"),
+             array("RpzEh69x5w8", "Peanuts (Drone)"),
+             array("TG_tXzUOiU0", "Light of Christmas"),
+             array("FF7FLKpWU58", "Hot Chocolate Drone"),
+             array("m1jmbFx2GGs", "Hot Chocolate"),
+	     array("dlsxYAeGLI0", "Sugar plum fairy (Drone)"),
+             array("XJ7IMXk_o8w", "12 Days of Christmas"),
+             array("Ao4aNGl6wuU", "House on Christmas Street"),
+             array("cjQXlG5nehE", "Dominick the Donkey"),
+             array("-dVyRL2xsIk", "Sounding Joy"),
+             array("XngMaYWBpOI", "Tunnel Rainbow"),
+             array("nQgYmLia6iU", "Tunnel Buttons"),
+             array("0ZOk3BZXEtk", "Behind the scenes tour"),
+             array("JRj87RyUpDg", "Setup: Day 11 - Arches, Bushes, Snowflakes"),
+             array("BmJhQt7VLWA", "Setup: Day 10 - Clock and Info boards"),
+             array("TZoo9sb4eD0", "Setup: Day 9 - MegaTree and Ground"),
+             array("2QdMEqkct1c", "Setup: Day 8 - Tunnel, Snowmen"),
+             array("n6P2rToCZOI", "Setup: Day 7 - Info Board Repair"),
+             array("fLudpz4hYtA", "Setup: Day 6 - Tunnel"),
+             array("VgT0AFCre8k", "Setup: Day 5 - Tunnel and Snowmen"),
+             array("77rDmg-XP3U", "Setup: Day 4 - Outline, Tree, Tunnel"),
+             array("ndZexlXfSAg", "Setup: Day 3 - Roof and Outline"),
+             array("qkt3UKyoJiw", "Setup: Day 2 - Windows,Grid, Outline"),
+             array("4ku41YCo7wc", "Setup: Day 1 - Windows and Grid"),
+             array("6bccS5xSd44", "Everything is Staged"),
+             array("ixBID_d_A_A", "Teaser"),
+             array("ex0m6J-gyYw", "Take Down Day 0"),
+             array("7WOkT13AxC8", "Take Down Day 1"),
+             array("ejXtAAf3I8g", "Take Down Day 2"),
+             array("_SJVoTkMUXM", "Take Down Day 3"),
+   );
+
+   return $movies;
+   }
+
+   public function stats()
+   {
+
+?>
+
+<ul>
+<li> 2550 KWh to power the display (around $300)
+<li> 26 songs for a total of 68 minutes
+<li> 65,125 "Smart" RGB Lights can change to any color individually
+<li> 880 "Dumb" RGB light bulbs (20 in each of the Stars on the ground)
+<li> 87 P10 panels in the information sign (equivalent of 27,840 pixels)
+<li> 10 P5 Pannels in the sign above tunnel (equivalent of 20,480 pixels)
+<li> 15 Pixel Controllers (AlphaPix 4, Falcon16v3, Kulp K8-B, Kulp K16, Kulp OctoScroller)
+<li> 5 "Dumb" RGB Controllers (Stars in yard)
+<li> 65 DC Power Supplies
+<li> 2 Raspberry Pi (Show runner and Button controller)
+<li> 7 Beagle Bone Black running FPP to control the P10s and some pixels
+<li> 2 Virtual Machines (Linux) to handle interactive elements of display
+<li> Too many electrical and control wire to count
+<li> 1493 unique phones sending names
+<li> 2,132 unique voters for songs
+<li> 40,846 button presses at the tunnel (Blue was most popular)
+<li> $2,610 in cash/gift cards along with 453 pounds of food donated to those in need
+
+</ul>
+
+<?php 
+   } //stats
+} // class
+
+$me = new Page();
+$me->render();
+
+include "footer.phtml" ?>
+

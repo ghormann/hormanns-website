@@ -1,0 +1,10 @@
+
+
+all: 2002
+	@echo "Done."
+
+2002: bushes.o sign.o 320controller.o 320controller.h 2002.h main.o snowmen.o
+	cc -pthread -o 2002 sign.o 320controller.o main.o bushes.o snowmen.o
+
+clean:
+	rm *.o 2002 *.core

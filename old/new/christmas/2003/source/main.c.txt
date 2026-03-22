@@ -1,0 +1,488 @@
+
+#include "320controller.h"
+#include "main.h"
+
+
+int boxs[41];         /* Holds master copy of boxes to be written out */
+int boxs_old[41];     /* Boxes last time written                      */
+int copy_boxs[41];    /* Should be replaced by boxs_old               */
+int global_time;      /* Holds sec remaining to display on screen     */
+int show_display;     /* If True then show screen output.             */
+int skip_time_check;  /* If True, then the show run regardless of hour*/
+char message[500];    /* Message Displayed on Screen (bushes)         */
+char message2[500];   /* Message Displayed on Screen (snowmen)        */
+char message3[500];   /* Message Displayed on Screen (sign)           */
+
+WINDOW *mainwin;      /* Window for curser                            */
+
+/*
+ * This is a multi-threaded application.
+ * Need to make sure that one thread doesn't
+ * start set_box while another thread is in
+ * the middle of this function.
+ */
+
+pthread_mutex_t protect_interface;
+
+
+main(int argc, char *argv[])
+{
+  pthread_t sign_t;
+  pthread_t bushes_t;
+  pthread_t snowmen_t;
+  
+  int i;
+  int ch;
+
+  show_display = OFF;  
+  skip_time_check = FALSE;
+  
+  /*
+   * Parse Arguments
+   */
+  while ((ch = getopt(argc, argv, "dDtT")) != -1)
+    switch (ch) {
+    case 'd':
+    case 'D':
+      show_display = ON;
+      break;
+    case 't':
+    case 'T':
+      skip_time_check = TRUE;
+      break;
+    case '?':
+    default:
+      printf("Usage: %s [-d] [-t]\n", argv[0]);
+      exit(1);
+    }
+  argc -= optind;
+  argv += optind;
+
+  /*
+   * Create window
+   */
+  if ((mainwin = initscr()) == NULL)
+  {
+    printf("Error loading ncursur\n");
+    exit(1);
+  }
+  noecho();
+  cbreak();
+  nodelay(mainwin, TRUE);
+  keypad(mainwin, TRUE);
+  
+
+  /*
+   * For FreeBSD, this is the trick needed
+   * to allow this program to write directly
+   * to IO ports
+   */
+  open("/dev/io", O_RDONLY);
+  
+  global_time = 0;
+  
+  /*
+   *  Set boxes so that the two don't match.
+   *  This is important starting out because we only
+   *  write out boxes that have changed.
+   */
+  for (i=0; i <= 40; i++)
+  {
+    boxs_old[i] = -1;
+    boxs[i] = 0;
+  }
+  write_data(0);
+  
+
+  /*
+   * Create threads for the display
+   */
+
+  pthread_create(&sign_t, NULL, sign_main, NULL);
+  pthread_create(&bushes_t, NULL, bushes_main, NULL); 
+  pthread_create(&snowmen_t, NULL, snowmen_main, NULL);
+  
+  pthread_mutex_init(&protect_interface, NULL); 
+  
+  
+  /*
+   * This program only ends if all of these
+   * threads die.  (Not going to happen because
+   * all of the threads have infinite loops
+   */
+  pthread_join(sign_t, NULL);
+  pthread_join(bushes_t, NULL); 
+  pthread_join(snowmen_t, NULL);
+  
+} /* End main() */
+
+/* ---------------- */
+
+
+/*
+ * This function writes out all boxes with
+ * pending changes and then pauses the calling
+ * thread for the time specified.
+ *
+ * If run in display_mode, then the program also
+ * updates the local representation of the boxes
+ * displayed on the screen.  This can't be done 
+ * in production mode because my P75 is two slow.
+ */
+
+void write_data(float pause)
+{
+  int i;
+  int bush_col = -1;
+  char bush_data[80];
+  int snowman_line = SNOWMEN_LINE+1;
+  
+  if (show_display)     /* If in Display_mode */
+  {
+    
+    /*
+     * Clear Screen
+     *
+     * (I really need to learn how to do ncursors
+     * to do this more efficiently, but for now, this
+     * works when debugging.
+    */
+    //system("clear");
+    
+    /*
+     * Print out messages
+     */
+
+    mvprintw(BUSHES_LINE, 1, "Clock: %-70s", message3);
+    mvprintw(BUSHES_LINE, 60, "Clock: %010d", global_time);
+    mvprintw(BUSHES_LINE+1, 1, "Bushes: %-70s", message);
+    mvprintw(SNOWMEN_LINE,1,"Snowmen: %-70s\n", message2);
+   
+    /*
+     *Bush 1
+     */
+  
+    if (boxs[3] & 1)
+      bush_data[++bush_col] = 'R';
+    else
+      bush_data[++bush_col] = ' ';
+    
+    if (boxs[3] & 2)
+      bush_data[++bush_col] = 'G';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[3] & 4)
+      bush_data[++bush_col] = 'B';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[3] & 8)
+      bush_data[++bush_col] = 'W';
+    else
+      bush_data[++bush_col] = ' ';
+
+    bush_data[++bush_col] = ' ';
+    bush_data[++bush_col] = ' ';
+  
+    /*
+     * Bush 2
+     */
+  
+    if (boxs[3] & 16)
+      bush_data[++bush_col] = 'R';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[3] & 32)
+      bush_data[++bush_col] = 'G';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[3] & 64)
+      bush_data[++bush_col] = 'B';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[2] & 1)
+      bush_data[++bush_col] = 'W';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    bush_data[++bush_col] = ' ';
+    bush_data[++bush_col] = ' ';
+  
+    /*
+     * Bush 3
+     */
+  
+    if (boxs[2] & 2)
+      bush_data[++bush_col] = 'R';
+    else
+      bush_data[++bush_col] = ' ';
+    
+    if (boxs[2] & 4)
+      bush_data[++bush_col] = 'G';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[2] & 8)
+      bush_data[++bush_col] = 'B';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[2] & 16)
+      bush_data[++bush_col] = 'W';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    bush_data[++bush_col] = ' ';
+    bush_data[++bush_col] = ' ';
+
+    /*
+     * Bush 4
+     */
+  
+    if (boxs[1] & 1)
+      bush_data[++bush_col] = 'R';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[1] & 2)
+      bush_data[++bush_col] = 'G';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[1] & 4)
+      bush_data[++bush_col] = 'B';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[1] & 8)
+      bush_data[++bush_col] = 'W';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    bush_data[++bush_col] = ' ';
+    bush_data[++bush_col] = ' ';
+
+    /*
+     * Bush 5
+     */
+  
+    if (boxs[1] & 16)
+      bush_data[++bush_col] = 'R';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[1] & 32)
+      bush_data[++bush_col] = 'G';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[1] & 64)
+      bush_data[++bush_col] = 'B';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[4] & 1)
+      bush_data[++bush_col] = 'W';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    bush_data[++bush_col] = ' ';
+    bush_data[++bush_col] = ' ';
+  
+    /*
+     * Bush 6
+     */
+  
+    if (boxs[4] & 2)
+      bush_data[++bush_col] = 'R';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[4] & 4)
+      bush_data[++bush_col] = 'G';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[4] & 8)
+      bush_data[++bush_col] = 'B';
+    else
+      bush_data[++bush_col] = ' ';
+  
+    if (boxs[4] & 16)
+      bush_data[++bush_col] = 'W';
+    else
+      bush_data[++bush_col] = ' ';
+  
+  /*
+   * Show house colors
+   */
+
+    bush_data[++bush_col] = ' ';
+    bush_data[++bush_col] = '|';
+    bush_data[++bush_col] = ' ';
+
+    
+    if (boxs[2] & 32)
+      bush_data[++bush_col] = 'R';
+    else
+      bush_data[++bush_col] = ' ';
+    
+    if (boxs[2] & 64)
+      bush_data[++bush_col] = 'G';
+    else
+      bush_data[++bush_col] = ' ';
+    
+    bush_data[++bush_col] = ' ';
+    bush_data[++bush_col] = ' ';
+    
+    
+    if (boxs[4] & 32)
+      bush_data[++bush_col] = 'R';
+    else
+      bush_data[++bush_col] = ' ';
+    
+    if (boxs[4] & 64)
+      bush_data[++bush_col] = 'G';
+    else
+      bush_data[++bush_col] = ' ';
+    
+  
+  /*
+   *  Print Time
+   */
+  
+    bush_data[++bush_col] = 0;
+    mvprintw(BUSHES_LINE+2, 1, "%s ", bush_data);
+  
+  /*
+   *
+   * Snow men
+   *
+   */
+
+    if (snowmen[LEFT][7])
+      mvprintw(snowman_line,2*TAB_STOP,"X");
+    else
+      mvprintw(snowman_line,2*TAB_STOP," ");
+
+    
+    snowman_line += 2;
+    
+    if (snowmen[LEFT][5])
+      mvprintw(snowman_line,TAB_STOP,"X");
+    else
+      mvprintw(snowman_line,TAB_STOP," ");
+
+    if (snowmen[RIGHT][7])
+      mvprintw(snowman_line,TAB_STOP*2,"X");
+    else
+      mvprintw(snowman_line,TAB_STOP*2," ");
+
+    if (snowmen[RIGHT][5])
+      mvprintw(snowman_line,TAB_STOP*3,"X");
+    else
+      mvprintw(snowman_line,TAB_STOP*3," ");
+
+    ++snowman_line;
+  
+    if (snowmen[LEFT][1])
+      mvprintw(snowman_line,0,"L");
+    else
+      mvprintw(snowman_line,0," ");
+  
+    if (snowmen[LEFT][2])
+      mvprintw(snowman_line,1,"/");
+    else
+      mvprintw(snowman_line,1," ");
+
+    if(snowmen[LEFT][3])
+      mvprintw(snowman_line,2,"H");
+    else
+      mvprintw(snowman_line,2," ");
+
+    if(snowmen[LEFT][4])
+      mvprintw(snowman_line,2,"S");
+    else
+      mvprintw(snowman_line,2," ");
+      
+
+    if(snowmen[LEFT][6])
+      mvprintw(snowman_line,TAB_STOP,"X");
+    else
+      mvprintw(snowman_line,TAB_STOP," ");
+
+
+    if(snowmen[RIGHT][6])
+      mvprintw(snowman_line,TAB_STOP*3,"X");
+    else
+      mvprintw(snowman_line,TAB_STOP*3," ");
+
+
+    if(snowmen[RIGHT][4])
+      mvprintw(snowman_line,TAB_STOP*4,"S");
+    else
+      mvprintw(snowman_line,TAB_STOP*4," ");
+
+    if(snowmen[RIGHT][3])
+      mvprintw(snowman_line,(TAB_STOP*4)+1,"H");
+    else
+      mvprintw(snowman_line,(TAB_STOP*4)+1," ");
+
+  
+    if (snowmen[RIGHT][2])
+      mvprintw(snowman_line,(TAB_STOP*4)+2,"\\");
+    else
+      mvprintw(snowman_line,(TAB_STOP*4)+2," ");
+
+    if (snowmen[RIGHT][1])
+      mvprintw(snowman_line,(TAB_STOP*4)+3,"J");
+    else
+      mvprintw(snowman_line,(TAB_STOP*4)+3," ");
+
+    refresh();
+    
+  }  /* End if (show_display) */
+
+  
+  /*
+   * Set Lock - Can't let multiple threads 
+   * into this area
+   */
+
+  pthread_mutex_lock(&protect_interface);
+  
+  /*
+   * Change Boxes
+   */
+  for (i = 1; i <= 40; i++)
+  {
+    if (boxs[i] != boxs_old[i])
+    {
+      set_box(i, boxs[i]);
+      boxs_old[i] = boxs[i];
+    }
+  }
+  
+  /*
+   * UnSet Lock
+   */
+  pthread_mutex_unlock(&protect_interface);
+  
+  /*
+   * Sleep amount of time specified
+   */
+  usleep(pause * 1000000);
+}   
+
+
+
+
+
+/*  LocalWords:  int boxs pthread mutex argc argv ch getopt dD printf optind tX
+ */
+/*  LocalWords:  FreeBSD RDONLY init ncursors UnSet usleep
+ */

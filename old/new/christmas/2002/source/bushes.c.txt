@@ -1,0 +1,1125 @@
+
+#include "320controller.h"
+#include "2002.h"
+
+/*
+ * Function for setting color of the house
+ */
+void set_house(int box, int red, int green);
+
+/*
+ * All the patterns that the bushes can do
+ */
+void follow_the_leader(void);
+void train(void);
+void move_in(void);
+void time_warp(void);
+void random_change(void);
+void rotate_in (void);
+void rotate_colors (void);
+void cycle_colors(void);
+void fill_from_right(void);
+void compete(double pause, double step, double threshold);
+void slide_down(void);
+void flash(int red, int green, int blue, int white, int cnt, double delay, double start);
+
+/*
+ * There are 6 bushes. Each bush can 
+ * be one of 4 colors.  The bushes are boxes
+ * 1-4.  (From left to right 3, 2, 1, 4)
+ *
+ * Positions 6 and 7 of boxes 2 and 4 are used
+ * for the spot lights on the house.
+ */
+
+void *bushes_main(void *args)
+{
+  time_t now_t;
+  struct tm *now;
+  int loop_counter = 0;
+
+  while(1)
+  {
+    time(&now_t);
+    now = localtime(&now_t);
+
+    /*
+     * During the day (8am-5pm): make sure all boxes are off.
+     * From 5pm - 11pm: run the standard display on the bushes
+     * From 11pm-6am: just have the spotlights on the house
+     */
+    
+    while ( ( now->tm_hour == 7 && now->tm_min > 59) ||
+	    ( (now->tm_hour > 7)  && now->tm_hour < 17) )
+                                                          /* 7:59am - 5pm */
+    {
+      boxs[1] = 0;
+      boxs[2] = 0;
+      boxs[3] = 0;
+      boxs[4] = 0;
+      write_data(.1);
+
+      printf ("Bushes: Sleeping 10 minutes (%d:%d)\n", now->tm_hour,
+	      now->tm_min);
+
+
+      sleep(600);
+      time(&now_t);
+      now = localtime(&now_t);
+
+      /*
+       * This is reset just to make sure loop_counter doesn't go
+       * beyond the size of an int.  (Very unlikely to happen, but
+       * oh well.)
+       */
+      loop_counter = 0;
+      
+    } /* End 7:59am - 5pm */
+
+    
+    while ( (now->tm_hour == 23) ||     /* 11pm - 6am */
+	    (now->tm_hour >=0 && now->tm_hour <6)  )
+    {
+      boxs[1] = 0;
+      boxs[2] = 0;
+      boxs[3] = 0;
+      boxs[4] = 0;
+      
+      /* 
+       * Alternate house colors (spot lights)
+       */
+      set_house(1, loop_counter %2, (loop_counter+1)%2);
+      set_house(2, loop_counter %2, (loop_counter+1)%2);
+      write_data(.1);
+
+      printf ("Bushes: House Only (%d:%d) - %d\n", now->tm_hour,
+	      now->tm_min,
+	      loop_counter);
+
+      sleep(600);
+      time(&now_t);
+      now = localtime(&now_t);
+      loop_counter++;
+    
+    } /* End 11pm-6am */
+
+    /* 
+     * 5PM - 11PM, 6am - 7:30am 
+     */
+    do_it_bushes();     
+    loop_counter = 0;
+  
+  } /* End While(1) */
+} /* End Bushes_main */
+
+
+/*
+ *
+ * This is where the work is actually done
+ *
+ */ 
+
+void do_it_bushes(void)
+{
+
+  int i;
+  
+  /*
+   * Message to display on screen when write_data is called
+   */
+  strcpy(message,"ALL ON ALL ON ALL ON ALL ON ALL ON\n");
+
+  flash(ON,ON, ON, ON, 22, .85, 1.5);
+
+  for (i=1; i < 7; i++)
+  {
+    set_bush(i,ON,ON,ON,ON);
+  }
+  set_house(1, ON, ON);
+  set_house(2, ON, ON);
+  write_data(5);
+
+  cycle_colors();
+  compete(2, .85, .2);
+  fill_from_right();
+  random_change();
+
+  set_house(1,OFF, OFF);
+  set_house(2,OFF, OFF);
+
+  follow_the_leader();
+  rotate_in();
+
+  flash(OFF,OFF, OFF, ON, 12, .65, 1.5);
+  write_data(1.5);
+  train();
+  set_house(1, OFF, ON);
+  set_house(2, OFF, ON);
+  move_in();
+
+  rotate_colors();
+  random_change();
+  time_warp();
+
+  flash(OFF, OFF, OFF, OFF, 2, .3, .3); /* Turn everything off */
+
+} /* End do_it_bushes */
+
+
+
+
+
+
+/* ----------------------------------------- */
+/*
+ *  Cycle Through Colors (red, blue, green, white)
+ *  This function changes the bushes pausing
+ *  for one second after each bush.
+ */
+/* ----------------------------------------- */
+
+void cycle_colors()
+{
+  int i;
+
+  set_house(1, ON, OFF);
+  set_house(2, ON, OFF);
+
+  strcpy(message,"Cycle Colors - RED RED RED RED RED\n");
+
+  for (i=0; i < 7; i++)
+  {
+    set_bush(i,ON,OFF,OFF,OFF);
+    write_data(1);
+  }
+
+  strcpy(message,"BLUE BLUE BLUE BLUE BLUE BLUE BLUE \n");
+  for (i=0; i < 7; i++)
+  {
+    set_bush(i,OFF,OFF,ON,OFF);
+    write_data(1);
+  }
+
+  set_house(1, OFF, ON);
+  set_house(2, OFF, ON);
+
+  strcpy(message,"GREEN GREEN GREEN GREEN GREEN GREEN \n");
+  for (i=0; i < 7; i++)
+  {
+    set_bush(i,OFF,ON,OFF,OFF);
+    write_data(1);
+  }
+
+
+
+  strcpy(message,"WHITE WHITE WHITE WHITE WHITE WHITE WHITE  \n");
+  for (i=0; i < 7; i++)
+  {
+    set_bush(i,OFF,OFF,OFF,ON);
+    write_data(1);
+  }
+
+  /*
+   * Pause with all while for a extra
+   * 3 seconds
+   */
+  write_data(3);
+
+} /* End Cycle Colors */
+
+  
+/*
+ * Function fill from Right
+ *
+ * This function provides a sliding motion where
+ * which results in the bushes eventually being all
+ * one color.
+ */
+
+void fill_from_right()
+{
+  int i, j;
+  double pause;
+
+  /* ----------------------------------------- */
+  /*
+   * Fill Green from Right
+  */
+  /* ----------------------------------------- */
+
+  strcpy(message,"Fill Green from Right\n");
+
+  pause = .5;
+
+  set_house(1, OFF, ON);
+  set_house(2, OFF, ON);
+
+  set_bush(1,OFF,OFF,OFF,OFF);
+  set_bush(2,OFF,OFF,OFF,OFF);
+  set_bush(3,OFF,OFF,OFF,OFF);
+  set_bush(4,OFF,OFF,OFF,OFF);
+  set_bush(5,OFF,OFF,OFF,OFF);
+  set_bush(6,OFF,OFF,OFF,OFF);
+  write_data(1);
+
+  for (j=1; j < 7; j++)
+  {
+    for (i=6; i >= j; i--)
+    {
+      set_bush(i, OFF, ON, OFF, OFF);
+      set_bush(i+1, OFF, OFF, OFF, OFF);
+      write_data(pause);
+    }
+  }
+
+  write_data(2);
+
+
+  /* ----------------------------------------- */
+  /*
+    Fill Blue from Right
+  */
+  /* ----------------------------------------- */
+
+  strcpy(message,"Fill Blue from Right\n");
+  pause = .5;
+
+  flash(OFF,ON, OFF, OFF, 5, 1, .35);
+
+  set_house(1, OFF, ON);
+  set_house(2, ON, OFF);
+
+  for (j=1; j < 7; j++)
+  {
+    for (i=6; i >= j; i--)
+    {
+      set_bush(i, OFF, OFF, ON, OFF);
+      set_bush(i+1, OFF, OFF, OFF, OFF);
+      write_data(pause);
+    }
+  }
+
+  write_data(2);
+
+  flash(OFF,OFF, ON, OFF, 5, 1, .35);
+
+} /* End Fill From Right */
+
+
+/*
+ * Function: Slide_down
+ *
+ * With a .2 second delay, just
+ * change the colors of all 6 bushes.
+ */
+void slide_down()
+{
+  int i;
+
+  strcpy(message,"Slide Down\n");
+
+  for (i = 1; i < 7; i++)
+  {
+    set_bush(i, ON, OFF, OFF, OFF);
+    write_data(.2);
+  }
+
+  set_house(1, ON, OFF);
+  set_house(2, ON, OFF);
+  write_data(5);
+  flash(OFF, OFF, OFF, OFF, 2, .1, .3); /* Turn everyting off */
+
+  for (i = 1; i < 7; i++)
+  {
+    set_bush(i, OFF, ON, OFF, OFF);
+    write_data(.2);
+  }
+
+  set_house(1, OFF, ON);
+  set_house(2, OFF, ON);
+  write_data(5);
+  flash(OFF, OFF, OFF, OFF, 2, .1, .3); /* Turn everyting off */
+  
+  for (i = 1; i < 7; i++)
+  {
+    set_bush(i, OFF, OFF, ON, OFF);
+    write_data(.2);
+  }
+
+  set_house(1, OFF, ON);
+  set_house(2, ON, OFF);
+  write_data(5);
+  flash(OFF, OFF, OFF, OFF, 2, .1, .3); /* Turn everyting off */
+
+  for (i = 1; i < 7; i++)
+  {
+    set_bush(i, OFF, OFF, OFF, ON);
+    write_data(.2);
+  }
+
+  set_house(1, ON, ON);
+  set_house(2, ON, ON);
+  write_data(10);
+
+
+  flash(OFF, OFF, OFF, OFF, 2, 3, .3); /* Turn everyting off */
+
+} /* End of Slide down */
+
+
+/* ----------------------------------------- */
+/*
+ *  Random Change
+ *
+ *  Randomly change the color of each bush with
+ *  a .75 second delay untill you have all 
+ *  bushes being the same color.  Once that is
+ *  done, do it again with another color.
+ */
+/* ----------------------------------------- */
+void random_change()
+{
+  int history[10];          /* For Random */
+  int i, j;
+  int c[10];
+  int bush;
+
+  double pause = .75;
+
+  strcpy(message,"Random Change\n");
+
+  set_house(1, ON, ON);
+  set_house(2, ON, ON);
+
+  /*
+   * Set color control
+   * -----------------
+   * This is a trick I do with modules(%) 
+   * to rotate through the different colors
+   * without using different code
+   */
+  c[0] = OFF;
+  c[1] = OFF;
+  c[2] = OFF;
+  c[3] = ON;
+
+  /*
+   *  Loop through all colors
+   */
+  for (j = 0; j < 5; j++)
+  {
+    /*
+     *  Set History Zero
+     *  ----------------
+     *  The history is used to make sure each time
+     *  we do a random change that we are changing
+     *  a bush that hasn't already been changed.
+     */
+    for (i = 1; i < 7; i++)
+    {
+      history[i] = 0;
+      set_bush(i,OFF,OFF,OFF,OFF);
+    }
+    write_data(1);
+
+    for (i=1; i < 7; i++)
+    {
+      while (1)
+      {
+	bush = random() % 6 + 1;
+	if (history[bush] == 0)
+	  break;
+      }
+      history[bush] = 1;
+     
+      /*
+       * The modules trick
+       */
+      if (j == 4)
+	set_bush(bush,ON, ON, ON, ON);
+      else
+	set_bush(bush, c[j%4], c[(j+1)%4], c[(j+2)%4], c[(j+3)%4]);
+
+      write_data(pause);
+    } /* End for (i=1... */
+    
+    write_data(4);
+
+  } /* End for (j = ) */
+
+} /* End change_random */
+
+/*
+ * Function: Rotate_in 
+ *
+ * Start at both ends and make the end bushes
+ * each color with a .5 second delay. Once the
+ * end pushes have gone through each color, set 
+ * the end bushes to all colors.
+ *
+ * Do the same thing with the middle bushes, and
+ * then the inter most bushes.
+ *
+ * Once all that is done, reverse the process.
+ */
+void rotate_in()
+{
+  int i;
+  int j;
+  int c[10];
+  double pause = .5;
+
+  c[0] = ON;
+  c[1] = OFF;
+  c[2] = OFF;
+  c[3] = OFF;
+
+  strcpy(message,"Rotate in\n");
+
+  for (i=1; i < 7; i++)
+    set_bush(i, OFF, OFF, OFF, OFF);
+
+  write_data(1);
+
+  for (i = 1; i < 4; i++)
+  {
+    for (j=0; j < 4; j++)
+    {
+      set_bush(i, c[j%4], c[(j+1)%4], c[(j+2)%4], c[(j+3)%4]);
+      set_bush(7-i, c[j%4], c[(j+1)%4], c[(j+2)%4], c[(j+3)%4]);
+      write_data(pause);
+    }
+
+    set_bush(i, ON, ON, ON, ON);
+    set_bush(7-i, ON, ON, ON, ON);
+    write_data(pause);
+  }
+
+  write_data(4);
+
+  /*
+   * Reverse the process
+   */
+
+  for (i = 3; i >= 1; i--)
+  {
+    for (j=0; j < 4; j++)
+    {
+      set_bush(i, c[j%4], c[(j+1)%4], c[(j+2)%4], c[(j+3)%4]);
+      set_bush(7-i, c[j%4], c[(j+1)%4], c[(j+2)%4], c[(j+3)%4]);
+      write_data(pause);
+    }
+
+    set_bush(i, OFF, OFF, OFF, OFF);
+    set_bush(7-i, OFF, OFF, OFF, OFF);
+    write_data(pause);
+  }
+
+  write_data(1.5);
+
+} /* End Rotate_in */
+
+/*
+ * Function: Rotate_colors
+ *
+ * Starting at the right, make each bush rotate through
+ * all the colors and then choose one to stay on. 
+ * Repeat the process a few times.
+ */
+
+void rotate_colors(void){
+  int i; 
+  int j; 
+  int k;
+  int c[10];
+  double pause = .2;
+
+  c[0] = ON;
+  c[1] = OFF;
+  c[2] = OFF;
+  c[3] = OFF;
+  c[4] = ON;
+
+  strcpy(message,"Rotate Colors\n");
+
+  for(i = 1; i < 7; i++)
+    set_bush(i, OFF, OFF, OFF, OFF);
+
+  write_data(1);
+
+  for (k = 1; k < 6; k++)
+  {
+    for (i = 6; i >= 1; i--)
+    {
+      for (j=0; j < 4; j++)
+      {
+	set_bush(i, c[j%4], c[(j+1)%4], c[(j+2)%4], c[(j+3)%4]);
+	write_data(pause);
+      }
+
+      if (k == 5)
+	set_bush(i, ON, ON, ON, ON);
+      else
+	set_bush(i, c[k%5], c[(k+1)%5], c[(k+2)%5], c[(k+3)%5]);
+
+      write_data(pause);
+    } /* End for (i=6 ...) */
+
+    write_data(1);
+    
+  } /* End for k=1 .... */
+
+  write_data(1);
+
+} /* End Rotate_Colors */
+
+
+/*
+ * Function: Flash
+ *
+ * Flash the specified colors on and then off looping
+ * for the specified count changing the delay with the 
+ * specified amounts.
+ */
+
+void flash(int red, int green, int blue, int white, int cnt, double delay, double start)
+{
+  int i, j;
+
+  double pause = start;
+
+  strcpy(message, "Flash\n");
+
+  for (i = 1; i < cnt; i++)
+  {
+    set_house(1, red, green);
+    set_house(2, red, green);
+    for (j=1; j < 7;  j++)
+      set_bush(j,red,green,blue, white);
+
+    write_data(pause);
+
+    set_house(1, OFF, OFF);
+    set_house(2, OFF, OFF);
+    for (j=1; j < 7;  j++)
+      set_bush(j,OFF,OFF,OFF,OFF);
+	 
+    write_data(pause);
+
+    pause = pause * delay;
+  }
+}    /* End Flash */
+
+/*
+ * Function: Move In
+ *
+ * Make bushes appear to rotate in towards 
+ * the middle.
+ */
+
+void move_in()
+{
+  int i;
+  int c[4];
+  double pause = 1;
+
+  c[0] = ON;
+  c[1] = OFF;
+  c[2] = OFF;
+  c[3] = OFF;
+
+  strcpy(message,"Move In\n");
+
+  for (i=1; i < 7; i++)
+    set_bush(i, OFF, OFF, OFF, OFF);
+
+  write_data(.5);
+
+  for (i=4; i < 100; i++)
+  {
+    set_bush(1, c[(i-0)%4], c[(i-1)%4], c[(i-2)%4], c[(i-3)%4]);
+    set_bush(6, c[(i-0)%4], c[(i-1)%4], c[(i-2)%4], c[(i-3)%4]);
+
+    set_bush(2, c[(i-1)%4], c[(i-2)%4], c[(i-3)%4], c[(i-0)%4]);
+    set_bush(5, c[(i-1)%4], c[(i-2)%4], c[(i-3)%4], c[(i-0)%4]);
+
+    set_bush(3, c[(i-2)%4], c[(i-3)%4], c[(i-0)%4], c[(i-1)%4]);
+    set_bush(4, c[(i-2)%4], c[(i-3)%4], c[(i-0)%4], c[(i-1)%4]);
+
+    write_data(pause);
+
+    pause = pause * 31/32;
+  }
+
+  sleep(3);
+
+
+} /* End Move In */
+
+/*
+ * Function: Train
+ *
+ * Send one green bush across a heard set, 
+ * then send two, three, etc.
+ *
+ * Once full, reduce the process going backwards.
+ */
+void train()
+{
+  int i, j, k;
+  int length;
+
+  double pause = .5;
+
+  strcpy(message,"Train\n");
+
+  for(i = 1; i < 7; i++)
+  {
+    set_bush(i,ON,OFF,OFF,OFF);
+  }
+
+  set_house(1, ON, OFF);
+  set_house(2, ON, OFF);
+
+  length = 0;
+
+  for (i=12; i < 72; i++)
+  {
+    if (i%12 == 0)
+      length++;
+
+    set_bush(i%12 + 1, OFF, ON, ON, OFF);
+    set_bush((i-length)%12 + 1, ON, OFF, OFF, OFF);
+    write_data(pause);
+
+  }
+
+  sleep(3);
+
+  /*
+   * Reverse the process
+   */
+  for (i=71; i >= 12; i--)
+  {
+    if (i%12 == 0)
+    {
+      set_bush((i+length)%12 -3, ON, OFF, OFF, OFF); /* Will be left */
+      length--;
+    }
+
+    set_bush(i%12 -3, OFF, ON, ON, OFF);
+    set_bush((i+length)%12 -3, ON, OFF, OFF, OFF);
+    write_data(pause);
+
+  }
+
+  strcpy(message,"Done Train\n");
+
+}  /* End Train */   
+
+/*
+ * Function: follow_the_leader
+ *
+ * One Red, Blue, and Green spot loop around
+ * all of the bushes. Speeding up as they go.
+ */
+void follow_the_leader()
+{
+  int i;
+  double pause;
+
+  strcpy(message,"Follow the Leader\n");
+
+  for(i = 1; i < 7; i++)
+  {
+    set_bush(i,OFF,OFF,OFF,OFF);
+  }
+
+  set_house(1, ON, OFF);
+  set_house(2, OFF, ON);
+
+  write_data(.2);
+
+
+  pause = 1;
+
+  for (i = 4; i< 70; i++)
+  {
+    set_bush( (i%6) + 1, ON, OFF, OFF, OFF);
+    set_bush( ((i-1)%6) +1, OFF, ON, OFF, OFF);
+    set_bush( ((i-2)%6) +1, OFF, OFF, ON, OFF);
+    set_bush( ((i-3)%6) +1, OFF, OFF, OFF, OFF);
+    set_bush( ((i-4)%6) +1, OFF, OFF, OFF, OFF);
+
+    write_data(pause);
+
+    pause = pause * .95;
+
+    if (pause < .1)
+      pause = .1;
+
+  }
+
+} /* End Follow the Leader */
+
+/*
+ * Function: Time Warp
+ *
+ * Change all bushes between red, green,
+ * and blue. Make the change quicker 
+ * until about .1 second delay, then
+ * start slowing it down until original
+ * speed is found.
+ */
+
+void time_warp()
+{
+  int i;
+  int j;
+  int counter=0;
+  int c[10];
+  double pause = 1.5;
+  double step = .95;
+
+  c[0] = ON;
+  c[1] = OFF;
+  c[2] = OFF;
+  c[3] = OFF;
+
+  strcpy(message,"Time Warp\n");
+
+  /*
+   * Turn Off
+   */
+
+  for(i = 1; i < 7; i++)
+  {
+    set_bush(i,OFF,OFF,OFF,OFF);
+  }
+
+  write_data(.2);
+
+  for (i = 1; i < 40; i++)
+  {
+    for (j = 1; j < 7; j++)
+    {
+      set_bush(j,c[counter%3], c[(counter+1)%3],
+	       c[(counter+2)%3], OFF);
+      set_house(1, c[counter%3], c[(counter+1)%3]);
+      set_house(2, c[counter%3], c[(counter+1)%3]);
+    }
+    counter++;
+    write_data(pause);
+    pause = pause * step;
+  }
+
+  /*
+   *  Reverse (Make delays longer).
+   */
+  step = 1.0526;
+
+  for (i = 1; i < 40; i++)
+  {
+    for (j = 1; j < 7; j++)
+    {
+      set_bush(j,c[counter%3], c[(counter+1)%3],
+	       c[(counter+2)%3], OFF);
+      set_house(1, c[counter%3], c[(counter+1)%3]);
+      set_house(2, c[counter%3], c[(counter+1)%3]);
+    }
+    counter++;
+    write_data(pause);
+    pause = pause * step;
+  }
+
+
+} /* End Time Warp */
+
+
+/*
+ * Function: Compete
+ *
+ * This function has the "red" side of the house
+ * (right) go up against the "green" side of the house
+ * (left)
+ *
+ * Start with a delay of "pause", loop changing 
+ * pause by step, and stop the process when the
+ * pause reaches threshold
+ */
+
+void compete(double pause, double step, double threshold)
+{
+  int i;
+  int c[10];
+  c[0] = OFF;
+  c[1] = ON;
+
+  strcpy(message, "Compete\n");
+
+  while (pause > threshold)
+  {
+    set_bush(1,ON,OFF,OFF,OFF);
+    set_bush(2,ON,OFF,OFF,OFF);
+    set_bush(3,ON,OFF,OFF,OFF);
+    set_bush(4,OFF,OFF,OFF,OFF);
+    set_bush(5,OFF,OFF,OFF,OFF);
+    set_bush(6,OFF,OFF,OFF,OFF);
+    set_house(1,ON,OFF);
+    set_house(2,OFF,OFF);
+
+    write_data(pause);
+
+    set_bush(1,OFF,OFF,OFF,OFF);
+    set_bush(2,OFF,OFF,OFF,OFF);
+    set_bush(3,OFF,OFF,OFF,OFF);
+    set_bush(4,OFF,ON,OFF,OFF);
+    set_bush(5,OFF,ON,OFF,OFF);
+    set_bush(6,OFF,ON,OFF,OFF);
+    set_house(1,OFF,OFF);
+    set_house(2,OFF,ON);
+    
+    write_data(pause);
+
+    pause *= step;
+
+  }
+
+  /* 
+   * Repeat last bit a few times 
+   */
+  for (i = 0; i < 5; i++)
+  {
+    set_bush(1,ON,OFF,OFF,OFF);
+    set_bush(2,ON,OFF,OFF,OFF);
+    set_bush(3,ON,OFF,OFF,OFF);
+    set_bush(4,OFF,OFF,OFF,OFF);
+    set_bush(5,OFF,OFF,OFF,OFF);
+    set_bush(6,OFF,OFF,OFF,OFF);
+    set_house(1,ON,OFF);
+    set_house(2,OFF,OFF);
+
+    write_data(pause);
+
+    set_bush(1,OFF,OFF,OFF,OFF);
+    set_bush(2,OFF,OFF,OFF,OFF);
+    set_bush(3,OFF,OFF,OFF,OFF);
+    set_bush(4,OFF,ON,OFF,OFF);
+    set_bush(5,OFF,ON,OFF,OFF);
+    set_bush(6,OFF,ON,OFF,OFF);
+    set_house(1,OFF,OFF);
+    set_house(2,OFF,ON);
+    
+    write_data(pause);
+
+  }
+
+  /*
+   * HOLD both sides on.
+   */
+    set_bush(1,ON,OFF,OFF,OFF);
+    set_bush(2,ON,OFF,OFF,OFF);
+    set_bush(3,ON,OFF,OFF,OFF);
+    set_bush(4,OFF,ON,OFF,OFF);
+    set_bush(5,OFF,ON,OFF,OFF);
+    set_bush(6,OFF,ON,OFF,OFF);
+    set_house(1,ON,OFF);
+    set_house(2,OFF,ON);
+
+    write_data(3);
+
+} /* End Function: Compete */
+    
+
+
+/*
+ * set_house
+ *
+ * Set (in memory) the value for a single house light.
+ * Using this function allows the representation of the
+ * house to change.
+ */
+void set_house(int side, int red, int green)
+{
+  if (side == 1)
+  {
+    if (red)
+      boxs[2] = boxs[2] | 32;
+    else
+      boxs[2] = boxs[2] & (~32 & 255);
+
+    if (green)
+      boxs[2] = boxs[2] | 64;
+    else
+      boxs[2] = boxs[2] & (~64 & 255);
+  }
+  else if (side == 2)
+  {
+    if (red)
+      boxs[4] = boxs[4] | 32;
+    else
+      boxs[4] = boxs[4] & (~32 & 255);
+
+    if (green)
+      boxs[4] = boxs[4] | 64;
+    else
+      boxs[4] = boxs[4] & (~64 & 255);
+  }
+} /* End function: set_house */
+
+
+/*
+ * set_bush()
+ *
+ * Set (in memory) the value for a single bush
+ * The use of this function is solely to allow for
+ * the bushes to be represented by boxes differently
+ * in the future.
+ */
+
+void set_bush(int bush, int red, int green, int blue, int white)
+{
+
+  if (bush == 1)
+  {
+    if (red)
+      boxs[3] = boxs[3] | 1;
+    else 
+      boxs[3] = boxs[3] & (~1 & 255);
+    
+    if (green)
+      boxs[3] = boxs[3] | 2;
+    else
+      boxs[3] = boxs[3] & (~2 & 255);
+
+    if (blue)
+      boxs[3] = boxs[3] | 4;
+    else
+      boxs[3] = boxs[3] & (~4 & 255);
+
+    if (white)
+      boxs[3] = boxs[3] | 8;
+    else
+      boxs[3] = boxs[3] & (~8 & 255);
+  }
+  else if (bush == 2)
+  {
+    if (red)
+      boxs[3] = boxs[3] | 16;
+    else 
+      boxs[3] = boxs[3] & (~16 & 255);
+
+    if (green)
+      boxs[3] = boxs[3] | 32;
+    else
+      boxs[3] = boxs[3] & (~32 & 255);
+
+    if (blue)
+      boxs[3] = boxs[3] | 64;
+    else
+      boxs[3] = boxs[3] & (~64 & 255);
+
+    if (white)
+      boxs[2] = boxs[2] | 1;
+    else
+      boxs[2] = boxs[2] & (~1 & 255);
+  }
+
+  else if (bush == 3)
+  {
+    if (red)
+      boxs[2] = boxs[2] | 2;
+    else 
+      boxs[2] = boxs[2] & (~2 & 255);
+
+    if (green)
+      boxs[2] = boxs[2] | 4;
+    else
+      boxs[2] = boxs[2] & (~4 & 255);
+
+    if (blue)
+      boxs[2] = boxs[2] | 8;
+    else
+      boxs[2] = boxs[2] & (~8 & 255);
+
+    if (white)
+      boxs[2] = boxs[2] | 16;
+    else
+      boxs[2] = boxs[2] & (~16 & 255);
+  }
+
+  else if (bush == 4)
+  {
+    if (red)
+      boxs[1] = boxs[1] | 1;
+    else 
+      boxs[1] = boxs[1] & (~1 & 255);
+
+    if (green)
+      boxs[1] = boxs[1] | 2;
+    else
+      boxs[1] = boxs[1] & (~2 & 255);
+
+    if (blue)
+      boxs[1] = boxs[1] | 4;
+    else
+      boxs[1] = boxs[1] & (~4 & 255);
+
+    if (white)
+      boxs[1] = boxs[1] | 8;
+    else
+      boxs[1] = boxs[1] & (~8 & 255);
+  }
+  else if (bush == 5)
+  {
+    if (red)
+      boxs[1] = boxs[1] | 16;
+    else 
+      boxs[1] = boxs[1] & (~16 & 255);
+
+    if (green)
+      boxs[1] = boxs[1] | 32;
+    else
+      boxs[1] = boxs[1] & (~32 & 255);
+
+    if (blue)
+      boxs[1] = boxs[1] | 64;
+    else
+      boxs[1] = boxs[1] & (~64 & 255);
+
+    if (white)
+      boxs[4] = boxs[4] | 1;
+    else
+      boxs[4] = boxs[4] & (~1 & 255);
+  }
+  else if (bush == 6)
+  {
+    if (red)
+      boxs[4] = boxs[4] | 2;
+    else 
+      boxs[4] = boxs[4] & (~2 & 255);
+
+    if (green)
+      boxs[4] = boxs[4] | 4;
+    else
+      boxs[4] = boxs[4] & (~4 & 255);
+
+    if (blue)
+      boxs[4] = boxs[4] | 8;
+    else
+      boxs[4] = boxs[4] & (~8 & 255);
+
+    if (white)
+      boxs[4] = boxs[4] | 16;
+    else
+      boxs[4] = boxs[4] & (~16 & 255);
+  }
+
+
+} /* End Function: set_bush */
+
+
+
+/*  LocalWords:  int cnt args struct tm localtime pm boxs printf strcpy
+ */
+

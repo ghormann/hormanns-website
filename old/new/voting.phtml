@@ -1,0 +1,68 @@
+<?php 
+$title="Song Voting";
+$subTitle="Song Voting";
+include "intro.phtml" ?>
+
+<style>
+figure {display: inline-block;}
+figcaption {text-align: center;}
+
+</style>
+
+
+<center>
+<?php Christmas_years(); ?>
+</center>
+<div class="row">
+<div class="col-sm-8">
+<h1>Voting on the Songs</h1>
+
+<p>
+The <a href="text_message.phtml">text your name</a> feature from 2018 worked so well, that we 
+wanted to add an additional interactive element in 2019.  After some thought, we got the idea of
+allowing viewers to vote for the next song. After considering a few different implementations,
+we decided upon a simple website designed for the moble phone and that is how
+<a href="https://vote-now.org">vote-now.org</a> was born.
+
+</p>
+
+<h2>How it works</h2>
+<div style="text-align:center">
+<img src ="images/vote_design.png" class="img-fluid">
+</div>
+
+<ul>
+<li> The front end website is a simple single page website with four tabs.  It was developed using <a href="https://vuejs.org/">vue.js</a> to be both reactive and mobile friendly. The <a href="https://github.com/ghormann/Christmas-Vote-now/tree/master/frontend">source code</a> for the frontend is public.
+<li> The backend is written in <a href="https://nodejs.org">node.js</a> and provides the basic endpoints for voting and getting information about the queue. (<a href="https://github.com/ghormann/Christmas-Vote-now/tree/master/server">Source Code</a>)
+<li> Each visitor is allowed to have at 8 votes cast at any given time.  Once a song he/she has voted for begins to play, any votes he/she had on that song are returned.   In addition, a new vote is granted every few minutes up to a maximum of 8 available  votes.
+<li> To ensure the voters don't keep repeating the same song over and over again, once a song has played, it isn't available for voting for around 6 minutes.
+<li> We use the <a href="https://github.com/FalconChristmas/fpp">Falcon Player</a> to actually play the songs on the display. This will send periodic updates via MQTT on which song is playing and how many seconds are left. These details are transmitted to each active web client via the web server. (Greg actually contributed some source code to the Falcon Player project to allow for this capability.)
+<li>The webserver is responsible for scheduling. The schedule is mostly driven by songs, but also by the number of names in the queue, the shows hours, and how long it has been since specific sequences were played (intro, radio station, etc.) When it has detected the falcon isn't playing a song, it send the next scheduled playlist name to the Falcon Player via an MQTT request.
+<li>Finally, there is another set of docker containers that records all the stats (names submitted, votes casts, songs played) and periodically reports a summary of those statistics to the webserver for distribution to browsers. (<a href="https://github.com/ghormann/ChristmasStats">Source Code</a>)
+</ul>
+
+</div><!--sm-8-->
+
+<div class="col-sm-4">
+<h2>Pictures</h2>
+<div style="font-size:0.7em;">(Click to Enlarge)</div>
+<?php 
+   $pics = array(
+           array("Current.jpg", "Song List"),
+           array("Names.jpg", "Name Queue"),
+           array("Stats.jpg", "Statistics"),
+           array("Faq.jpg", "FAQs"));
+   foreach ($pics as $data)
+   {
+      $pic = $data[0];
+      $label = $data[1];
+      labledPicture("christmas-thumb-tall", "christmas/2019/Website/$pic", "$label", "christmas/2019/Website/normal_size/$pic");
+   }
+
+?>
+
+</div><!-- Sm-4 -->
+</div><!-- row -->
+
+
+<?php include "footer.phtml" ?>

@@ -1,0 +1,103 @@
+<?php 
+$title="Christmas 2023 at the Hormanns";
+$subTitle="Christmas 2023";
+include "intro.phtml" ?>
+
+<?php
+require_once 'christmasBase.phtml';
+
+class Page extends ChristmasPage
+{
+   public function intro()
+   {
+
+?>
+
+<br><br>
+2023 was our 23th year for an animated Christmas Lights Display. Outdoor construction started November 10th and completed on November 21rd. We added four additonal songs this year
+and hosted multiple local television stations.
+We would love to have you visit us on <a href="#house_address">Devon Drive</a> as it is far better in person.
+
+
+<br><br>
+We were so blessed to have over 50 people join us to watch our Christmas Countdown clock hit zero.  
+
+<br><br>
+We still have a few more videos to edit and get posted. Our goals to have them all by Jan 1.
+
+<p>
+
+<?php 
+   } // body
+
+   public function getMovies()
+   {
+
+   $movies = array(
+             array("bZQIA-Um3vA", "Mary Did You Know (Pentatonix)?"),
+             array("Iz8nz4Nns0Q", "Jingle Bells (Colton Dixon)"),
+             array("NLGOeNDNHP8", "Dominick the Donkey"),
+             array("_mMUZ2S2_4w", "All I Want for Christmas"),
+             array("fIt9kif24Ig", "Christmas Minions"),
+             array("MyZQ5zaAXqQ", "Christmas Can Can"),
+             array("pySTzkMLTQ8", "I got the Joy (Go Fish)"),
+             array("cqIseHP-Axw", "Live on Fox19", "https://img.youtube.com/vi/cqIseHP-Axw/sddefault.jpg"),
+             array("sJhgrT7oHVo", "WKRC Local 12 News", "https://img.youtube.com/vi/sJhgrT7oHVo/sddefault.jpg"),
+             array("Hc5FtVw2f4M", "I want a Hippo for Christmas"),
+             array("i5cjfUNOC44", "12 Days of Christmas"),
+             array("GTbjgiLnoX8", "Little Drummer Boy"),
+             array("KFL8tMQSX0Q", "Highlight on WLWT5 TV"),
+             array("JMIm0N7Azew", "Light of Christmas"),
+             array("wrd6p26xZxo", "I heard the Bells"),
+             array("qc9CWnBCEe4", "Christmas Canon 2023"),
+             array("HpcExG1dQpo", "Tunnel of Lights"),
+             array("IfaQTydzE1Y", "Countdown Clock Hits Zero"),
+             array("CsNtqjoJftI", "Setup: Day 1 - The Grid, Snowflakes, Windows"),
+             array("f1N9lGrLd8M", "Setup: Day 2 - Grid and Outline"),
+             array("SZFE_f4uzuw", "Setup: Day 3 - Windows and one Mega Tree"),
+             array("9cOmT1RWOhA", "Setup: Day 4 - The Wasted Day"),
+             array("A52b5S2XGXg", "Setup: Day 5 - Roof and Tunnel"),
+             array("STx_4p-lqiU", "Setup: Day 6 - Mega tree and Tunnel"),
+             array("Zfi6tDEdeUk", "Setup: Day 7 - More Tunnel Construction"),
+             array("tpxjNk1ZbPI", "Setup: Day 8 - Tunnel and Snowmen"),
+             array("ygZBP-YtNNk", "Setup: Day 9 - Yard, Bushes, Clock"),
+             array("W916kc1tnsU", "Setup: Day 10 - Arches and Mini Trees"),
+             array("AOQipIk4bbU", "Take Down Day 1"),
+             array("NDrIsLMH8lA", "Take Down Day 2"),
+             array("QMmaXoLvpHc", "Take Down Day 3"),
+             array("3t0d6dakKHw", "Take Down Day 4"),
+   );
+
+   return $movies;
+   }
+
+   public function stats()
+   {
+
+?>
+
+<ul>
+<li> 65,125 "Smart" RGB lights that can be set to any color individually
+<li> 880 "Dumb" RGB light bulbs (20 in each of the Stars on the ground)
+<li> 87 P10 panels in the information sign (equivalent of 27,840 pixels)
+<li> 13 Pixel Controllers (AlphaPix 4, Falcon16v3, Kulp K8-B, Kulp K16)
+<li> 5 "Dumb" RGB Controllers (Stars in yard)
+<li> 64 DC Power Supplies
+<li> 1 Raspberry Pi running FPP to control the show
+<li> 6 Beagle Bone Black running FPP to control the P10s and some pixels
+<li> 2 Virtual Machines to handle interactive elements of display
+<li> Too many electrical and control wire to count
+</ul>
+
+
+
+
+<?php 
+   } //stats
+} // class
+
+$me = new Page();
+$me->render();
+
+include "footer.phtml" ?>
+

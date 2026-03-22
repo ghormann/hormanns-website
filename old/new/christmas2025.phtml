@@ -1,0 +1,123 @@
+<?php 
+$title="Christmas 2025 at the Hormanns";
+$subTitle="Christmas 2025";
+include "intro.phtml" ?>
+
+<?php
+require_once 'christmasBase.phtml';
+
+class Page extends ChristmasPage
+{
+   public function intro()
+   {
+
+?>
+
+<br><br>
+2025 is our 25th year for an animated Christmas Lights Display. With over 75,805 lights synchronized to 73 minutes of Christmas music (28 songs), it is well worth the trip to
+Liberty Township to see it in person (we are located on <a href="#house_address">Devon Drive</a>).  We are still adding the videos for those out of town, but
+the videos don't capture the nearly as well as being in person.  This year we replaced the lights on the bushes with a 48ft x 4 ft grid just in front of the house and updated every song to take advantage of this new prop.  We also added spinners on each side of the garage door.
+
+<!--
+<br>
+<br>
+We welcomed in Christmas morning with 50 neighbors by counting down the last seconds to Christmas in front of the <a href="clock.php">countdown clock</a> 
+The <a href="https://www.youtube.com/watch?v=ceJZGeCeO78">video</a> of the evening shows the excitement.  Make your plans now to join us next year!
+-->
+
+
+<p>
+
+<?php 
+   } // body
+
+   public function getMovies()
+   {
+
+   $movies = array(
+	   array("lM5qQ943Mgo", "I believe in Santa", "https://img.youtube.com/vi/Cg7V9iT5vF4/maxresdefault.jpg"),
+             array("hmlkdoI7Vss", "I got the Joy"),
+             array("YC445cXfzlg", "God Rest Ye Merry Gentlemen"),
+             array("zrkT5Rne3r0", "Christmas Can Can"),
+             array("-xm7_vO-cok", "Christmas Every Day"),
+             array("ZO2Q_H6K0Y0", "Magic"),
+	     array("Yc7aGBQnJk4", "Here comes Santa Claus"),
+	     array("34zzR0awWa4", "Peanuts"),
+	     array("5P5VmEarIjY", "The Grinch"),
+             array("rrnzxb2Jdws", "Dominick the Donkey"),
+             array("wQbo1BvXf3s", "Mary did you Know?"),
+             array("f4KxlTRzNC0", "Little Drummer Boy"),
+	     array("Alw043dtMEM", "All I want for Christmas is you"),
+	     array("O4jOb7Odhwo", "Sugar Plumb Fairy"),
+             array("F2H7eb-4Mac", "House on Christmas Street"),
+             array("cTvrfOoq9jE", "12 Days of Christmas"),
+	     array("AhBPTahdRDY", "I Want a Hippopotamus for Christmas"),
+	     array("IpymPAywIkQ", "Hot Chocolate"),
+	     array("gMTumHk2keU", "Light of Christmas"),
+	     array("v-ej7SPku4I", "Christmas Minions"),
+             array("cxI0nYcogp4", "Christmas Cannon"),
+             array("gGduvUQ2LMg", "Dance of the Sugar Plum Fairy"),
+             array("e8bJV6cX8uU", "Sounding Joy"),
+             array("UJ-8i3xXjV4", "Amazing Grace"),
+             array("KO9qg-Y9U1k", "EDM Christmas"),
+             array("XAOpcLCLlvI", "Heard the Bells"),
+             array("k_8tLgTwnaw", "Jingle Dogs"),
+             array("sXEf4hXI0gM", "Jingle Bells (Dixon)"),
+             array("qq1Vcwzy60E", "You make it feel like Christmas"),
+             array("s9nfcFMzzqk", "Countdown Clock hits Zero"),
+             array("kj9P1e7PjaQ", "Christmas Eve Traffic"),
+             array("cgee7xJPR_U", "Takedown: Day 3", "https://img.youtube.com/vi/cgee7xJPR_U/hqdefault.jpg"),
+             array("ro209OygwEA", "Takedown: Day 2", "https://img.youtube.com/vi/ro209OygwEA/hqdefault.jpg"),
+             array("lMWKoLFzqwU", "Takedown: Day 1", "https://img.youtube.com/vi/lMWKoLFzqwU/hqdefault.jpg"),
+             array("HO8YYfBJGfc", "Setup: Day 13", "https://img.youtube.com/vi/HO8YYfBJGfc/hqdefault.jpg"),
+             array("7Rmd2PAhnGM", "Setup: Day 12", "https://img.youtube.com/vi/7Rmd2PAhnGM/hqdefault.jpg"),
+             array("Dw0U0nFCddI", "Setup: Day 11", "https://img.youtube.com/vi/Dw0U0nFCddI/hqdefault.jpg"),
+             array("b4Epc26UHS0", "Setup: Day 10", "https://img.youtube.com/vi/b4Epc26UHS0/hqdefault.jpg"),
+             array("RUa5BL2NfcQ", "Setup: Day 9", "https://img.youtube.com/vi/RUa5BL2NfcQ/hqdefault.jpg"),
+             array("3jHCUJeP_qU", "Setup: Day 8", "https://img.youtube.com/vi/3jHCUJeP_qU/hqdefault.jpg"),
+             array("bcN63pBPlXc", "Setup: Day 7", "https://img.youtube.com/vi/bcN63pBPlXc/hqdefault.jpg"),
+             array("pTlFmbEesXw", "Setup: Day 6", "https://img.youtube.com/vi/pTlFmbEesXw/hqdefault.jpg"),
+             array("kzf8Az4GdAg", "Setup: Day 5", "https://img.youtube.com/vi/kzf8Az4GdAg/hqdefault.jpg"),
+             array("YDi3pQPqkAU", "Setup: Day 4", "https://img.youtube.com/vi/YDi3pQPqkAU/hqdefault.jpg"),
+             array("4ud0Y10Elf4", "Setup: Day 3", "https://img.youtube.com/vi/4ud0Y10Elf4/hqdefault.jpg"),
+             array("1YON8Dqbjzo", "Setup: Day 2", "https://img.youtube.com/vi/1YON8Dqbjzo/hqdefault.jpg"),
+             array("caYtQl-ZQOU", "Setup: Day 1", "https://img.youtube.com/vi/caYtQl-ZQOU/hqdefault.jpg"),
+   );
+
+   return $movies;
+   }
+
+   public function stats()
+   {
+
+?>
+
+<ul>
+<li> 2800 KWh to power the display (around $320)
+<li> 28 songs for a total of 73 minutes
+<li> 75,805 "Smart" RGB Lights can change to any color individually
+<li> 880 "Dumb" RGB light bulbs (20 in each of the Stars on the ground)
+<li> 87 P10 panels in the information sign (equivalent of 27,840 pixels)
+<li> 10 P5 Pannels in the sign above tunnel (equivalent of 20,480 pixels)
+<li> 16 Pixel Controllers (AlphaPix 4, Falcon16v3, Kulp K8-B, Kulp K16, Kulp OctoScroller)
+<li> 5 "Dumb" RGB Controllers (Stars in yard)
+<li> 75 DC Power Supplies
+<li> 2 Raspberry Pi (Show runner and Button controller)
+<li> 8 Beagle Bone Black running FPP to control the P10s and some pixels
+<li> 2 Virtual Machines (Linux) to handle interactive elements of display
+<li> Too many electrical and control wire to count
+<li> 1402 unique phones sending names
+<li> 1920 unique voters for songs
+<li> 39,661 button presses at the tunnel (Red was most popular)
+
+</ul>
+
+<?php 
+   } //stats
+} // class
+
+$me = new Page();
+$me->render();
+
+include "footer.phtml" ?>
+

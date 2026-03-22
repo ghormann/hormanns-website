@@ -1,0 +1,6 @@
+AddHandler php-action phtml
+Action php-action /cgi-bin/gregphp.cgi
+#AddHandler cgi-script .php
+DirectoryIndex home.phtml
+RedirectPermanent /ghormann/new/home.html http://www.kconline.com/ghormann/new/home.phtml
+RedirectPermanent /ghormann/new/friends.phtml http://www.kconline.com/ghormann/new/home.phtml

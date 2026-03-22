@@ -1,0 +1,212 @@
+
+#include "../lib/320controller.h"
+#include "main.h"
+
+/*
+ * Code in this file handles the
+ * count down clock. If clock is
+ * Less than zero, then display
+ * seven zeros.
+ */
+
+/*
+ * The numbers are layed out as followed.
+ *
+ *  Display       Bits
+ *
+ *                  
+ * +-----+       +--1--+
+ * |     |       2     3
+ * |     |       |     |
+ * +-----+       +--4--+
+ * |     |       5     6
+ * |     |       |     |
+ * +-----+       +--7--+
+ *
+ */
+
+void *clock_main( void *args)
+{
+  time_t now_t;
+  struct tm *now;
+  
+  while(1)
+  {
+    time(&now_t);
+    now = localtime(&now_t);
+
+    message3[0] = '\0';
+    /****
+    while (now->tm_hour >= 9 && now->tm_hour < 17 && !skip_time_check)
+    {
+      sprintf (message3, "Sleeping 2 minutes (%02d:%02d)\n", now->tm_hour,
+	      now->tm_min);
+
+
+      boxs[6]  = 0;
+      boxs[7]  = 0;
+      boxs[8]  = 0;
+      boxs[9]  = 0;
+      boxs[5]  = 0;
+      write_data(1);
+ 
+      sleep(120);
+      time(&now_t);
+      now = localtime(&now_t);
+    }
+    */
+
+    /* 
+     * If after 5 pm but before 8pm then display clock
+     */
+
+    do_it_clock();
+  
+  } /* End while(1) */
+} /* End Main Sign */
+
+
+
+/*
+ * This is the function that actually handles
+ * displaying the clock.  It should be called
+ * once every second.
+ */
+
+void do_it_clock(void)
+{
+  time_t t_christmas;        /* When is Christmas                    */
+  time_t t_now;              /* What time is it now ?                */
+
+  struct tm *tm_now;         /* Current time in String Form          */
+  struct tm tm_christmas;    /* Christmas time in String Form        */
+
+  int num_seconds;           /* Seconds between Christmas and Now    */
+  char c_seconds[11];        /* Seconds represented as String        */
+  int num[10];               /* Each Digit represent as an int       */
+  int i; 
+  int code[10];              /* What signal to send out for each num */
+
+  time(&t_now);
+  tm_now = localtime(&t_now);
+
+  /*
+   * What date are we counting down too?
+   * Keep recalculating this in the loop
+   * only so that that tm_now->tm_year can be 
+   * used rather than hardcoding a value.
+   * Although uncessary, this doesn't seem to 
+   * cause problems on the P75 machine running the
+   * display.
+   */
+  tm_christmas.tm_sec    = 0;
+  tm_christmas.tm_min    = 0;
+  tm_christmas.tm_hour   = 0;
+  tm_christmas.tm_mday   = 25;
+  tm_christmas.tm_mon    = 11;
+  tm_christmas.tm_year   = tm_now->tm_year;
+  tm_christmas.tm_isdst  = tm_now->tm_isdst;
+  tm_christmas.tm_zone   = tm_now->tm_zone;
+  tm_christmas.tm_gmtoff = tm_now->tm_gmtoff;
+
+  t_christmas = mktime(&tm_christmas);
+  num_seconds = difftime(t_christmas, t_now);
+
+  /*
+   * If the dat has passed, display all zeros. 
+   * Otherwise, convert the number of seconds into a string
+   * so we can parse out each digit.
+   *
+   * Note: Global_time is a global variable used by
+   * write_data for printing output to the screen.
+   */
+
+  if (num_seconds < 0)
+  {
+    num_seconds = 0;
+    global_time = 0;
+    sprintf(c_seconds, "0000000");
+  }
+  else
+  {
+    global_time = num_seconds;
+    sprintf(c_seconds, "%7d", num_seconds);
+  }
+  
+  /* printf("Debug: xx%sxx\n", c_seconds); */
+
+
+  /* 
+   * Loop through each character converting it to an
+   * integer.  (Leading blank spaces are display as all
+   * lights off rather than zero 
+   */
+
+  for (i = 0; i < 7; i++)
+  {
+    if (isblank(c_seconds[i]))
+    {
+      num[i] = -1;
+    }
+    else
+    {
+      num[i] = c_seconds[i] - 48;
+    }
+
+    
+    /* 
+     * This is where each number is converted
+     * into bit codes. (See head of file).
+     */
+    
+    if (num[i] == -1) 
+      code[i] =0;            
+    else if (num[i] == 0)
+      code[i] =119;          
+    else if (num[i] == 1)
+      code[i] =36;
+    else if (num[i] == 2)
+      code[i] =93;
+    else if (num[i] == 3)
+      code[i] =109;
+    else if (num[i] == 4)
+      code[i] =46;
+    else if (num[i] == 5)
+      code[i] =107;
+    else if (num[i] == 6)
+      code[i] =123;
+    else if (num[i] == 7)
+      code[i] =37;
+    else if (num[i] == 8)
+      code[i] =127;
+    else  /* 9 */
+      code[i] =47;
+
+    /* printf("Number %d = %d  (%d)\n", i, num[i], code[i]); */
+  }
+
+  /* 
+   * Write code out to boxes.
+   * 
+   * Note: there is some cheating going on here
+   * Position #1 didn't have a box because it only changed
+   * every 11 days.  I did this one manually to save on
+   * circuits.
+   */
+
+  boxs[6]  = code[2-1];   /* Position #2 */
+  boxs[7]  = code[3-1];   /* Position #3 */
+  boxs[8]  = code[4-1];   /* Position #4 */
+  boxs[9]  = code[5-1];   /* Position #5 */
+  boxs[5]  = code[6-1];   /* Position #6 */
+  boxs[11] = code[7-1];   /* Position #7 */
+
+  /*
+   * Write data out to screen and wait 1 second
+   */
+  write_data(1); 
+
+} /* End Do_it_clock */
+
+
+

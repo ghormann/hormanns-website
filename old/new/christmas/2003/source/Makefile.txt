@@ -1,0 +1,11 @@
+
+CC_LIBS= -lcurses -pthread
+
+all: 2003
+	@echo "Done."
+
+2003: bushes.o sign.o 320controller.o 320controller.h main.h main.o snowmen.o
+	cc $(CC_LIBS) -o 2003 sign.o 320controller.o main.o bushes.o snowmen.o
+
+clean:
+	@rm *.o 2003 *.core *~

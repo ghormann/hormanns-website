@@ -1,0 +1,242 @@
+<?
+Header "Content-type: image/gif\n";
+
+$width = 60;             /*Of Table*/
+$height=30;             /*Of Table*/
+$image_width = 500;
+$image_height = 500;
+
+$day[0] = "";           /*Days of the Week using Unix Date command*/
+$day[1] = "Sun";
+$day[2] = "Mon";
+$day[3] = "Tue";
+$day[4] = "Wed";
+$day[5] = "Thu";
+$day[6] = "Fri";
+$day[7] = "Sat";
+$day_data[0] = "";
+$day_data[1] = "Su";
+$day_data[2] = "M";
+$day_data[3] = "T";
+$day_data[4] = "W";
+$day_data[5] = "R";
+$day_data[6] = "F";
+$day_data[7] = "S";
+
+$im = ImageCreate($image_height, $image_width);
+$col = ImageColorAllocate($im, 255, 0, 0);
+$back = ImageColorAllocate($im, 255, 255, 255);
+$black = ImageColorAllocate($im, 0, 0, 0);
+
+
+ImageFill($im, 0, 100, $back);
+ImageString ($im, 3, 0, $image_height-15,"Current local time:", $black); 
+ImageString ($im, 3, 140, $image_height-15, date("D M d, Y H:i:s"), $col);
+
+ImageString ($im, 3, 0, $image_height-30, "Generated for:", $black);
+
+if ($name == ""); $name = getENV("REMOTE_ADDR"); endif;
+ImageString ($im, 3, 140, $image_height-30, $name, $col);
+ImageString ($img,3, 0 ,$image_height-45, "Created by:",
+             $black);
+ImageString ($img,3, 140, $image_height-45, 
+            "Greg Hormann (ghormann@nix.kconline.com)",$col);
+
+
+/*==================================================*/
+/*File access*/
+$filename = $who + ".data";
+
+if (-1 == fileInode ($filename)); 
+    ImageString ($img, 5, 20, 20, "Can Not Access " + $filename, $black);
+    ImageGif($im);
+    Exit;
+endif;
+     
+$classes = File($filename);
+
+
+/*============================================*/
+/*Color in correct day*/
+$daycol=ImageColorAllocate($im, 240,255,128);
+$today = date("D");
+$count = 0;
+$start = 0;
+while($count <= 7);
+   if($day[$count] == $today); $start = $count;  endif;
+   $count++;
+endwhile;
+
+
+ImageFilledRectangle($im, 20+($start * $width),0, 
+                     20+(($start + 1) * $width),$image_height-45, $daycol);
+
+$combox = 20+($start * $width);
+
+
+/*end Color in correct day*/
+
+/*============================================*/
+/*Add classes*/
+$count = Count($classes) - 1;
+
+$classcol=ImageColorAllocate($im, 16,172,255);
+
+while ($count >= 0);
+
+   $return = reg_Match("\([^,]*\),\([^,]*\),\([^,]*\),\([^,]*\),\(.*\)", 
+             $classes[$count], $substring);
+
+   $class = $substring[1];
+   if (reg_Match ("\([^ ]*\) \(.*\)", $class, $sub)); 
+        $class = $sub[2];
+        $class_type = $sub[1];
+   endif;
+   $start = $substring[2];
+   $end = $substring[3];
+   $day = $substring[4];
+   $room = $substring[5];
+
+
+/*====================Starty======================*/
+   
+   $return = reg_Match("\(.*\):\([^PA]*\)\(.*\)", 
+             $start, $substring);
+
+   $shour = $substring[1];
+   $smin = $substring[2];
+   $extension = $substring[3];   
+   SetType($shour, "integer");
+   SetType($smin, "integer");
+
+   if ($extension=="PM" && $shour != 12); $shour = $shour + 12; endif;
+
+   $starty = (($shour - 8) * $height) + 35 + ($smin * $height)/60;
+
+/*=================Endy============================*/
+
+   $return = reg_Match("\(.*\):\([^PA]*\)\(.*\)", 
+             $end, $substring);
+
+   $shour = $substring[1];
+   $smin = $substring[2];
+   $extension = $substring[3];   
+   SetType($shour, "integer");
+   SetType($smin, "integer");
+
+   if ($extension=="PM" && $shour != 12); $shour = $shour + 12; endif;
+
+   $endy = (($shour - 8) * $height) + 35 + ($smin * $height)/60;
+
+/*Store Class*/
+   $class_name[$count] = $class;
+   $class_y[$count] = $starty;
+   $class_day[$count] = $day;
+   $class_class_type[$count] = $class_type;
+
+/*=====================X==================================*/
+   $i = 7;
+   while ($i > 0);
+       if (reg_search($day_data[$i],$day)) ; 
+             $startx = 20+$i*$width;
+             $endx = $startx + $width;
+             ImageFilledRectangle($im, $startx+2,$starty,
+                                  $endx-2, $endy, $classcol);
+             
+
+       endif;
+   $i--;
+   endwhile;
+
+   $count--;
+endwhile;
+
+/*===============================================*/
+/*Color in correct Hour*/
+$today = date("H");
+$min = date("i");
+SetType($today, "integer");
+SetType($min, "integer");
+
+$hourcol=ImageColorAllocate($im, 255,0,255);
+$bothcol=ImageColorAllocate($im, 255,128,192);
+
+if ($today >= 8 && $today <= 21);
+   $today = $today - 8;
+   $start = 35 + ($today * $height) + ($min * $height) /60;
+   ImageFilledRectangle($im, 0, $start-2,$image_width,$start+2, $hourcol); 
+
+   /*Paint Combonation of two*/
+   ImageFilledRectangle($im,$combox,$start-2,$combox+$width,$start+2,
+                       $bothcol);
+
+endif;   
+
+
+
+/*===============================================*/
+/*Do columns*/
+
+$count = 0;
+$start = $width+20;
+
+while($count < 7) ;  /*Cols*/
+  ImageLine($im,$start,0,$start,$image_height-45,$col);
+  ImageString($im, 5, $start+15, 20, $day[$count+1], $black);
+  $start = $start + $width;
+
+  $count++;
+endwhile;   
+
+/*===================================================*/
+/*Do Rows*/
+
+$count = 0;
+$start = 35;
+$data = 7; $extension="AM";
+
+while($count < 14);   /*ROWS*/
+   ImageLine($im,0,$start,$image_width,$start,$col);
+   $data++;
+   if ($data=="13"); $data = 1; $extension = "PM"; endif;
+   $copy = $data; SetType($copy, "string")
+   ImageString($im,5,2,$start+2, $copy +":00 " + $extension, $col);
+   $count++;
+   $start = $start + $height;
+
+endwhile;
+ 
+ImageLine($im, 0, $start, $image_width, $start, $col);
+/*That is the last line*/
+
+/*=============================================*/
+/*Add class names*/
+
+$count = Count($classes) - 1;
+
+while ($count >= 0);
+
+
+   $i = 7;
+   while ($i > 0);
+       if (reg_search($day_data[$i],$class_day[$count])) ; 
+             $startx = 20+$i*$width + 15;
+             $endx = $startx + $width;
+             ImageString($im, 3, $startx, $class_y[$count],
+             $class_class_type[$count],$black);
+             ImageString($im, 3, $startx, $class_y[$count] + 10,
+             $class_name[$count],$black);
+
+       endif;
+   $i--;
+   endwhile;
+
+$count--;
+endwhile;
+
+/*============================================*/
+
+/*Return Image*/
+
+ImageGif($im);
+>

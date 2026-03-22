@@ -1,0 +1,161 @@
+<?php 
+$title="Christmas 2003 at the Hormanns";
+$subTitle="Christmas 2003";
+include "intro.phtml" ?>
+
+
+<div class="container-fluid"><!--Main Container -->
+
+<center>
+<?php Christmas_years(); ?>
+</center>
+<div class="row">
+<div class="col-sm-8">
+<h1>Christmas 2003 at the Hormanns</h1>
+This is our third year for an animated Christmas display.  
+The <a href="parallel320.phtml">320 Circuit Controller</a> 
+was used again this year.  Due to the birth of our first child, we
+didn't make  many changes from last year. The only viewer noticeable 
+differences are (a) the addition of more lights on the bushes and (b)
+changing the sign below the count down clock to be more descriptive.
+These changes pushed us from ~6,000 lights to just over 13,000.
+
+<h2>Movies</h2>
+<div class="container">
+  <div class="row">
+     <div class="col-12 col-lg-6 col-xl-4 space-after-row">
+        <img src="christmas/2003/thumbnails/IMG_0868.JPG"><br>
+        Clock (<a href="christmas/2003/movies/sign.rm">Real</a>) (1Mb)
+     </div>
+
+     <div class="col-12 col-lg-6 col-xl-4 space-after-row">
+        <img src="christmas/2003/thumbnails/IMG_0872.JPG"><br>
+        House (<a href="christmas/2002/movies/bushes_light.wmv">WMV</a>)
+           (<a href="christmas/2002/movies/bushes_light.rm">Real</a>) (4Mb)
+     </div>
+
+     <div class="col-12 col-lg-6 col-xl-4 space-after-row">
+        <img src="christmas/2003/thumbnails/IMG_0894.JPG"><br>
+        Snowmen (<a href="christmas/2002/movies/snowmen.rm">Real</a>) (4Mb)
+     </div>
+  </div>
+</div>
+
+
+<h2>Statistics</h2>
+<ul>
+<li> ~13000 lights
+<li> 84 Circuits
+<li> ~2000 ft electrical and control Wire
+<li> P-75 Mhz PC
+</ul>
+
+
+<h2>Pictures</h2>
+<font size=-2 color="brown">(Click image to enlarge)</font>
+<br>
+
+<div class="old-picture">
+
+<a href="christmas/2003/IMG_0868.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0868.JPG"></a>
+
+<a href="christmas/2003/IMG_0869.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0869.JPG" ></a>
+
+<a href="christmas/2003/IMG_0870.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0870.JPG" ></a>
+
+<a href="christmas/2003/IMG_0871.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0871.JPG" ></a>
+
+<a href="christmas/2003/IMG_0872.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0872.JPG" ></a>
+
+<a href="christmas/2003/IMG_0873.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0873.JPG" ></a>
+
+<a href="christmas/2003/IMG_0874.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0874.JPG" ></a>
+
+<a href="christmas/2003/IMG_0877.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0877.JPG" ></a>
+
+<a href="christmas/2003/IMG_0878.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0878.JPG" ></a>
+
+<a href="christmas/2003/IMG_0879.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0879.JPG" ></a>
+
+<a href="christmas/2003/IMG_0881.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0881.JPG" ></a>
+
+<a href="christmas/2003/IMG_0883.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0883.JPG" ></a>
+
+<a href="christmas/2003/IMG_0884.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0884.JPG" ></a>
+
+<a href="christmas/2003/IMG_0885.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0885.JPG" ></a>
+
+<a href="christmas/2003/IMG_0887.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0887.JPG" ></a>
+
+<a href="christmas/2003/IMG_0892.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0892.JPG" ></a>
+
+<a href="christmas/2003/IMG_0893.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0893.JPG" ></a>
+
+<a href="christmas/2003/IMG_0894.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0894.JPG" ></a>
+
+<a href="christmas/2003/IMG_0896.JPG">
+	<IMG SRC="christmas/2003/thumbnails/IMG_0896.JPG" ></a>
+</div><!-- old images -->
+
+</div><!--sm-8-->
+
+<div class="col-sm-4">
+<?php include "favDisplays.phtml" ?>
+</div><!-- Sm-4 -->
+</div><!-- row -->
+
+
+<br><br><br>
+
+
+<h2>Source Code</h2>
+The following source code controlled this year's display from a P-75
+running the FreeBSD 4.7 OS. The primary changes this year are in main.c
+where the nCurser library is used to display the light sequences on the screen.
+This makes debugging a whole lot easier.
+
+You can look at the 
+<a href="christmas/2003/source/2003_full_source.tar.gz">full source</a> 
+in tar.gz format, or you can look at individual files:
+
+<br><br><br>
+<center>
+<table border=0>
+<tr>
+<td><a href="christmas/2003/source/main.c.txt">main.c</a></td>
+<td><a href="christmas/2003/source/bushes.c.txt">bushes.c</a></td>
+</tr><tr>
+<td><a href="christmas/2003/source/Makefile.txt">Makefile</a></td>
+<td><a href="christmas/2003/source/sign.c.txt">sign.c</a></td>
+</tr><tr>
+<td><a href="christmas/2003/source/main.h.txt">main.h</a></td>
+<td><a href="christmas/2003/source/snowmen.c.txt">snowmen.c</a></td>
+</tr><tr>
+<td><a href="christmas/2003/source/320controller.c.txt">320controller.c</a></td>
+<td><a href="christmas/2003/source/320controller.h.txt">320controller.h</a></td>
+</tr>
+</table>
+</center>
+
+</div><!--main -->
+
+<?php include "footer.phtml" ?>
+

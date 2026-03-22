@@ -1,0 +1,79 @@
+<hr>
+<div class="container">
+  <div class="row">
+     <!-- Left Picture -->
+     <div class="col-6 bottom-logo">
+        <a href = "http://www.php.net">
+           <img src= "images/php-med-trans.png" alt="Powered by PHP"  border=0>
+         </a>
+     </div>
+     <!-- RIght Picture -->
+     <div class="col-6 bottom-logo">
+        <a href = "http://www.freebsd.org">
+          <img  src = "images/powerlogo.gif" alt="Powered by FreeBSD" height=61 border=0>
+        </a>
+     </div>
+  </div><! -- end row -->
+
+  <!-- Divider Row-->
+  <div class="row" style="background-color: <?php echo $logobgcolor ?> ;">
+     <div class="col-12">
+         &nbsp;
+     </div>
+  </div><! -- end row -->
+
+
+  <!-- Contact Row-->
+  <div class="row">
+     <div class="col-12 col-sm-6" style="padding-left:0px;">
+        Greg &amp; Mary Hormann<br>
+        <a href = "mailto:ghormann@gmail.com">ghormann@gmail.com</a>
+        <br>
+        <a href = "http://www.thehormanns.net">http://www.thehormanns.net</a>
+     </div>
+     <div class="col-12 col-sm-6 bottom-logo">
+        Copyright &copy 2000-2025<br>
+        All Rights Reserved
+     </div>
+  </div><! -- end row -->
+
+
+  <!-- Divider Row-->
+  <div class="row" style="background-color: <?php echo $logobgcolor ?> ;">
+     <div class="col-12">
+         &nbsp;
+     </div>
+  </div><! -- end row -->
+
+</div><!--Container -->
+
+</table>
+<span style="font-size:10px;">
+<!-- IP: <?php global $_SERVER; echo $_SERVER['SERVER_ADDR'] ?> -->
+</span>
+</center>
+
+   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+$('.dropdown-submenu > a').on("click", function(e) {
+    console.log("Sub item clicked")
+    var submenu = $(this);
+    $('.dropdown-submenu .dropdown-menu').removeClass('show');
+    submenu.next('.dropdown-menu').addClass('show');
+    e.stopPropagation();
+});
+
+$('.dropdown').on("hidden.bs.dropdown", function() {
+    console.log("Dropdown clicked")
+    // hide any open menus when parent closes
+    $('.dropdown-menu.show').removeClass('show');
+});
+
+</script>
+
+</div><!-- Endof container div from Head -->
+</body></html>

@@ -1,0 +1,226 @@
+<?php 
+$title="Christmas";
+$subTitle=$title;
+
+include "intro.phtml" ?>
+
+<div class="container-fluid"><!--Main Container -->
+
+<center>
+<?php Christmas_years(); ?>
+</center>
+
+<!--############## Start left body of table #########-->
+<h1>Christmas Projects</h1>
+<div style="text-align:center; margin-top:10px; margin-bottom:10px">
+   <img src="https://cooldisplays.net/picture.php?v=1642876801&width=1500&display=1" class="img-fluid">
+</div>
+<div class="row">
+<div class="col-sm-8 col-lg-10">
+
+<p>
+We have one of the largest private Christmas displays
+in northen Cincinnati with over 41,535 RGB bulbs that are individually controlled
+by a computer and synchronized to to over 30 minutes of music. Viewers become part of the display by voting for the next song, selecting the next snowman, and including their names in the show. The links in the menu provide more information about individual elements in the display. You can find us on <a href="https://goo.gl/maps/tZj7PPjBcjEFB1XM6">Google Maps</a>.
+</p>
+
+
+
+<h1>A Little History</h1>
+<p>
+Both of us are big on Christmas.  Mary likes the shopping, baking, and interior
+decorating, and Greg always wanted a big outdoors Christmas like his grandfather's displays.  Once we purchased
+our first house in <a href="christmas2001.phtml">2001</a>, Greg got a chance to work on that display  and experimented
+with animated displays that are controlled by a computer.  That
+year Greg built two <a href="parallel_boxes.phtml">
+parallel port controls</a> that could control 8 circuits each. These were 
+simple to build and control, but didn't provide much growth potential.
+</p>
+<p>
+<CENTER>
+<?php
+   $movies = array(
+             array("Nd7ADGezo3s", "Video History of our Display")
+   );
+
+    youtubeVideo($movies, "youtubeVideosm");
+?>
+</CENTER>
+</p>
+</p>
+For 2002, Greg started in January trying to find a design that would allow
+us to control many more circuits without purchasing expensive Digital I/O 
+Boards that were used by a few others around the United States. After a bit a searching, he found
+<a href="parallel320.phtml" target="_blank">Hill Robertson's</a> design for a 
+<a href="parallel320.phtml" 
+target=_blank">320 circuit</a> device that could be controlled by a parallel 
+port and spent much of the year building our own
+<a href="parallel320.phtml">version</a> At the time, the device was rather amazing and allowed for up to 320 AC circuits to be switched on 
+and off using a single Parallel port on a PC. </p>
+
+<p>
+In 2008, we purchased some <a href="christmas/2016/lor.jpg">Light-o-Rama CTB08 controllers</a>.  Although each device only controlled 8 AC circuits, they were the first solution we ever had that allowed for dimming.  This opened up a complete new world as we could cross fade between colors in the display. Although LOR solutions are a bit on the expensive side compared to other Do-It-Yourself (DYI) solutions, 
+the LOR solutions remain a great way to get started on your own animated Christmas Light display. (Greg, being who he is,
+refused to purchase the LOR software, and instead reverse engineered the protocol and continued to run custom software.) 
+</p>
+<p>
+By 2014, it was finally time to retire the <a href="parallel320.phtml">320 Controller</a>. We invested heavily in DYI <a href="DMX.phtml">DMX and E1.31 solutions</a>. As we moved to this new technology, we also started making the conversion to <a href="DMX.phtml">Pixels</a> 
+allowing each individual light to be individually controlled bring a whole new world of possibilities. In 2016, we retired the last of 
+the LOR Controllers. 2016 also marked the year we converted from custom software to using <a href="http://xlights.org">XLights</a>.
+This is a great open source project created by the holiday lighting community. 2016 also marked the year Greg finally gave into the family demands
+and started synchronizing the lights to music played over a low power FM transmitter.  (Mostly because xLights was so easy to use that
+both Mary and the kids could help with programming the lights.)
+</p>
+
+<!--</div> -->
+
+   </div><!--Main Column-->
+   <div class="col-sm-4 col-lg-2">
+      <h3>Technology</h3>
+      <ul>
+        <li><a href="clock.php">The Clock</a>
+        <li><a href="snowmen.php">The Snowmen</a>
+        <li><a href="grid.php">The Grid</a>
+        <li><a href="DMX.phtml">DMX and E1.31</a>
+        <li><a href="text_message.phtml">Texting Your Name</a>
+        <li><a href="voting.phtml">Voting for Songs</a>
+        <li><a href="parallel_boxes.phtml">8 Port Parallel Controller</a>
+        <li><a href="parallel320.phtml">320 Parallel Port Controller</a>
+      </ul>
+      <h3>Years</h3>
+        <ul>
+           <?php Christmas_simple("<li>",  "</li>"); ?>
+        </UL>
+      </UL>
+   </div><!--Second col -->
+</div><!--Row-->
+<!-- ############## Start row Two ################-->
+<div class="row">
+   <div class="col-sm-8 col-lg-10">
+      <?php include "christmas/display.phtml" ?>
+   </div>
+   <div class="col-sm-4 col-lg-2">
+      <?php labledPicture("christmas-thumb", "snowmen.php", "Snowmen", "https://img.youtube.com/vi/9xToVesowGE/0.jpg"); ?>
+      <?php labledPicture("christmas-thumb", "https://www.youtube.com/watch?v=gbwJwxvBV-Y", "Proposal", "https://img.youtube.com/vi/gbwJwxvBV-Y/0.jpg"); ?>
+      <?php labledPicture("christmas-thumb", "https://www.youtube.com/watch?v=66iHa96EXFY", "Construction", "https://img.youtube.com/vi/66iHa96EXFY/0.jpg"); ?>
+   </div>
+</div>
+<!-- ############## Start row Three ################-->
+
+
+<div class="row">
+<div class="col-sm-8 col-lg-10">
+<h1>Some References</h1>
+<div class="container"> <!-- Was table -->
+  <div class="row gjh-table-row">
+    <div class="col-lg-4">
+      <a href="http://www.CoolDisplays.net">CoolDisplays.Net</a>
+    </div>
+    <div class="col-sm-8">
+      Trying to locate impressive holiday displays near you?  CoolDisplays.Net is a great tool for locating holiday displays across the United States.
+    </div>
+  </div><!-- row -->
+  <div class="row gjh-table-row">
+    <div class="col-lg-4">
+       <a href="http://doityourselfchristmas.com">DoItYourselfChristmas.com</a>
+    </div>
+    <div class="col-sm-8">
+       This has become our de facto source for keeping up with others who do Computer Controlled Christmas light displays. 
+The forums on this site are a great resource for learning about the hobby.
+    </div>
+  </div><!-- row -->
+  <div class="row gjh-table-row">
+    <div class="col-lg-4">
+      <a href="http://diylightanimation.com">DiyLightAnimation</a><br>
+      <a href="http://falconchristmas.com/forum/index.php">FalconChristmas</a><br>
+      <a href="http://nutcracker123.com/forum/index.php">xLights Forum</a><br>
+    </div>
+    <div class="col-sm-8">
+      These are other community based websites with good information for those interested in different aspects of Computer Controlled
+Christmas displays.
+    </div>
+  </div><!-- row -->
+  <div class="row gjh-table-row">
+    <div class="col-lg-4">
+       <a href="https://www.pixelcontroller.com" target="_blank">PixelController.com</a> <br>
+       <a href="https://kulplights.com" target="_blank">Kulp LIghts</a> <br>
+       <a href="http://HolidayCoro.com" target="_blank">Holiday Coro</a> <br>
+       <a href="https://www.boscoyostudio.com/" target="_blank">Boscoyo Studios</a> <br>
+       <a href="http://www.lightorama.com" target="_blank">Light-O-Rama</a>
+    </div>
+    <div class="col-sm-8">
+Really interested in creating your own animated displays but don't have 
+the technical know-how? If so, then check out these vendors. These sites
+offers both the hardware and software you need to control your lights
+and set them to music. There are many other vendors in the space (some of which probably have lower prices), but these are the vendors we have primarly leveraged in the past and are known to be reliable.
+    </div>
+  </div><!-- row -->
+  <div class="row gjh-table-row">
+    <div class="col-lg-4">
+       <a href="http://www.planetchristmas.com"> Planet Christmas</a>
+    </div>
+    <div class="col-sm-8">
+The original
+home of computer controlled Christmas lights! The site isn't as popular
+as it once was, but Chuck Smith was the father of Computer Controlled Christmas lights and 
+and was a key driver in this becoming so popular.
+    </div>
+  </div>
+</div><!-- container-->
+</div><!--SM-8-->
+
+<!--############# End left body of table ##########-->
+<div class="col-sm-4 col-lg-2">
+
+<?php
+labledPicture("christmas-thumb", "snowmen.php", "Old Snowmen", "christmas/2002/2002_snowman_4.jpg");
+labledPicture("christmas-thumb", "clock.php", "Clock", "christmas/2004/Outside/thumbnails/IMG_5997.JPG");
+
+?>
+
+</a>
+
+</div><!--sm-4-->
+</div><!--Row-->
+
+<br><br>
+<!-- ############## Start row Four ################-->
+<div class="row">
+<div class="col-sm-8 col-lg-10">
+<h1>The Star</h1>
+The odd looking object on the right has been passed through the Hormann
+family for generations. Now matter which direction you look at it from, you
+can always see a 5 point star! Made entirely of copper and colored glass, this one of a kind decoration weighs a ton.  The Star was designed and built by my
+great-great uncle and given to my grandfather to be hung outside 
+their Fort Wayne home where it was placed every Christmas for many years. 
+Upon his passing, the Star was given
+to my father who presented it to me in 1998. <br><br>
+
+
+My grandparents always hung the Star outside on the porch until the year it 
+disappeared  while my grandparents were attending church. After placing 
+articles in the local paper explaining the family significance of the star, 
+it mysteriously  reappeared a few days later. Since that incident, the Star 
+is now proudly displayed every Thanksgiving through New Years in our front window.
+
+</div><!--sm-8-->
+
+<!-- ############## Row three picture ################-->
+<div class="col-sm-4 col-lg-2 align-self-center">
+<?php
+labledPicture("christmas-thumb", "images/star.jpg", "The Star", "images/_star.jpg");
+?>
+</div><!-- sm-4 -->
+</div><!-- Row -->
+<!-- ############## Start row Four ################-->
+<br><br>
+<h1>Our Display</h1>
+See the following links for all of the different displays we've done.<br>
+<?php Christmas_simple() ?>
+
+<br><br>
+
+<?php include "favDisplaysWide.phtml" ?>
+<?php include "footer.phtml" ?>
+</div><!-- Main -->
+

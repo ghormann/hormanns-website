@@ -1,0 +1,77 @@
+<?php 
+$title="Texting Your Name";
+$subTitle="Texting Your Name";
+include "intro.phtml" ?>
+
+<style>
+figure {display: inline-block;}
+figcaption {text-align: center;}
+
+</style>
+
+
+<center>
+<?php Christmas_years(); ?>
+</center>
+<div class="row">
+<div class="col-sm-8">
+<h1>Texting Your Name</h1>
+
+<p>
+In 2018, we added the ability for viewers to supply their first name via text message and have it included in the display. The name immediately displays on the small grid under the display and then every 10 minutes or so, a 1 minute sequence is displayed where 13 names are included on the 18' X 8' grid. Starting in 2019, viewers can see there spot in the queue using the same
+<a href="voting.phtml">website used for voting</a>.   Here are two videos of the system in action.
+</p>
+
+<figure class="youtubeVideo">
+   <a href="https://www.youtube.com/watch?v=EhCaSn63lMk">
+      <img src="https://img.youtube.com/vi/EhCaSn63lMk/0.jpg">
+       <figcaption>On the big Grid</figcaption></a>
+</figure>
+
+<figure class="youtubeVideo">
+   <a href="https://www.youtube.com/watch?v=IPzWfIm7C5c">
+      <img src="https://img.youtube.com/vi/IPzWfIm7C5c/0.jpg">
+       <figcaption>On the Clock</figcaption></a>
+</figure>
+
+<h2>How it works</h2>
+<img src ="images/text_arch.png" class="img-fluid">
+
+<ol>
+<li> We use the Twilo service to convert inbound text messages to API calls on our web server.
+<li> Our web server (apache + python) to accept the message from Twilo.   
+<li> The python code then validates the name against a whitelist of valid first names that was provided by the <a href="https://www.ssa.gov/oact/babynames/limits.html">Social Security Administration</a>. 
+<li> If the name isn't in the white list, a text message is sent to the admin and the originator of the message is notified that the name needs reviewed. 
+<li> For valid names, a MQTT message is generated and sent to both the Clock VM and the xLights VM box where it will be added to a local queue. 
+<li> The Clock VM is running a <a href="https://github.com/ghormann/GregsLights">custom C++ program</a>.  This program is written to always drain the queue of names before doing any other greetings / graphics.   
+<li> The xLights VM is a Ubuntu vm running a python process.   The name will just be added to the queue of the python process.  The current queue is always published by the python program every 2 seconds so that the web server knows the current status. 
+<li> In fpp, the sequence is set up so that a sequence called "WISH_Names.seq" is played approximately every 10 minutes.  (The exact duration is controlled by the Webserver and will dynamically change based on the number of names in the queue.) Just before it is time to play the names, the webserver will  send an MQTT message asking the xLights VM to genereate the sequence and move it to the FPP server. 
+<li> The xLights VM, having received a signal that it is time for the next batch of names, will take the next 13 names from the queue, and generate a new xLights .xml file.   It does this by loading a template file that has %NAME_1%, %NAME_2%, ... , %NAME_C%  and just doing a simple replace.  If there are not enought names, it just selects a few from the database as the seuqnce is designed to always play 13 names.
+<li> Once the .xml file has been generated, the python process runs xLights -r WISH_Names.xml to generate the .seq file.   
+<li> As soon as the .seq file is generated, the python process uses the FPP API to upload Wish_names.seq file on the fpp server and send a signal via MQTT to let the webserver know everything is ready.
+<li> At this point the webserver will schedue names this song as the next song to play.
+<li>Finally, while all this is happening, both the <a href="voting.phtml">Voting Website</a> and Stats server have been monitring all traffic and provided updates to both the admin and end users.
+</ol>
+<p>The source code is avaiable if you are interested.
+<ul>
+   <li><a href="https://github.com/ghormann/christmasnamechecker">Web Server</a>
+   <li><a href="https://bitbucket.org/ghormann/xlightsnamegen">XLights VM Server</a>
+   <li><a href="https://github.com/ghormann/ChristmasStats">Stats Tracker</a>
+</ul>
+</p>
+
+<h2>Admin Interfaces</h2>
+The web server also contains and admin page that allows us to remotely monitor the queue.  We can remove or add new names the queue (without going thought he name validation.) .   This will just generate the same MQTT messages that are consumed by the xLights VM and Clock VM machines.  Most of the time, we use this to "add" any valid names that were incorrectly blocks by the name filter.  Because of this, we have a one click "add" button that is displayed against anything that doesn't pass the filter. 
+
+<img src ="images/text_admin.png" class="img-fluid">
+
+
+</div><!--sm-8-->
+
+<div class="col-sm-4">
+<?php include "favDisplays.phtml" ?>
+</div><!-- Sm-4 -->
+</div><!-- row -->
+
+
+<?php include "footer.phtml" ?>

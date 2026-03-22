@@ -1,0 +1,47 @@
+<?php 
+$title="TheHormanns.net - Site Map";
+$subTitle="Site&nbsp;Map";
+include "intro.phtml" ?>
+
+<div class="container-fluid"><!--Main Container -->
+
+<div class="row">
+   <div class="col-sm-auto">
+<ul>
+<li> <a href="home.phtml">Home Page</a>
+<li> <a href="greg.phtml">Greg's Page</a>
+<li> <a href="mary.phtml">Mary's Page</a>
+<li> <a href="pictures.phtml">Pictures</a>
+<li> <a href="directions.phtml">Map to Display</a>
+<li> <a href="christmas.phtml">Christmas Technology</a>
+   <ul>
+     <li><a href="clock.php">The Clock</a>
+     <li><a href="snowmen.php">The Snowmen</a>
+     <li><a href="grid.php">The Grid</a>
+     <li><a href="DMX.phtml">DMX and E1.31</a>
+     <li><a href="text_message.phtml">Texting Your Name</a>
+     <li><a href="voting.phtml">Voting for Song</a>
+     <li><a href="christmas_info_board.phtml">Information Board</a>
+     <li><a href="parallel_boxes.phtml">8 Port Parallel Controller</a>
+     <li><a href="parallel320.phtml">320 Parallel Port Controller</a>
+   </ul>
+</ul>
+</div>
+<div class="col-sm-auto">
+<ul>
+<li> <a href="christmas.phtml<?php echo "$urlname" ?>">Christmas</a>
+   <ul>
+    <?php Christmas_simple("<li>",  "</li>"); ?>
+   </UL>
+</UL>
+</div><!--sm-2-->
+
+<div class="col-sm-auto">
+<a href="wedding/reception/cake3.jpg">
+<img src = "wedding/reception/_cake3.jpg" border=0
+            width = 174 heigth=117>
+</a>
+</div><!--Sm-4-->
+</div><!--Row-->
+<?php include "footer.phtml" ?>
+</div><!-- Main -->

@@ -1,0 +1,81 @@
+<?php 
+$title="DMX and E1.31 with Pixels";
+$subTitle="DMX&nbsp;and&nbsp;E1.31&nbsp;with&nbsp;Pixels";
+include "intro.phtml" ?>
+
+<center>
+<?php Christmas_years(); ?>
+</center>
+<h1>DMX / E1.31 with Pixels</h1>
+<br>
+<div class="row">
+<div class="col-sm-8">
+<h2>Background</h2>
+Prior to 2014, all of the hardware we leveraged was basically just tricks
+for switching AC circuits on and off. Although the LOR controller supported 
+dimming, it basically implemented this by switch the AC current to a normal
+outlet on and off very quickly.  The challenge with this technology is 
+that you still had to basically switch entire strings of lights 
+on and off. In 2011, GE introduced the "GE Color Effect" lights for Christmas.  Each "bulb" contained three LEDs (one Red, one Green, and one Blue) as well as some control chips. Using a serial protocol it was possible to make each bulb appear as any color by mixing the amount of Red/Green/Blue present in a single bulb.  These light strings turned out to be easy hacked to work with controllers other than the original controller and it started a revolution.
+
+<br><br>
+
+By the time we wanted to test using this level of control in our display, multiple others in the "do it yourself" Christmas Lighting community had discovered China was already manufacturing RGB "<a href="images/20151019_pixel.jpg">pixels</a>" for applications in outdoors signs with well documented protocols (like WS2811).  Soon lighting enthusiasts were developing custom hardware for controlling these RGB pixels targeted at those working on holiday displays. In 2014, we used our first pixels on the grid under the countdown clock (<a href="https://www.youtube.com/watch?v=tCQ9uxtrXfQ">video</a>).  By 2016, we had eliminated nearly all of the AC lighting circuits in favor of pixels as well as a few "dumb" RGB components (explained more below). Because there are multiple pixel protocols, the community adopted a standard of using DMX for the common communication protocol back to the controlling computer as DMX is popular in the lighting community for control lights and intensity.
+<br><br>
+<h2>The Pixels</h2>
+For most of our display elements (grid, bushes, mega tree, and arches), we use WS2811 IP68 rated RGB pixels. We use different form factors of pixels.  The grids, trees, and house outlines all use <a href="images/20151019_pixel.jpg">Bullet Nodes</a>. For the arches, we use high density <a href="images/strip.png">Flex Strip</a>. The bushes use <a href="http://www.holidaycoro.com/Brilliant-Bulb-p/709.htm">Brilliant Bulbs</a> that have the same 5050 RGB LEDs as the strip.
+
+We leverage a mixture of 5V and 12V pixels. Our 5V elements include the windows, the snowmen, and the small sign under the clock. All the other elements are 12V. 5V pixels are less money, are more power efficient, but you need to inject power more frequently to avoid color issues from voltage drop. 
+
+<br><br>
+<h2>Controllers</h2>
+Regardless of the style of pixel, they all work the basically the same. Each pixel requires 3 DMX channels, one to specify the intensity of red, one for green, and one for blue.  (This means that our Mega tree with 2400 nodes, requires a total of 7200 DMX channels and our 8x18ft grid takes a whopping 14628 channels!).  Although there are a number of <a href="http://nutcracker123.com/nutcracker/rgb_controllers/">RGB Controllers</a> on the market, we currently use Falcon Boards from <a href="https://kulplights.com/">Kulp LIghts</a> for any new construction. We still have 3 <a href="christmas/2019/f16v3.jpg">Falcon F16v3</a> and a few <a href="images/alphapix4.png"> AlphaPix 4</a> controllers from Holiday Coro. The AlphaPix 4 controllers from <a href="http://HolidayCoro.com">Holiday Coro</a> were the our initial standard and continue to work well today, but lack a few key features of newer controllers. The Falcon F16v3 controllers from <a href="https://www.pixelcontroller.com/">Pixel Controller.com</a> are currently difficult to beat for price / performance. However, the FPP based controllers from <a href="https://kulplights.com/">Kulp LIghts</a> give a huge amount of flexiblity and our slowly replacing all our other controllers. Our newer elements (snowmen, windows, second mega tree) all leverage Kulp controllers. All types of controllers take DMX over IP Ethernet (E1.31) and convert the data to the WS2811 serial protocol that the pixels understand. These controllers sit outside, near the pixels in water proof enclosures along with power supplies that convert 120V to either 5V or 12V for the pixels. The FPP based ones, allow the sequence to be loaded into the control reducing network bandwith during the show.
+
+<br><br>
+<h2>Dumb RGB</h2>
+Although most all of our display is now smart pixels (that allow each individual pixel to be a different color) , the Stars in the yard use "Dumb RGB" nodes.  The core difference is that all the nodes in a strand will display the same color.   We use these in the stars because (1) We need multiple lights in each star to make it bright enough and (2) the stars are at least 8ft apart from each other and early pixels really couldn't be more than a few feet apart before the signal would be lost. We use five <a href="images/9ch_dumb.png">27 channel controllers (9 RGB)</a> Controllers to control the intensity of the Red/Green/Blue RGBs inside of each star.
+<br><br>
+
+<h2>Videos</h2>
+
+<?php
+   $movies = array(
+             array("yt2iT4zrkDo", "Replacing a Pixel"),
+             array("0ZOk3BZXEtk", "Behind the Scenes (2024)" ),
+             array("ZMBEbfsgzBY", "Behind the Scenes (2019)" ),
+             array("t6V2sWjIf3I", "Behind the Scenes (2016)" )
+   );
+
+    youtubeVideo($movies);
+?>
+
+
+</center>
+
+<br><br>
+
+<br><br> 
+<h2>Learning more</h2> If you'd like to learn more about RGB pixel technology, I suggest checking out <a href="https://auschristmaslighting.com/wiki/AusChristmasLighting_101">The Aus Christmas Light 101 Manual</a> 
+
+</div><!--sm-8-->
+
+<div class="col-sm-4">
+<h2>Pictures</h2>
+<font size=-2 color="brown">(Click to enlarge)</font><br>
+<?php
+   labledPicture("christmas-thumb", "images/20151019_pixel.jpg", "Bullet Node", "");
+   labledPicture("christmas-thumb", "images/20151128_pixel.jpg", "Multiple Bullet Nodes", "");
+   labledPicture("christmas-thumb", "images/20160103_grid2.jpg", "Front of Big Grid", "");
+   labledPicture("christmas-thumb", "images/20160103_grid.jpg", "Back of Big Grid", "");
+   labledPicture("christmas-thumb", "images/strip.png", "Flex Strip Pixels", "images/strip_120.png");
+   labledPicture("christmas-thumb", "images/alphapix4.png", "AlphaPix 4 Pixel Controller", "images/alphapix4_120.png");
+   labledPicture("christmas-thumb", "christmas/2019/f16v3.jpg", "Falcon F16v3", "");
+   labledPicture("christmas-thumb", "images/9ch_dumb.png", "9 RGB Dumb Controller", "images/9ch_dumb_120.png");
+   labledPicture("christmas-thumb", "images/dumb_node.png", "Dumb RGB Node", "images/dumb_node_120.png");
+?>
+
+</div><!-- Sm-4 -->
+</div><!-- row -->
+
+
+<?php include "footer.phtml" ?>

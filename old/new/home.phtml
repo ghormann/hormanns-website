@@ -1,0 +1,67 @@
+<?php
+$title="Greg and Mary Hormann";
+$subTitle="";
+include "intro.phtml";
+?>
+
+<h1>Meet Greg and Mary Hormann</h1>
+
+
+<!--############## Start left body of table #########-->
+<div class="row">
+<div class="col-sm-8">
+<a href = "greg.phtml">Greg </a> and <a href = "mary.phtml">Mary </a>
+became friends in 
+high school (<a href="http://www.wawasee.k12.in.us/">Wawasee High school</a>, 
+Syracuse, IN). Both separately decided to attend <a href="http://www.iub.edu">
+Indiana University</a> in Bloomington, Indiana. Greg and Mary began dating 
+during their freshman year, and both ended up moving to Cincinnati after
+college to find employment.  On November 4, 2000 (exactly 6 years from their
+first date), the couple were wed at All Saints Catholic Church in Cincinnati, Ohio.
+<p>
+</div>
+<div class="col-sm-4">
+   <div class="text-center">
+      <a href="wedding/reception/greg_mary_dancing.jpg">
+         <img src = "wedding/reception/_greg_mary_dancing.jpg" class="img-fluid" border=0
+            alt="Greg &amp; Mary Dancing">
+      </a>
+   </div><!--Center-->
+</div>
+</div><!-- Row Div -->
+
+<div class="row">
+<div class="col-sm-8">
+<h3>Christmas Display</h3>
+Both of us are big on <a href="christmas.phtml">Christmas</a>. Mary likes the shopping and interior decorating, and Greg is big on outside Christmas displays. In <a href="christmas2001.phtml">2001</a>, Greg started experimenting with animated displays that are controlled by a computer. That year he built two <a href="parallel_boxes.phtml">parallel port controls</a> that could control 8 circuits each. These were simple to build and control, but didn't provide much growth potential.
+For <a href="christmas2002.phtml">2002</a>, Greg started in January trying to find a design that would allow him to control many more circuits without purchasing expensive Digital I/O Boards. In February, he found Hill Robertson's design for <a href="parallel320.phtml">a 320 circuit device</a> that could be controlled by a parallel port. He spent much of the year building our own version. These days, we leverage <a href="https://xlights.org">Xlights</a>, <a href="https://github.com/FalconChristmas/fpp">FPP</a>, and <a href="DMX.phtml">Pixels controlled by E1.31</a>.
+<br><br>
+Past Displays: <?php Christmas_simple(); ?>
+<?php include "favDisplaysWide.phtml"; ?>
+</div><!-- col-8-->
+<div class="col-sm-4">
+   <a href="christmas.phtml">
+      <img class="img-fluid" style="margin-top:1em; margin-bottom:2em" src="https://cooldisplays.net/picture.php?v=1732283181&pictid=226&width=800">
+   </a>
+
+<?php
+   $movies = array(
+             array("Nd7ADGezo3s", "Video History of our Display")
+   );
+
+    youtubeVideo($movies, "youtubeVideosm");
+?>
+
+</div>
+
+
+</div><!-- Row Div -->
+
+<p>
+<h3>Looking for for more?</h3>
+Check out the <a href="map.phtml">site map</a> to learn about everything 
+this site has to offer.
+
+
+
+<?php include "footer.phtml"; ?>

@@ -1,0 +1,142 @@
+<?php 
+$title="Christmas 2012 at the Hormanns";
+$subTitle="Christmas 2012";
+include "intro.phtml" ?>
+
+<div class="container-fluid"><!--Main Container -->
+
+<center>
+<?php Christmas_years(); ?>
+</center>
+<div class="row">
+<div class="col-sm-8">
+<h1>Christmas 2012 at the Hormann's</h1>
+
+2012 was our twelfth year for an animated Christmas display.  
+I put a few more 
+<a href="http://www.lightorama.com/">LOR Controllers</a> 
+into service.  Two replaced the 320-controllers on the sign
+above the door, while a third is used to control the the new blue
+flood lights that where added this year.
+The changes are not that significant from the last few years, but
+I went ahead and updated the videos anyway to show things off. :-) 
+
+
+<br><br>
+For the last 7 years or so, a small (but growing) group of neighbors have
+braved the cold to watch the clock hit mid-night and welcome Christmas.  
+This year, we had about 20 individuals standing across the street watching. 
+I even got Mary to come outside this year! 
+This has been a great tradition. 
+
+
+<h2>Map</h2>
+<?php include "christmas/display.phtml" ?>
+
+<h2>Movies</h2>
+We are hosting the movies on YouTube again.  If you have problems 
+accessing them, please let us know.  They should show up below. <i>Note that 
+all are available in HD. </i>
+
+<br><br>
+<center>
+
+<?php 
+   $movies = array("c5oBUImfSdA", "u8uZSKy_S0k", "YY1jnphglgw", "RfnnOA3iYeo", "Y6ZcAkIPIFE");
+
+   foreach ($movies as $mov)
+   {
+      echo("<a href=\"https://www.youtube.com/watch?v=$mov\">");
+      echo("<img src=\"https://img.youtube.com/vi/$mov/0.jpg\" ");
+      echo("style=\"border-style:none; margin: 5px 5px 5px 5px; height:250px;\">" );
+      echo("</a>");
+   }
+?>
+
+
+</center>
+
+<br><br>
+
+
+<h2>Statistics</h2>
+<ul>
+<li> ~13000 lights
+<li> 106 Circuits
+<li> ~2000 ft electrical and control Wire
+<li> P-500 Mhz PC
+</ul>
+
+<h2>Pictures</h2>
+<font size=-2 color="brown">(Click image to enlarge)</font>
+<br>
+
+<div class="old-picture">
+
+<a href="christmas/2004/Outside/normal_size/IMG_5997.JPG">
+<img src=christmas/2004/Outside/thumbnails/IMG_5997.JPG ></a>
+
+<a href="christmas/2004/Outside/normal_size/IMG_5999.JPG">
+<img src=christmas/2004/Outside/thumbnails/IMG_5999.JPG ></a>
+
+<a href="christmas/2004/Outside/normal_size/IMG_6000.JPG">
+<img src=christmas/2004/Outside/thumbnails/IMG_6000.JPG ></a>
+
+<a href="christmas/2004/Outside/normal_size/IMG_6001.JPG">
+<img src=christmas/2004/Outside/thumbnails/IMG_6001.JPG ></a>
+
+<a href="christmas/2004/Outside/normal_size/IMG_6209.JPG">
+<img src=christmas/2004/Outside/thumbnails/IMG_6209.JPG ></a>
+
+</div>
+<br><br><br>
+
+
+
+</div><!--Sm 8 -->
+
+<div class="col-sm-4">
+<?php include "favDisplays.phtml" ?>
+</div><!-- Sm-4 -->
+</div><!-- Row -->
+
+
+<!--
+
+<font color=brown>
+<b><font size=5>Source Code</font></b><br>
+</font>
+<br>
+
+<center>
+<table border=0>
+<tr>
+<td><a href="christmas/2008/source/main.c.txt">main.c</a></td>
+<td><a href="christmas/2008/source/bushes.c.txt">bushes.c</a></td>
+</tr><tr>
+<td><a href="christmas/2008/source/Makefile.txt">Makefile</a></td>
+<td><a href="christmas/2008/source/sign.c.txt">sign.c</a></td>
+</tr><tr>
+<td><a href="christmas/2008/source/main.h.txt">main.h</a></td>
+<td><a href="christmas/2008/source/snowmen.c.txt">snowmen.c</a></td>
+</tr><tr>
+<td><a href="christmas/2008/source/clock.c.txt">clock.c</a></td>
+</tr><tr>
+<td><a href="christmas/2008/source/lor.c.txt">lor.c</a></td>
+<td><a href="christmas/2008/source/lor.h.txt">lor.h</a></td>
+</tr><tr>
+<td><a href="christmas/2008/source/320controller.c.txt">320controller.c</a></td>
+<td><a href="christmas/2008/source/320controller.h.txt">320controller.h</a></td>
+</tr>
+</table>
+</center>
+
+-->
+
+<br><br>
+</center>
+
+</div> <!-- Main --> 
+
+<?php include "footer.phtml" ?>
+

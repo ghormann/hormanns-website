@@ -1,0 +1,3 @@
+AddHandler php-action phtml
+Action php-action /cgi-bin/php.cgi
+RedirectPermanent /ghormann/new/wedding/wedding.html http://www.kconline.com/ghormann/new/wedding/wedding.phtml

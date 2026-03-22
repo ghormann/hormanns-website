@@ -1,0 +1,237 @@
+<!doctype html>
+<?php
+ 
+$hcolor="brown";
+$ncolor="blue";
+$bgcolor="#F8F5D6";
+$logobgcolor="#EBBD82";
+
+function labledPicture($myclass, $pics, $text, $thumb)
+{
+   if ($thumb === ''){
+      $thumb = $pics;
+   }
+   echo("<figure class=\"$myclass\">\n");
+   echo("\t<a href=\"$pics\">\n");
+   echo("\t\t<img src=\"$thumb\">\n");
+   echo("\t<figcaption>$text</figcaption></a>\n");
+   echo("</figure>\n");
+}
+
+function youtubeVideo($movies, $imgClass="youtubeVideo") {
+   foreach ($movies as $movData)
+      {
+         $mov = $movData[0];
+         $label = $movData[1];
+         $thumb = "https://img.youtube.com/vi/$mov/maxresdefault.jpg";
+         if (count($movData) > 2) 
+         {
+            $thumb = $movData[2];
+         }
+         echo("<figure class=\"$imgClass\" >");
+         echo("<a href=\"https://www.youtube.com/watch?v=$mov\">");
+         echo("<img src=\"$thumb\" >");
+         echo("<figcaption>$label</figcaption>");
+         echo("</a>");
+         echo("</figure>");
+      }
+}
+
+function Christmas_details() {
+   $years = array(
+       array("2001", "christmas2001.phtml", "2000-2009"),
+       array("2002", "christmas2002.phtml", "2000-2009"),
+       array("2003", "christmas2003.phtml", "2000-2009"),
+       array("2004-2007", "christmas2004.phtml", "2000-2009"),
+       array("2008-2009", "christmas2008.phtml", "2000-2009"),
+       array("2010", "christmas2010.phtml", "2010-2019"),
+       array("2011", "christmas2011.phtml", "2010-2019"),
+       array("2012", "christmas2012.phtml", "2010-2019"),
+       array("2013", "christmas2013.phtml", "2010-2019"),
+       array("2014", "christmas2014.phtml", "2010-2019"),
+       array("2015", "christmas2015.phtml", "2010-2019"),
+       array("2016", "christmas2016.phtml", "2010-2019"),
+       array("2017", "christmas2017.phtml", "2010-2019"),
+       array("2018", "christmas2018.phtml", "2010-2019"),
+       array("2019", "christmas2019.phtml", "2010-2019"),
+       array("2020", "christmas2020.phtml", "2020-Today"),
+       array("2021", "christmas2021.phtml", "2020-Today"),
+       array("2022", "christmas2022.phtml", "2020-Today"),
+       array("2023", "christmas2023.phtml", "2020-Today"),
+       array("2024", "christmas2024.phtml", "2020-Today"),
+       array("2025", "christmas2025.phtml", "2020-Today"),
+   );
+
+   return $years;
+}
+
+function Christmas_submenu() {
+   $years = Christmas_details();
+ 
+   $last_group = "blank";
+
+   foreach ($years as $y) {
+      $label = $y[0];
+      $url = $y[1];
+      $group = $y[2];
+
+      if ($last_group != $group) {
+         if ($last_group != "blank") {
+            echo("</ul></li>");
+         }
+         echo("  <li class=\"dropdown-item dropdown-submenu\">");
+         echo("       <a href=\"#\" data-toggle=\"dropdown\" class=\"dropdown-toggle\">$group</a>");
+         echo("       <ul class=\"dropdown-menu\">");
+         $last_group = $group;
+      } /* End group change */
+     
+     echo("       <li class=\"dropdown-item\"><a href = \"$url\">$label</a></li>");
+   }
+  
+ 
+    echo("</ul></li>"); /* CLose final submenu */
+}
+
+
+function Christmas_simple($preFix = "", $suffix="", $htmlClass="", $reverse=False) {
+        $years = Christmas_details();
+        if ($reverse) {
+            $years = array_reverse($years);
+        }
+
+
+        foreach ($years as $y) {
+           $label = $y[0];
+           $url = $y[1];
+	   echo " $preFix <a $htmlClass href = \"$url\">$label</a> $suffix";
+        }
+
+}
+
+Function Christmas_years() {
+	Christmas_simple();
+}
+
+?>
+
+<HTML lang="en"><HEAD>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-16040992-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-16040992-1');
+</script>
+
+   <META NAME="Author" CONTENT="Greg Hormann">
+   <META NAME="keywords" CONTENT="Greg, Mary, Hormann, Christmas">
+   <meta name="google-site-verification" content="Wm_ACFhrB0gCaV1A9Xq2b1gBr6e4S7F04bavC20BcKY" />
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style type="text/css">
+
+.body {
+   font-family:"Times New Roman", Times, serif;
+}
+
+h1,h2,h3 {
+	color: <?php echo "$hcolor"; ?> ;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+}
+
+.outline { border-style: dotted; 
+           border-color: <?php echo "$ncolor"; ?> }
+
+.code { color: <?php echo "$ncolor" ?> }
+
+<?php require "menucss.php" ?>
+
+</style>
+
+<TITLE><?php echo $title ?></TITLE>
+
+
+</HEAD>
+
+<?php 
+function PLACE_MENU() {
+?>
+
+<nav class="navbar navbar-expand-md fixed-top navbar-greg">
+  <a class="navbar-brand" href="/new">The Hormanns</a>
+  <button class="navbar-toggler toggler-greg" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav mr-auto">
+
+      <!-- Person Dropdown -->
+      <li class="nav-item dropdown">
+         <a class="nav-link dropdown-toggle" href="#" id="personDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Meet Us
+         </a>
+         <div class="dropdown-menu" arislabeledby="personDropdown">
+            <a class="nav-link" href="/new">Home</a>
+            <a class="nav-link" href="greg.phtml">Greg</a>
+            <a class="nav-link" href="mary.phtml">Mary</a>
+         </div>
+      </li>
+
+
+      <!-- Christmas years Dropdown -->
+      <li class="nav-item dropdown">
+         <a class="nav-link dropdown-toggle" href="#" id="displayDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Christmas Display
+         </a>
+         <ul class="dropdown-menu" arislabeledby="displayDropdown">
+            <a class="nav-link" href="christmas.phtml">Overview</a>
+            <?php Christmas_submenu(); ?>
+         </ul>
+      </li>
+
+      <!-- Christmas Tech Dropdown -->
+      <li class="nav-item dropdown">
+         <a class="nav-link dropdown-toggle" href="#" id="techDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Christmas Technology
+         </a>
+         <div class="dropdown-menu" arislabeledby="techDropdown">
+            <a class="nav-link" href="christmas.phtml">Overview</a>
+            <a class="nav-link" href="clock.php">The Clock</a>
+            <a class="nav-link" href="snowmen.php">The Snowmen</a>
+            <a class="nav-link" href="grid.php">The Grid</a>
+            <div class="dropdown-divider"></div>
+            <a class="nav-link" href="DMX.phtml">DMX / E1.31</a>
+            <a class="nav-link" href="text_message.phtml">Texting Your Name</a>
+            <a class="nav-link" href="voting.phtml">Voting for next Song</a>
+            <a class="nav-link" href="christmas_info_board.phtml">Information Board</a>
+            <a class="nav-link" href="parallel_boxes.phtml">Simple Controller (Legacy)</a>
+            <a class="nav-link" href="parallel320.phtml">320 Controller (Legacy)</a>
+         </div>
+      </li>
+
+      <li class="nav-item">
+         <a class="nav-link" href="map.phtml">Site Map</a>
+      </li>
+
+
+    </ul>
+  </div>
+</nav>
+
+<?php
+}// menu
+?>
+
+
+<BODY>
+<!-- This div is closed in footer -->
+<?php PLACE_MENU(); ?>
+<div class="container" style="padding-top: 3em;">
+
+
+

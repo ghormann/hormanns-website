@@ -1,0 +1,54 @@
+<?php 
+$title="Our Pictures";
+$subTitle = $title;
+include "intro.phtml" ?>
+
+<div class="container-fluid"><!--Main Container -->
+
+<h1>Pictures</h1>
+
+We have a few pictures available, but if you have some you would like to 
+contribute, please let us know.
+
+<br><br>
+
+<!--############## Row 1 ##############-->
+<div class="row">
+<div class="col-sm-8">
+<h2>Christmas Pictures</h2>
+
+<ul>
+<?php Christmas_Simple("<li>"); ?>
+</ul>
+
+
+</div><!--Sm-8-->
+<!--############## Image = Row 1 ##############-->
+<div class="col-sm-4">
+<a href="christmas/2001/disp_picts/merry_christmas.jpg">
+   <img src = "christmas/2001/disp_picts/_merry_christmas.jpg" border=0>
+</a>
+</div><!--Sm-4-->
+</div><!-- Row -->
+
+
+<!--############## Row 2 ##############-->
+<div class="row">
+<div class="col-sm-8">
+<h2>Family Pictures</h2>
+
+Our Family Pictures are password protected. Need a password? Then
+<a href="mailto:ghormann@gmail.com">email us</a>.
+</div><!--Sm-8-->
+
+<!--############## Image = Row 2 ##############-->
+<div class="col-sm-4">
+<a href="wedding/reception/cake3.jpg">
+<img src = "wedding/reception/_cake3.jpg" border=0
+            width = 174 heigth=117>
+</a>
+</div><!--Sm-4 -->
+</div><!--row -->
+</div><!--Main -->
+<?php include "footer.phtml" ?>
+

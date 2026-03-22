@@ -1,0 +1,731 @@
+
+#include "../lib/lor.h"
+#include "main.h"
+
+/*
+ * Function for setting color of the house
+ */
+void set_house(int light, int color, int intensity);
+void fade_house(int light, int color, int s_intensity, int f_intensity, double duration);
+
+/*
+ * All the patterns that the bushes can do
+ */
+void fadeThroughAll(double f_duration, double h_duration);
+void setAllOff();
+int get_device(int bush);
+int get_circuit(int bush, int color);
+int get_light_device(int light);
+int get_light_circuit(int light, int color);
+void setAllToColor(int color, int intensity);
+void test_bushes();
+void change_one(void);
+void move_in(void);
+void time_warp(void);
+void rotate_in (void);
+void rotate_colors (void);
+void cycle_colors(void);
+void fill_from_right(void);
+void compete(double pause, double step, double threshold);
+void slide_down(void);
+void flash_bushes(int red, int green, int blue, int white, int cnt, double delay, double start);
+
+/*
+ * There are 6 bushes. Each bush can 
+ * be one of 4 colors.  The bushes are boxes
+ * 1-4.  (From left to right 3, 2, 1, 4)
+ *
+ * Positions 6 and 7 of boxes 2 and 4 are used
+ * for the spot lights on the house.
+ */
+
+void *bushes_main(void *args)
+{
+  time_t now_t;
+  struct tm *now;
+  int loop_counter = 0;
+  int i;
+
+  setAllOff();
+
+  //Testing
+  //test_bushes();
+
+  while(1)
+  {
+    time(&now_t);
+    now = localtime(&now_t);
+
+    /*
+     * During the day (8am-5pm): make sure all boxes are off.
+     * From 5pm - 11pm: run the standard display on the bushes
+     * From 11pm-6am: just have the spotlights on the house
+     */
+    
+    while ( ( now->tm_hour == 7 && now->tm_min > 59) ||
+	    ( (now->tm_hour > 7)  && now->tm_hour < 17)
+	    )
+                                                          /* 7:59am - 5pm */
+    {
+      if (skip_time_check)
+      {
+	break;
+      }
+      setAllOff();
+
+      sprintf(message, "Sleeping 2 minutes (%d:%02d)\n", now->tm_hour,
+	      now->tm_min);
+
+      write_data(.1);
+
+
+      sleep(120);
+      time(&now_t);
+      now = localtime(&now_t);
+
+      /*
+       * This is reset just to make sure loop_counter doesn't go
+       * beyond the size of an int.  (Very unlikely to happen, but
+       * oh well.)
+       */
+      loop_counter = 0;
+      
+    } /* End 7:59am - 5pm */
+
+    
+    while ( (now->tm_hour == 23) ||     /* 11pm - 6am */
+	    (now->tm_hour >=0 && now->tm_hour <6)  )
+    {
+      if (skip_time_check)
+      {
+	break;
+      }
+
+      setAllOff();
+      
+      /* 
+       * Alternate house colors (spot lights)
+       */
+      //set_house(1, loop_counter %2, 100);
+      //set_house(2, loop_counter %2, 100);
+      //set_house(3, loop_counter %2, 100);
+      //set_house(4, loop_counter %2, 100);
+
+      sprintf (message, "House Only (%d:%02d) - %d\n", now->tm_hour,
+	      now->tm_min,
+	      loop_counter);
+      write_data(.1);
+
+      sleep(120);
+      time(&now_t);
+      now = localtime(&now_t);
+      loop_counter++;
+    
+    } /* End 11pm-6am */
+
+    /* 
+     * 5PM - 11PM, 6am - 7:30am 
+     */
+    do_it_bushes();     
+    loop_counter = 0;
+  
+  } /* End While(1) */
+} /* End Bushes_main */
+
+void test_bushes()
+{
+   double delay = 1.0;
+   int i, j;
+
+   strcpy(message,"TEST MODE");
+
+   while(1)
+   {
+      setAllOff();
+      write_data(delay);
+      set_bush(1, RED, 100);
+      write_data(delay);
+      set_bush(1, RED, 0);
+      write_data(delay);
+      set_bush(1, RED, 100);
+      write_data(delay);
+      set_bush(1, RED, 0);
+      write_data(delay);
+
+      for(i = 1; i<=6; i++)
+      {
+	 for(j=RED; j<=WHITE;j++)
+	 {
+	    set_bush(i,j,100);
+	    write_data( delay );
+	    set_bush(i,j,0);
+	 }
+	 set_bush( i, RED, 0);
+	 set_bush( i, GREEN, 0);
+	 set_bush( i, BLUE, 0);
+	 set_bush( i, WHITE, 0);
+      }
+
+      for (i = RED; i <=WHITE; i++)
+      {
+	 setAllToColor(i, 100);
+	 write_data(2);
+	 setAllToColor(i, 0);
+      }
+   }
+}
+
+/*
+ * Set All bushes to one color
+ */
+void setAllToColor(int color, int intensity)
+{
+   int i;
+   int j;
+   for (i = 1; i <= 6; i++)
+   {
+      set_bush(i, color, intensity);
+   }
+}
+
+/*
+ * Set all bushes and house lights off
+ */
+void setAllOff()
+{
+   int i;
+   int j;
+   for (i=1; i<10; i++)
+   {
+      for(j=RED; j<=WHITE; j++)
+      {
+	 set_bush(i, j, 0);
+      }
+   }
+}
+
+/*
+ * Sets a Flood light to a specific intensity
+ */
+void set_house(int light, int color, int intensity)
+{
+   int device = get_light_device(light);
+   int circuit = get_light_circuit(light, color);
+   flood_lights[light][color] = intensity;
+   setIntensity(device, circuit, intensity);
+}
+
+void fade_house(int light, int color, int s_intensity, int f_intensity, double duration)
+{
+   int device = get_device(light);
+   int circuit = get_circuit(light, color);
+
+   if (f_intensity > s_intensity)
+      flood_lights[light][color] = FADE_UP;
+   else
+      flood_lights[light][color] = FADE_DN;
+      
+   fadeLOR(device, circuit, s_intensity, f_intensity, duration);
+}
+
+/*
+ * Set_bush to a specific intensity
+ */
+void set_bush(int bush, int color, int intensity)
+{
+   int device = get_device(bush);
+   int circuit = get_circuit(bush, color);
+   bushes[bush][color] = intensity;
+   setIntensity(device, circuit, intensity);
+}
+
+int get_light_device(int light)
+{
+   if (light <= 2)
+      return 2;
+
+   return 4;
+}
+
+int get_light_circuit(int light, int color)
+{
+   if (light == 1 || light == 3)
+      return color + 5;
+
+   if (light == 2 || light == 4)
+      return color + 7;
+}
+
+int get_device(int bush)
+{
+   if (bush == 1 || bush == 2)
+      return 1;
+
+   if (bush == 3)
+      return 2;
+
+   if (bush == 4 || bush == 5)
+      return 3;
+
+   if (bush == 6) 
+      return 4;
+
+   return 4;
+}
+
+int get_circuit(int bush, int color)
+{
+   if ( bush == 1 || bush == 3 || bush == 4 || bush == 6)
+      return color + 1;
+   else 
+      return color + 5;
+}
+
+/*
+ * fade the bush 
+ */
+void fade_bush(int bush, int color, int s_intensity, int f_intensity, double duration)
+{
+   int device = get_device(bush);
+   int circuit = get_circuit(bush, color);
+
+   if (f_intensity > s_intensity)
+      bushes[bush][color] = FADE_UP;
+   else
+      bushes[bush][color] = FADE_DN;
+      
+   fadeLOR(device, circuit, s_intensity, f_intensity, duration);
+}
+
+/*
+ * Fade RED->GREEN->BLUE->->RED/GREEN/->WHITE->BLUE/GREEN
+ * f_duration-> Fade Duration
+ * h_duration-> Hold duration (after fade done.)
+ */
+void fadeThroughAll(double f_duration, double h_duration)
+{
+   int i;
+   setAllOff();
+
+   strcpy(message,"FADE Through: Fade All RED\n");
+   for (i=1; i<=6; i++)
+   {
+      fade_bush(i, RED, 0, 100, f_duration);
+      if (i <= 4)
+	 fade_house(i, RED, 0, 100, f_duration);
+   }
+   write_data(f_duration);
+   for (i=1; i<=4; i++)
+      set_house(i, RED, 100);
+
+   setAllToColor(RED, 100);
+   setAllToColor(GREEN, 0);
+   setAllToColor(BLUE, 0);
+   setAllToColor(WHITE, 0);
+   write_data(h_duration);
+
+   strcpy(message,"FADE THROUGH: Fade All RED->GREEN\n");
+   for (i=1; i<=6; i++)
+   {
+      fade_bush(i, RED, 100, 0, f_duration);
+      fade_bush(i, GREEN, 0, 100, f_duration);
+      if (i <= 4)
+      {
+	 fade_house(i, RED, 100, 0, f_duration);
+	 fade_house(i, GREEN, 0, 100, f_duration);
+      }
+   }
+   write_data(f_duration);
+   for (i=1; i<=4; i++)
+   {
+      set_house(i, RED, 0);
+      set_house(i, GREEN, 100);
+   }
+   setAllToColor(GREEN, 100);
+   setAllToColor(RED, 0);
+   write_data(h_duration);
+
+   strcpy(message,"FADE THROUGH: Fade All GREEN->BLUE\n");
+   for (i=1; i<=6; i++)
+   {
+      fade_bush(i, GREEN, 100, 0, f_duration);
+      fade_bush(i, BLUE, 0, 100, f_duration);
+      if (i <= 4)
+	 fade_house(i, GREEN, 100, 0, f_duration);
+   }
+
+   write_data(f_duration);
+   for (i=1; i<=4; i++)
+   {
+      set_house(i, GREEN, 0);
+   }
+   setAllToColor(BLUE, 100);
+   setAllToColor(GREEN,0);
+   write_data(h_duration);
+
+   strcpy(message,"FADE THROUGH: Fade All BLUE->RED+GREEN\n");
+   for (i=1; i<=6; i++)
+   {
+      fade_bush(i, BLUE, 100, 0, f_duration);
+      fade_bush(i, RED, 0, 100, f_duration);
+      fade_bush(i, GREEN, 0, 100, f_duration);
+      if (i <= 4)
+      {
+	 fade_house(i, RED,  0, 100, f_duration);
+	 fade_house(i, GREEN, 0, 100, f_duration);
+      }
+   }
+
+   write_data(f_duration);
+   for (i=1; i<=4; i++)
+   {
+      set_house(i, RED, 100);
+      set_house(i, GREEN, 100);
+   }
+   setAllToColor(RED, 100);
+   setAllToColor(GREEN, 100);
+   setAllToColor(BLUE, 0);
+   write_data(h_duration);
+
+
+   strcpy(message,"FADE THROUGH: Fade All RED+GREEN->WHITE\n");
+   for (i=1; i<=6; i++)
+   {
+      fade_bush(i, RED, 100, 0, f_duration);
+      fade_bush(i, GREEN, 100, 0, f_duration);
+      fade_bush(i, WHITE, 0, 100, f_duration);
+      if (i <= 4)
+      {
+	 fade_house(i, RED,  100, 0, f_duration);
+	 fade_house(i, GREEN, 100, 0, f_duration);
+      }
+   }
+
+   write_data(f_duration);
+   for (i=1; i<=4; i++)
+   {
+      set_house(i, RED, 0);
+      set_house(i, GREEN, 0);
+   }
+   setAllToColor(WHITE, 100);
+   setAllToColor(RED, 0);
+   setAllToColor(GREEN, 0);
+   write_data(h_duration);
+
+   strcpy(message,"FADE THROUGH: WHITE->BLUE/GREEN\n");
+   for (i=1; i<=6; i++)
+   {
+      fade_bush(i, WHITE, 100, 0, f_duration);
+      fade_bush(i, GREEN, 0, 100, f_duration);
+      fade_bush(i, BLUE, 0, 100, f_duration);
+   }
+   write_data(f_duration);
+   setAllToColor(WHITE, 0);
+   setAllToColor(BLUE, 100);
+   setAllToColor(GREEN, 100);
+   setAllToColor(RED, 0);
+   write_data(h_duration);
+
+   strcpy(message,"FADE THROUGH: BLUE/GREEN->OFF\n");
+   for (i=1; i<=6; i++)
+   {
+      fade_bush(i, GREEN, 100, 0, f_duration);
+      fade_bush(i, BLUE, 100, 0, f_duration);
+   }
+   write_data(f_duration);
+   setAllToColor(WHITE, 0);
+   setAllToColor(BLUE, 0);
+   setAllToColor(GREEN, 0);
+   setAllToColor(RED, 0);
+}
+
+void chase_left(int baseColor, int diffColor, double startDuration, 
+                 double decreasePct, double stopDuration)
+{
+   double duration = startDuration;
+   int bush = 1;
+   sprintf(message,"Chase LEFT - Duration: %f", duration);
+   setAllOff();
+   write_data(.1);
+   setAllOff();
+   write_data(.1);
+
+   setAllToColor(baseColor, 100);
+   write_data(.1);
+   setAllToColor(baseColor, 100);
+   write_data(.1);
+
+   while (duration > stopDuration)
+   {
+      sprintf(message,"Chase LEFT - Duration: %f", duration);
+      set_bush(bush, baseColor, 0);
+      set_bush(bush, diffColor, 100);
+      write_data(duration);
+      set_bush(bush, baseColor, 100);
+      set_bush(bush, diffColor, 0);
+
+      if (--bush < 1)
+	 bush = 6;
+     
+      duration -= (duration * decreasePct);
+   }
+
+}
+
+
+void chase_right(int baseColor, int diffColor, double startDuration, 
+                 double decreasePct, double stopDuration)
+{
+   double duration = startDuration;
+   int bush = 1;
+   sprintf(message,"Chase Right - Duration: %f", duration);
+   setAllOff();
+   write_data(.1);
+   setAllOff();
+   write_data(.1);
+
+   setAllToColor(baseColor, 100);
+   write_data(.1);
+   setAllToColor(baseColor, 100);
+   write_data(.1);
+
+   while (duration > stopDuration)
+   {
+      sprintf(message,"Chase Right - Duration: %f", duration);
+      set_bush(bush, baseColor, 0);
+      set_bush(bush, diffColor, 100);
+      write_data(duration);
+      set_bush(bush, baseColor, 100);
+      set_bush(bush, diffColor, 0);
+
+      if (++bush > 6)
+	 bush = 1;
+     
+      duration -= (duration * decreasePct);
+   }
+
+}
+
+void fadeAllColor(int color, int start, int end, double duration)
+{
+   int i;
+   for (i=1; i<=6; i++)
+   {
+      fade_bush(i, color, start, end, duration);
+   }
+   write_data(duration);
+
+   for (i=1; i<=6; i++)
+   {
+      set_bush(i, color, end);
+   }
+   write_data(0.1);
+}
+
+/*
+ * Change_one
+ *
+ * Set each bush to a color and then change them 
+ * one at a time.
+ */
+
+void change_one()
+{
+   int i, j;
+   double duration = 2.0;
+   int color = WHITE;
+   int old_color;
+   int bush;
+   int current_color[10];
+   setAllOff();
+
+   sprintf(message,"Change_one: Set initial Colors");
+
+   // Set initial color
+   for(i = 1; i <=6; i++)
+   {
+      if (++color > BLUE)
+	 color = RED;
+      
+      fade_bush(i, color, 0, 100, duration);
+      current_color[i] = color;
+   }
+   write_data(duration);
+
+   // Make sure the colors stuck.
+   for (i = 1; i <= 6; i++)
+   {
+      set_bush(i, current_color[i], 100);
+   }
+   write_data(0.01);
+
+   // Change colors
+   bush = 0;
+   color = RED;
+   for (i = 0; i < 20; i++)
+   {
+      sprintf(message,"Change_one: Step: %d", i);
+
+      if (++bush > 6) 
+	 bush = 1;
+
+      if (++color > BLUE)
+	 color = RED;
+
+      old_color = current_color[bush];
+      if (old_color == color)
+      {
+	 if (++color > BLUE)
+	    color = RED;
+      }
+
+      fade_bush(bush, old_color, 100, 0, duration);
+      fade_bush(bush, color, 0, 100, duration);
+      current_color[bush] = color;
+      write_data(duration);
+      write_data(0.01);
+      set_bush(bush, old_color, 0);
+      set_bush(bush, color, 100);
+      write_data(0.01);
+   }
+
+   // Fade all off
+   sprintf(message,"Change_one: Fade all off", i);
+   for (i = 1; i <= 6; i++)
+   {
+      fade_bush(i, current_color[i], 100, 0, duration);
+   }
+   write_data(duration);
+   write_data(0.01);
+   setAllOff();
+}
+
+/*
+ *
+ * This is where the work is actually done
+ *
+ */ 
+
+void do_it_bushes(void)
+{
+   double duration = 2.0;
+   int i;
+
+
+   // Step 1
+   setAllOff();
+   fadeThroughAll(5, 2);
+
+   // Fade House lighs on before Steps 2 and 3
+   sprintf(message,"Fade house on before 2 and 3");
+   duration = 3.0;
+   fade_house(1, RED, 0, 100, duration);
+   fade_house(2, GREEN, 0, 100, duration);
+   fade_house(3, RED, 0, 100, duration);
+   fade_house(4, GREEN, 0, 100, duration);
+   write_data(duration);
+   set_house(1, RED, 100);
+   set_house(2, GREEN, 100);
+   set_house(3, RED, 100);
+   set_house(4, GREEN, 100);
+   write_data(0.01);
+
+   // Step 2
+   duration = 3.0;
+   setAllOff();
+   chase_right(RED, GREEN, 2.0, 0.05, 0.1);
+   setAllToColor(RED, 100);
+   setAllToColor(GREEN, 0);
+   write_data(.1);
+   for (i=1; i<=6; i++)
+   {
+      fade_bush(i, GREEN, 0, 100, duration);
+      fade_bush(i, RED, 100, 0, duration);
+   }
+   write_data(duration + 0.1);
+   setAllToColor(RED, 0);
+   setAllToColor(GREEN, 100);
+
+   // Step 3
+   chase_left(GREEN, RED, 2.0, 0.05, 0.1);
+   setAllToColor(GREEN, 100);
+   setAllToColor(RED, 0);
+   write_data(.1);
+   for (i=1; i<=6; i++)
+   {
+      fade_bush(i, GREEN, 100, 0, duration);
+   }
+   write_data(duration + 0.1);
+   setAllToColor(RED, 0);
+   setAllToColor(GREEN, 0);
+
+   // Fade House lighs off after Steps 2 and 3
+   sprintf(message,"Fade house off after 2 and 3");
+   duration = 3.0;
+   fade_house(1, RED, 100, 0, duration);
+   fade_house(2, GREEN, 100, 0, duration);
+   fade_house(3, RED, 100, 0, duration);
+   fade_house(4, GREEN, 100, 0, duration);
+   write_data(duration);
+   set_house(1, RED, 0);
+   set_house(2, GREEN, 0);
+   set_house(3, RED, 0);
+   set_house(4, GREEN, 0);
+   write_data(0.01);
+
+   // Step 4
+   sprintf(message,"Fade WHITE from 100->25 down and back");
+   duration = 5.0;
+   fadeAllColor(WHITE, 0, 100, 2.0);
+   for (i=1; i < 4; i++)
+   {
+      fadeAllColor(WHITE, 100, 35, duration);
+      write_data(1);
+      fadeAllColor(WHITE, 35, 100, duration);
+      write_data(1);
+   }
+   sprintf(message,"Fade WHITE OFF");
+   fadeAllColor(WHITE, 100, 0, duration);
+   setAllOff();
+
+   // Step 5
+   change_one();
+
+  /*
+   * OLD
+   */
+  //flash_bushes(ON,ON, ON, ON, 22, .85, 1.5);
+
+  // fLASH BUSHES ON/off
+
+  //cycle_colors();
+
+  //compete(2, .85, .2);
+  //fill_from_right();
+  //random_change();
+
+  //set_house(1,OFF, OFF);
+  //set_house(2,OFF, OFF);
+
+  //follow_the_leader();
+  //rotate_in();
+
+  //flash_bushes(OFF,OFF, OFF, ON, 12, .65, 1.5);
+  //write_data(1.5);
+  //train();
+  //set_house(1, OFF, ON);
+  //set_house(2, OFF, ON);
+  //move_in();
+
+  //rotate_colors();
+  //random_change();
+  //time_warp();
+
+  //flash_bushes(OFF, OFF, OFF, OFF, 2, .3, .3); /* Turn everything off */
+
+} /* End do_it_bushes */
+
+
+/*  LocalWords:  int cnt args struct tm localtime pm boxs printf strcpy
+ */
+

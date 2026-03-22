@@ -1,0 +1,70 @@
+<?php 
+$title="Christmas 2017 at the Hormanns";
+$subTitle="Christmas 2017";
+include "intro.phtml" ?>
+
+<?php
+require_once 'christmasBase.phtml';
+
+class Page extends ChristmasPage
+{
+   public function intro()
+   {
+
+?>
+
+2017 is our seventeenth year for an animated Christmas Lights Display. This year we focused on increasing the number of songs and made just a few technical adjustments vs. the previous year. The most visable change was replacing the incandescent countdown clock with a LED based design.  
+
+We also invested in a much studier frame for the 18x8 foot grid that hangs above the door while nearly doubling the number of songs.
+
+<br><br>
+
+This year was amazing with over 30 neighbors joining to celebrate as the clock hit zero. Hopefully you'll join us next year!
+
+<?php 
+} // intro
+   public function getMovies()
+   {
+   $movies = array(
+             array("Nrho8ANpdqs", "Carol of the Bells"),
+             array("S4TT42B6Q_c", "I Want a Hippopotamus for Christmas"),
+             array("lgkyU6OHScM", "House on Christmas Street"),
+             array("3LnuuNEzAwY", "Light of Christmas"),
+             array("bUH0nVy8ZnA", "12 Days of Christmas"),
+             array("El0baSVF6do", "Introduction to our Display"),
+             array("xLK0kUa0DVc", "Jingle Dogs"),
+             array("BXHsjQiSyEw", "Joy to the World"),
+             array("UtwAhWNzOd0", "I heard the bells on Christmas Day"),
+             array("2AYCejAgTQY", "Little Drummer Boy"),
+             array("8932p_BQfVw", "Amazing Grace"),
+             array("dUgwAfNfWQ8", "Christmas Minions"),
+             array("jkwzZzWLxyE", "Here comes Santa Claus"),
+             array("EU6GWv_xGls", "Christmas Cannon")
+   );
+
+   return $movies;
+   } // movies()
+
+   public function stats()
+   {
+?>
+
+<ul>
+<li> 12,533 RGB lights that can be set to any color individually.
+<li> 16 LOR Circuits (Snowmen)
+<li> too many electrical and control wire to count
+</ul>
+
+
+<?php
+   } //stats
+} // class
+
+$me = new Page();
+$me->render();
+
+?>
+
+
+<?php include "footer.phtml" ?>
+

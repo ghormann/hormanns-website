@@ -1,0 +1,72 @@
+<?php 
+$title="Christmas 2016 at the Hormanns";
+$subTitle="Christmas 2016";
+include "intro.phtml" ?>
+
+<?php
+require_once 'christmasBase.phtml';
+
+class Page extends ChristmasPage
+{
+   public function intro()
+   {
+
+?>
+
+
+2016 is our sixteenth year for an animated Christmas display.  This year there were a number of new additions.  The biggest was the addtion of the 12 foot tall RGB pixel tree to the left of the house. We also added six arches in the front of the display and outlined the house in RGB pixels.  Finally, we used this year to add a radio station and synchronize the lights to the music.
+
+Behind the scenes, we converted from a custom software to leveraging the open source program <a href="http://xlights.org/">Xlights</a> for creating the display. Rather than tying up a PC to control the lights during the show, we are leveraging the <a href="http://falconchristmas.com/forum/index.php?board=8.0"> Falcon Player</a> running on a Raspberry Pi to control all the E1.31 and DMX controllers in the yard.
+
+<br><br>
+For the last eleven years or so, a number of neighbors have braved the cold to watch the clock hit midnight and welcome Christmas. 
+
+<!--We hope you'll join us this year. -->
+
+This year was amazing with over 48 neighbors joining to celebrate as the clock hit zero. Hopefully you'll join us next year!
+
+
+<?php 
+} // intro
+
+   public function getMovies() {
+   $movies = array(
+      array("cZflLb2bdmc", "Carol of the Bells"), 
+      array("EcuIWO2yEyo", "Heard the Bells"),
+      array("0k7U3Zap0h0", "Amazing Grace"), 
+      array("el0HW9apz-E", "2016 Christmas Light Introduction"),
+      array("E4dthDaBP4U", "Minons: Jinggle Bells"),
+      array("B3WMj5C03Qk", "Here Comes Santa Claus"),
+      array("nZw13jstEgg", "Christmas Cannon"), 
+      array("tXiDZqdv2gg", "Light of Christmas"), 
+      array("UdQGn5WxL0I", "Christmas Countdown Clock"),
+      array("YY1jnphglgw", "Snowmen in Snowball Fight"),
+      array("t6V2sWjIf3I", "Behind the Scenes walkthough")
+   );
+
+    return $movies;
+}
+
+    public function stats() {
+
+?>
+
+
+<ul>
+<li> 12,232 RGB lights that can be set to any color individually.
+<li> 40 LOR Circuits (Clock + Snowmen)
+<li> too much electrical and control Wire to count
+</ul>
+</div><!--Main Container -->
+
+
+<?php
+   } //stats
+} // class
+
+$me = new Page();
+$me->render();
+
+?>
+<?php include "footer.phtml" ?>
+
