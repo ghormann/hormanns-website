@@ -4,7 +4,6 @@ import ChristmasLayout from '../../layouts/ChristmasLayout.astro';
 import YouTubeGrid from '../../components/YouTubeGrid.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import StatBlock from '../../components/StatBlock.astro';
-import YearPrevNext from '../../components/YearPrevNext.astro';
 import FavDisplays from '../../components/FavDisplays.astro';
 
 export async function getStaticPaths() {
@@ -33,13 +32,44 @@ const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisp
 <ChristmasLayout title={title}>
   <!-- Hero heading strip -->
   <div
-    class="rounded-lg px-6 py-4 mb-6 -mx-2"
+    class="rounded-lg px-6 py-4 mb-4 -mx-2"
     style="background-color: var(--color-amber);"
   >
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-brown);">
       {title}
     </h1>
   </div>
+
+  <!-- Year navigation -->
+  <nav class="flex justify-between items-center mb-6 text-sm" style="font-family: var(--font-sans);">
+    {prev ? (
+      <a
+        href={`/christmas/${prev.year}/`}
+        class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80"
+        style="background-color: var(--color-amber); color: var(--color-brown);"
+      >
+        ← {prev.year}
+      </a>
+    ) : <span />}
+
+    <a
+      href="/christmas/"
+      class="font-medium px-3 py-1 rounded-full border transition-opacity hover:opacity-80"
+      style="border-color: var(--color-amber); color: var(--color-brown-light);"
+    >
+      All Years
+    </a>
+
+    {next ? (
+      <a
+        href={`/christmas/${next.year}/`}
+        class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80"
+        style="background-color: var(--color-amber); color: var(--color-brown);"
+      >
+        {next.year} →
+      </a>
+    ) : <span />}
+  </nav>
 
   {heroImage && (
     <img
@@ -106,7 +136,6 @@ const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisp
 
   {showFavDisplays && <FavDisplays />}
 
-  <YearPrevNext prev={prev} next={next} />
 </ChristmasLayout>
 
 <style>
