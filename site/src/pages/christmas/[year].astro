@@ -41,34 +41,40 @@ const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisp
   </div>
 
   <!-- Year navigation -->
-  <nav class="flex justify-between items-center mb-6 text-sm" style="font-family: var(--font-sans);">
-    {prev ? (
-      <a
-        href={`/christmas/${prev.year}/`}
-        class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80"
-        style="background-color: var(--color-amber); color: var(--color-brown);"
-      >
-        ← {prev.year}
-      </a>
-    ) : <span />}
+  <nav class="grid grid-cols-3 items-center mb-6 text-sm" style="font-family: var(--font-sans);">
+    <div>
+      {prev && (
+        <a
+          href={`/christmas/${prev.year}/`}
+          class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80 w-fit"
+          style="background-color: var(--color-amber); color: var(--color-brown);"
+        >
+          ← {prev.year}
+        </a>
+      )}
+    </div>
 
-    <a
-      href="/christmas/"
-      class="font-medium px-3 py-1 rounded-full border transition-opacity hover:opacity-80"
-      style="border-color: var(--color-amber); color: var(--color-brown-light);"
-    >
-      All Years
-    </a>
-
-    {next ? (
+    <div class="flex justify-center">
       <a
-        href={`/christmas/${next.year}/`}
-        class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80"
-        style="background-color: var(--color-amber); color: var(--color-brown);"
+        href="/christmas/"
+        class="font-medium px-3 py-1 rounded-full border transition-opacity hover:opacity-80"
+        style="border-color: var(--color-amber); color: var(--color-brown-light);"
       >
-        {next.year} →
+        All Years
       </a>
-    ) : <span />}
+    </div>
+
+    <div class="flex justify-end">
+      {next && (
+        <a
+          href={`/christmas/${next.year}/`}
+          class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80"
+          style="background-color: var(--color-amber); color: var(--color-brown);"
+        >
+          {next.year} →
+        </a>
+      )}
+    </div>
   </nav>
 
   {heroImage && (
