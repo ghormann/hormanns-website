@@ -84,7 +84,7 @@ dialog#lightbox {
   margin: 0;
   padding: 0;
   border: none;
-  background-color: color-mix(in srgb, var(--color-green-deep) 97%, transparent);
+  background-color: rgba(0, 0, 0, 0.92);
   display: flex;
   align-items: center;
   justify-content: center;
