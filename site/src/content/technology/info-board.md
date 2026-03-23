@@ -1,6 +1,7 @@
 ---
 title: "Christmas Information Board"
 description: "A 12ft wide P10 panel display showing real-time power usage, radio station, and viewer interaction info."
+heroImage: https://img.youtube.com/vi/ksmsWpjH3jE/hqdefault.jpg
 order: 7
 videos:
   - id: "ksmsWpjH3jE"

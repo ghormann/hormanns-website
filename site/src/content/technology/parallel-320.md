@@ -4,9 +4,10 @@ description: "The Hill-Robertson design for controlling up to 320 individually s
 order: 9
 videos: []
 photos:
+  - src: "christmas/2008/hill320_front.jpg"
+    caption: "Controller Front"
   - src: "christmas/2002/2002_board1.jpg"
     caption: "Controller Board"
-    thumb: "christmas/2002/_2002_board1.jpg"
   - src: "christmas/2002/2002_board2.jpg"
     thumb: "christmas/2002/_2002_board2.jpg"
   - src: "christmas/2002/2002_board_3.jpg"

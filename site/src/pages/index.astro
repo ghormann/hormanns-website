@@ -1,13 +1,8 @@
 ---
-import { getCollection } from 'astro:content';
 import PageLayout from '../layouts/PageLayout.astro';
-import YearCard from '../components/YearCard.astro';
+import RecentDisplays from '../components/RecentDisplays.astro';
 import YouTubeGrid from '../components/YouTubeGrid.astro';
 import FavDisplays from '../components/FavDisplays.astro';
-
-const recentYears = (await getCollection('christmas', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.year - a.data.year)
-  .slice(0, 6);
 
 const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display' }];
 ---
@@ -59,18 +54,7 @@ const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display'
         and <a href="/technology/dmx/">pixels controlled by E1.31</a>.
         If you are curious about the history of our display, we've captured <a href="/christmas/our-story/">our story</a>.
       </p>
-      <h2 class="text-lg font-semibold mb-3" style="color: var(--color-brown);">Recent Displays</h2>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-2">
-        {recentYears.map(y => (
-          <YearCard
-            year={y.data.year}
-            heroImage={y.data.heroImage}
-          />
-        ))}
-      </div>
-      <p class="text-sm" style="font-family: var(--font-sans);">
-        <a href="/christmas/">See all years →</a>
-      </p>
+      <RecentDisplays />
     </div>
     <div>
       <a href="/christmas/">
