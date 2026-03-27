@@ -70,6 +70,7 @@ const currentPath = Astro.url.pathname;
       <button
         class="nav-btn"
         aria-haspopup="true"
+        aria-expanded="false"
       >
         Meet Us ▾
       </button>
@@ -83,7 +84,7 @@ const currentPath = Astro.url.pathname;
 
     <!-- Christmas Display -->
     <li class="group relative">
-      <button class="nav-btn" aria-haspopup="true">
+      <button class="nav-btn" aria-haspopup="true" aria-expanded="false">
         Christmas Display ▾
       </button>
       <ul class="dropdown">
@@ -98,7 +99,7 @@ const currentPath = Astro.url.pathname;
 
     <!-- Technology -->
     <li class="group relative">
-      <button class="nav-btn" aria-haspopup="true">
+      <button class="nav-btn" aria-haspopup="true" aria-expanded="false">
         Technology ▾
       </button>
       <ul class="dropdown">
@@ -166,8 +167,9 @@ const currentPath = Astro.url.pathname;
     padding: 0.25rem 0;
     z-index: 100;
   }
-  /* Show on hover (CSS-only, no JS needed on desktop) */
-  .group:hover .dropdown {
+  /* Show on hover (progressive enhancement) or when JS opens it */
+  .group:hover .dropdown,
+  .group.is-open .dropdown {
     display: block;
   }
 
@@ -183,3 +185,71 @@ const currentPath = Astro.url.pathname;
     background-color: var(--color-amber-dark);
   }
 </style>
+
+<script>
+  function initNavDropdowns() {
+    const groups = document.querySelectorAll('nav .group.relative');
+
+    function closeAll() {
+      groups.forEach(g => {
+        g.classList.remove('is-open');
+        const btn = g.querySelector('.nav-btn');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    groups.forEach(group => {
+      const btn = group.querySelector('.nav-btn');
+      if (!btn) return;
+
+      btn.addEventListener('click', () => {
+        const isOpen = group.classList.contains('is-open');
+        closeAll();
+        if (!isOpen) {
+          group.classList.add('is-open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        } else if (e.key === 'Escape') {
+          closeAll();
+          btn.focus();
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const first = group.querySelector('.dropdown-item');
+          if (first) first.focus();
+          if (!group.classList.contains('is-open')) btn.click();
+        }
+      });
+
+      group.addEventListener('focusout', (e) => {
+        if (!group.contains(e.relatedTarget)) {
+          group.classList.remove('is-open');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Escape from within dropdown
+      group.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeAll();
+          btn.focus();
+        }
+      });
+    });
+
+    // Click outside closes all
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('nav .group.relative')) {
+        closeAll();
+      }
+    });
+  }
+
+  initNavDropdowns();
+  document.addEventListener('astro:after-swap', initNavDropdowns);
+</script>
