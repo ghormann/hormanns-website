@@ -7,6 +7,11 @@ const years = (await getCollection('christmas', ({ data }) => !data.draft))
 const recentYears = years.slice(0, 6);
 
 const currentPath = Astro.url.pathname;
+
+const isActive = (href: string) => currentPath === href;
+const inMeetUs = ['/', '/greg/', '/mary/', '/pictures/'].includes(currentPath);
+const inChristmas = currentPath.startsWith('/christmas/');
+const inTechnology = currentPath.startsWith('/technology/');
 ---
 
 <nav
@@ -36,30 +41,30 @@ const currentPath = Astro.url.pathname;
       class="absolute top-full left-0 right-0 shadow-lg p-4 flex flex-col gap-2"
       style="background-color: var(--color-amber);"
     >
-      <a href="/" class="nav-link">Home</a>
-      <a href="/greg/" class="nav-link">Greg</a>
-      <a href="/mary/" class="nav-link">Mary</a>
-      <a href="/pictures/" class="nav-link">Pictures</a>
+      <a href="/" class={`nav-link${isActive('/') ? ' nav-link--active' : ''}`}>Home</a>
+      <a href="/greg/" class={`nav-link${isActive('/greg/') ? ' nav-link--active' : ''}`}>Greg</a>
+      <a href="/mary/" class={`nav-link${isActive('/mary/') ? ' nav-link--active' : ''}`}>Mary</a>
+      <a href="/pictures/" class={`nav-link${isActive('/pictures/') ? ' nav-link--active' : ''}`}>Pictures</a>
       <hr style="border-color: var(--color-amber-dark);" />
       <span class="nav-link font-semibold">Christmas Display</span>
       <div class="pl-3 flex flex-wrap gap-x-3">
         {recentYears.map(y => (
-          <a href={`/christmas/${y.data.year}/`} class="nav-link text-sm">{y.data.year}</a>
+          <a href={`/christmas/${y.data.year}/`} class={`nav-link text-sm${isActive(`/christmas/${y.data.year}/`) ? ' nav-link--active' : ''}`}>{y.data.year}</a>
         ))}
       </div>
-      <a href="/christmas/" class="nav-link pl-3 text-sm">All Years</a>
-      <a href="/christmas/our-story/" class="nav-link pl-3 text-sm">Our Story</a>
+      <a href="/christmas/" class={`nav-link pl-3 text-sm${isActive('/christmas/') ? ' nav-link--active' : ''}`}>All Years</a>
+      <a href="/christmas/our-story/" class={`nav-link pl-3 text-sm${isActive('/christmas/our-story/') ? ' nav-link--active' : ''}`}>Our Story</a>
       <hr style="border-color: var(--color-amber-dark);" />
-      <a href="/technology/" class="nav-link font-semibold">Technology</a>
-      <a href="/technology/clock/" class="nav-link pl-3 text-sm">The Clock</a>
-      <a href="/technology/snowmen/" class="nav-link pl-3 text-sm">The Snowmen</a>
-      <a href="/technology/grid/" class="nav-link pl-3 text-sm">The Grid</a>
-      <a href="/technology/dmx/" class="nav-link pl-3 text-sm">DMX / E1.31</a>
-      <a href="/technology/text-message/" class="nav-link pl-3 text-sm">Texting Your Name</a>
-      <a href="/technology/voting/" class="nav-link pl-3 text-sm">Voting for Songs</a>
-      <a href="/technology/info-board/" class="nav-link pl-3 text-sm">Information Board</a>
+      <a href="/technology/" class={`nav-link font-semibold${isActive('/technology/') ? ' nav-link--active' : ''}`}>Technology</a>
+      <a href="/technology/clock/" class={`nav-link pl-3 text-sm${isActive('/technology/clock/') ? ' nav-link--active' : ''}`}>The Clock</a>
+      <a href="/technology/snowmen/" class={`nav-link pl-3 text-sm${isActive('/technology/snowmen/') ? ' nav-link--active' : ''}`}>The Snowmen</a>
+      <a href="/technology/grid/" class={`nav-link pl-3 text-sm${isActive('/technology/grid/') ? ' nav-link--active' : ''}`}>The Grid</a>
+      <a href="/technology/dmx/" class={`nav-link pl-3 text-sm${isActive('/technology/dmx/') ? ' nav-link--active' : ''}`}>DMX / E1.31</a>
+      <a href="/technology/text-message/" class={`nav-link pl-3 text-sm${isActive('/technology/text-message/') ? ' nav-link--active' : ''}`}>Texting Your Name</a>
+      <a href="/technology/voting/" class={`nav-link pl-3 text-sm${isActive('/technology/voting/') ? ' nav-link--active' : ''}`}>Voting for Songs</a>
+      <a href="/technology/info-board/" class={`nav-link pl-3 text-sm${isActive('/technology/info-board/') ? ' nav-link--active' : ''}`}>Information Board</a>
       <hr style="border-color: var(--color-amber-dark);" />
-      <a href="/sitemap/" class="nav-link">Site Map</a>
+      <a href="/sitemap/" class={`nav-link${isActive('/sitemap/') ? ' nav-link--active' : ''}`}>Site Map</a>
     </div>
   </details>
 
@@ -68,58 +73,58 @@ const currentPath = Astro.url.pathname;
     <!-- Meet Us -->
     <li class="group relative">
       <button
-        class="nav-btn"
+        class={`nav-btn${inMeetUs ? ' nav-btn--active' : ''}`}
         aria-haspopup="true"
         aria-expanded="false"
       >
         Meet Us ▾
       </button>
       <ul class="dropdown">
-        <li><a href="/" class="dropdown-item">Home</a></li>
-        <li><a href="/greg/" class="dropdown-item">Greg</a></li>
-        <li><a href="/mary/" class="dropdown-item">Mary</a></li>
-        <li><a href="/pictures/" class="dropdown-item">Pictures</a></li>
+        <li><a href="/" class={`dropdown-item${isActive('/') ? ' dropdown-item--active' : ''}`}>Home</a></li>
+        <li><a href="/greg/" class={`dropdown-item${isActive('/greg/') ? ' dropdown-item--active' : ''}`}>Greg</a></li>
+        <li><a href="/mary/" class={`dropdown-item${isActive('/mary/') ? ' dropdown-item--active' : ''}`}>Mary</a></li>
+        <li><a href="/pictures/" class={`dropdown-item${isActive('/pictures/') ? ' dropdown-item--active' : ''}`}>Pictures</a></li>
       </ul>
     </li>
 
     <!-- Christmas Display -->
     <li class="group relative">
-      <button class="nav-btn" aria-haspopup="true" aria-expanded="false">
+      <button class={`nav-btn${inChristmas ? ' nav-btn--active' : ''}`} aria-haspopup="true" aria-expanded="false">
         Christmas Display ▾
       </button>
       <ul class="dropdown">
         {recentYears.map(y => (
-          <li><a href={`/christmas/${y.data.year}/`} class="dropdown-item">{y.data.year}</a></li>
+          <li><a href={`/christmas/${y.data.year}/`} class={`dropdown-item${isActive(`/christmas/${y.data.year}/`) ? ' dropdown-item--active' : ''}`}>{y.data.year}</a></li>
         ))}
         <li><hr style="border-color: var(--color-amber-dark);" /></li>
-        <li><a href="/christmas/" class="dropdown-item">All Years</a></li>
-        <li><a href="/christmas/our-story/" class="dropdown-item">Our Story</a></li>
+        <li><a href="/christmas/" class={`dropdown-item${isActive('/christmas/') ? ' dropdown-item--active' : ''}`}>All Years</a></li>
+        <li><a href="/christmas/our-story/" class={`dropdown-item${isActive('/christmas/our-story/') ? ' dropdown-item--active' : ''}`}>Our Story</a></li>
       </ul>
     </li>
 
     <!-- Technology -->
     <li class="group relative">
-      <button class="nav-btn" aria-haspopup="true" aria-expanded="false">
+      <button class={`nav-btn${inTechnology ? ' nav-btn--active' : ''}`} aria-haspopup="true" aria-expanded="false">
         Technology ▾
       </button>
       <ul class="dropdown">
-        <li><a href="/technology/" class="dropdown-item">Overview</a></li>
-        <li><a href="/technology/clock/" class="dropdown-item">The Clock</a></li>
-        <li><a href="/technology/snowmen/" class="dropdown-item">The Snowmen</a></li>
-        <li><a href="/technology/grid/" class="dropdown-item">The Grid</a></li>
+        <li><a href="/technology/" class={`dropdown-item${isActive('/technology/') ? ' dropdown-item--active' : ''}`}>Overview</a></li>
+        <li><a href="/technology/clock/" class={`dropdown-item${isActive('/technology/clock/') ? ' dropdown-item--active' : ''}`}>The Clock</a></li>
+        <li><a href="/technology/snowmen/" class={`dropdown-item${isActive('/technology/snowmen/') ? ' dropdown-item--active' : ''}`}>The Snowmen</a></li>
+        <li><a href="/technology/grid/" class={`dropdown-item${isActive('/technology/grid/') ? ' dropdown-item--active' : ''}`}>The Grid</a></li>
         <li><hr style="border-color: var(--color-amber-dark);" /></li>
-        <li><a href="/technology/dmx/" class="dropdown-item">DMX / E1.31</a></li>
-        <li><a href="/technology/text-message/" class="dropdown-item">Texting Your Name</a></li>
-        <li><a href="/technology/voting/" class="dropdown-item">Voting for Songs</a></li>
-        <li><a href="/technology/info-board/" class="dropdown-item">Information Board</a></li>
+        <li><a href="/technology/dmx/" class={`dropdown-item${isActive('/technology/dmx/') ? ' dropdown-item--active' : ''}`}>DMX / E1.31</a></li>
+        <li><a href="/technology/text-message/" class={`dropdown-item${isActive('/technology/text-message/') ? ' dropdown-item--active' : ''}`}>Texting Your Name</a></li>
+        <li><a href="/technology/voting/" class={`dropdown-item${isActive('/technology/voting/') ? ' dropdown-item--active' : ''}`}>Voting for Songs</a></li>
+        <li><a href="/technology/info-board/" class={`dropdown-item${isActive('/technology/info-board/') ? ' dropdown-item--active' : ''}`}>Information Board</a></li>
         <li><hr style="border-color: var(--color-amber-dark);" /></li>
-        <li><a href="/technology/parallel-8/" class="dropdown-item text-sm">Simple Controller (Legacy)</a></li>
-        <li><a href="/technology/parallel-320/" class="dropdown-item text-sm">320 Controller (Legacy)</a></li>
+        <li><a href="/technology/parallel-8/" class={`dropdown-item text-sm${isActive('/technology/parallel-8/') ? ' dropdown-item--active' : ''}`}>Simple Controller (Legacy)</a></li>
+        <li><a href="/technology/parallel-320/" class={`dropdown-item text-sm${isActive('/technology/parallel-320/') ? ' dropdown-item--active' : ''}`}>320 Controller (Legacy)</a></li>
       </ul>
     </li>
 
     <li>
-      <a href="/sitemap/" class="nav-btn">Site Map</a>
+      <a href="/sitemap/" class={`nav-btn${isActive('/sitemap/') ? ' nav-btn--active' : ''}`}>Site Map</a>
     </li>
   </ul>
 </nav>
@@ -149,6 +154,10 @@ const currentPath = Astro.url.pathname;
   }
   .nav-btn:hover {
     background-color: var(--color-amber-dark);
+  }
+  .nav-btn--active {
+    border-bottom: 2px solid var(--color-brown);
+    padding-bottom: calc(0.4rem - 2px);
   }
 
   /* Dropdown panel — hidden by default, shown on group hover */
@@ -183,6 +192,15 @@ const currentPath = Astro.url.pathname;
   }
   .dropdown-item:hover {
     background-color: var(--color-amber-dark);
+  }
+  .dropdown-item--active {
+    background-color: var(--color-amber-dark);
+    font-weight: 600;
+  }
+
+  .nav-link--active {
+    font-weight: 700;
+    text-decoration: underline;
   }
 </style>
 
