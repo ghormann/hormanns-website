@@ -2,7 +2,7 @@
 
 ## High Priority
 
-### UX-01: Desktop dropdown menus inaccessible by keyboard and fragile on touch
+### ~~UX-01: Desktop dropdown menus inaccessible by keyboard and fragile on touch~~ ✓ FIXED
 
 **File:** `site/src/components/NavBar.astro:69-118`
 
@@ -14,7 +14,7 @@
 
 ---
 
-### UX-02: No current-page indicator in navigation
+### ~~UX-02: No current-page indicator in navigation~~ ✓ FIXED
 
 **File:** `site/src/components/NavBar.astro:9` (collects `currentPath` but never uses it)
 
@@ -26,7 +26,7 @@
 
 ---
 
-### UX-03: Homepage wedding photo links to raw image file
+### ~~UX-03: Homepage wedding photo links to raw image file~~ ✓ FIXED
 
 **File:** `site/src/pages/index.astro:33-39`
 
@@ -50,7 +50,7 @@
 
 ---
 
-### UX-05: No loading placeholder for lazy-loaded gallery images
+### ~~UX-05: No loading placeholder for lazy-loaded gallery images~~ ✓ FIXED
 
 **File:** `site/src/components/PhotoGallery.astro:37-42`
 
