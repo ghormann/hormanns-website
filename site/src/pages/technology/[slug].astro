@@ -64,8 +64,10 @@ const heroAlt = heroImageAlt ?? photos?.[0]?.caption ?? title;
 
 <style>
   .prose p { margin-bottom: 1em; }
+  :global(.prose p) { margin-bottom: 12px; }
   .prose ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; }
   .prose li { margin-bottom: 0.25em; }
-  .prose h2, .prose h3 { color: var(--color-heading); margin-top: 1.5em; margin-bottom: 0.5em; }
+  :global(.prose h2) { color: var(--color-heading); margin-top: 1.5em; margin-bottom: 0.5em; font-size: 1.25rem; font-weight: 600; }
+  :global(.prose h3) { color: var(--color-heading); margin-top: 1.5em; margin-bottom: 0.5em; }
   .prose img { max-width: 100%; border-radius: 0.5rem; }
 </style>
