@@ -23,7 +23,7 @@ const { videos, cols = 2 } = Astro.props;
           target="_blank"
           rel="noopener noreferrer"
           class="group flex flex-col rounded overflow-hidden shadow hover:shadow-md transition-shadow"
-          style="background-color: var(--color-card);"
+          style="background-color: var(--color-card-bg);"
         >
           <div class="relative overflow-hidden aspect-video bg-gray-200">
             <img
@@ -40,7 +40,7 @@ const { videos, cols = 2 } = Astro.props;
               </svg>
             </div>
           </div>
-          <p class="text-sm px-2 py-1 leading-snug" style="font-family: var(--font-sans); color: var(--color-brown);">
+          <p class="text-sm px-2 py-1 leading-snug" style="font-family: var(--font-sans); color: var(--color-heading);">
             {v.title}
           </p>
         </a>

@@ -22,8 +22,8 @@ const heroAlt = heroImageAlt ?? photos?.[0]?.caption ?? title;
 ---
 
 <PageLayout title={`${title} — The Hormanns`}>
-  <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-amber);">
-    <h1 class="text-3xl font-bold m-0" style="color: var(--color-brown);">{title}</h1>
+  <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">{title}</h1>
   </div>
 
   {heroSrc && (
@@ -40,22 +40,22 @@ const heroAlt = heroImageAlt ?? photos?.[0]?.caption ?? title;
 
   {videos.length > 0 && (
     <>
-      <h2 class="text-xl font-semibold mt-8 mb-2" style="color: var(--color-brown);">Videos</h2>
+      <h2 class="text-xl font-semibold mt-8 mb-2" style="color: var(--color-heading);">Videos</h2>
       <YouTubeGrid videos={videos} />
     </>
   )}
 
   {photos.length > 0 && (
     <>
-      <h2 class="text-xl font-semibold mt-8 mb-2" style="color: var(--color-brown);">Photos</h2>
+      <h2 class="text-xl font-semibold mt-8 mb-2" style="color: var(--color-heading);">Photos</h2>
       <PhotoGallery photos={photos} />
     </>
   )}
 
   {showFavDisplays && <FavDisplays />}
 
-  <div class="mt-8 pt-4 border-t" style="border-color: var(--color-amber);">
-    <a href="/technology/" class="text-sm hover:underline" style="font-family: var(--font-sans); color: var(--color-brown-light);">
+  <div class="mt-8 pt-4 border-t" style="border-color: var(--color-accent);">
+    <a href="/technology/" class="text-sm hover:underline" style="font-family: var(--font-sans); color: var(--color-link);">
       ← Back to Technology
     </a>
   </div>
@@ -63,9 +63,8 @@ const heroAlt = heroImageAlt ?? photos?.[0]?.caption ?? title;
 
 <style>
   .prose p { margin-bottom: 1em; }
-  .prose a { color: var(--color-brown-light); text-decoration: underline; }
   .prose ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; }
   .prose li { margin-bottom: 0.25em; }
-  .prose h2, .prose h3 { color: var(--color-brown); margin-top: 1.5em; margin-bottom: 0.5em; }
+  .prose h2, .prose h3 { color: var(--color-heading); margin-top: 1.5em; margin-bottom: 0.5em; }
   .prose img { max-width: 100%; border-radius: 0.5rem; }
 </style>

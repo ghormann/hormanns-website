@@ -7,7 +7,7 @@ const recentYears = (await getCollection('christmas', ({ data }) => !data.draft)
   .slice(0, 6);
 ---
 
-<h2 class="text-lg font-semibold mb-3" style="color: var(--color-brown);">Recent Displays</h2>
+<h2 class="text-lg font-semibold mb-3" style="color: var(--color-heading);">Recent Displays</h2>
 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-2">
   {recentYears.map(y => (
     <YearCard year={y.data.year} heroImage={y.data.heroImage} />

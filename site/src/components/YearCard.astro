@@ -11,7 +11,7 @@ const { year, heroImage, highlight } = Astro.props;
 <a
   href={`/christmas/${year}/`}
   class="group block rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow"
-  style="background-color: var(--color-card);"
+  style="background-color: var(--color-card-bg);"
 >
   {heroImage ? (
     <div class="relative aspect-video overflow-hidden">
@@ -33,15 +33,15 @@ const { year, heroImage, highlight } = Astro.props;
   ) : (
     <div
       class="aspect-video flex items-center justify-center"
-      style="background-color: var(--color-amber);"
+      style="background-color: var(--color-accent);"
     >
-      <span class="text-4xl font-bold" style="color: var(--color-brown); font-family: var(--font-serif);">
+      <span class="text-4xl font-bold" style="color: var(--color-heading); font-family: var(--font-serif);">
         {year}
       </span>
     </div>
   )}
   {highlight && (
-    <p class="text-xs px-3 py-2" style="font-family: var(--font-sans); color: var(--color-brown-light);">
+    <p class="text-xs px-3 py-2" style="font-family: var(--font-sans); color: var(--color-link);">
       {highlight}
     </p>
   )}

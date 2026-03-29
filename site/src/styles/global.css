@@ -2,16 +2,16 @@
 
 @theme {
   /* Brand palette — Festive Warmth (Christmas) */
-  --color-cream: #F5F0E8;
-  --color-amber: #C8A840;        /* gold — hero banners, accent */
-  --color-amber-dark: #A88C2A;   /* darker gold — hover on gold surfaces */
-  --color-brown: #8B1C1C;        /* Christmas red — headings */
-  --color-brown-light: #2D6A4F;  /* forest green — links */
-  --color-green-deep: #1A3C2A;   /* dark green — footer */
-  --color-green-nav: #1A4A2A;    /* deep green — nav bar */
-  --color-green-nav-dark: #15381F; /* darker green — nav hover */
+  --color-page-bg: #F5F0E8;
+  --color-accent: #C8A840;        /* gold — hero banners, accent */
+  --color-accent-hover: #A88C2A;   /* darker gold — hover on gold surfaces */
+  --color-heading: #8B1C1C;        /* Christmas red — headings */
+  --color-link: #2D6A4F;  /* forest green — links */
+  --color-footer-bg: #1A3C2A;   /* dark green — footer */
+  --color-nav-bg: #1A4A2A;    /* deep green — nav bar */
+  --color-nav-hover: #15381F; /* darker green — nav hover */
   --color-nav-text: #F5EDD0;     /* warm cream — text on green nav */
-  --color-card: #FDFAF3;
+  --color-card-bg: #FDFAF3;
   --color-text: #1C1410;
 
   /* Typography */
@@ -21,26 +21,27 @@
 
 /* Base styles */
 body {
-  background-color: var(--color-cream);
+  background-color: var(--color-page-bg);
   color: var(--color-text);
   font-family: var(--font-serif);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--color-brown);
+  color: var(--color-heading);
   font-family: var(--font-serif);
 }
 
-/* Brown link styling for content sections */
-.brown-links a {
-  color: var(--color-brown-light);
+/* Link styling for content sections */
+.brown-links a,
+.prose a {
+  color: var(--color-link);
   text-decoration: underline;
 }
 
 
 /* Smooth focus ring */
 :focus-visible {
-  outline: 2px solid var(--color-brown);
+  outline: 2px solid var(--color-heading);
   outline-offset: 2px;
 }
 

@@ -7,8 +7,8 @@ const pages = (await getCollection('technology', ({ data }) => !data.draft))
 ---
 
 <PageLayout title="Christmas Technology — The Hormanns">
-  <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-amber);">
-    <h1 class="text-3xl font-bold m-0" style="color: var(--color-brown);">Christmas Technology</h1>
+  <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-accent);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Christmas Technology</h1>
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -21,7 +21,7 @@ const pages = (await getCollection('technology', ({ data }) => !data.draft))
         <a
           href={`/technology/${p.id}/`}
           class="group block rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow"
-          style="background-color: var(--color-card);"
+          style="background-color: var(--color-card-bg);"
         >
           {imgSrc ? (
             <div class="relative aspect-video overflow-hidden">
@@ -41,14 +41,14 @@ const pages = (await getCollection('technology', ({ data }) => !data.draft))
               </div>
             </div>
           ) : (
-            <div class="aspect-video flex items-center justify-center px-4 text-center" style="background-color: var(--color-amber);">
-              <span class="text-lg font-bold" style="color: var(--color-brown); font-family: var(--font-serif);">
+            <div class="aspect-video flex items-center justify-center px-4 text-center" style="background-color: var(--color-accent);">
+              <span class="text-lg font-bold" style="color: var(--color-heading); font-family: var(--font-serif);">
                 {p.data.title}
               </span>
             </div>
           )}
           {p.data.description && (
-            <p class="text-xs px-3 py-2" style="font-family: var(--font-sans); color: var(--color-brown-light);">
+            <p class="text-xs px-3 py-2" style="font-family: var(--font-sans); color: var(--color-link);">
               {p.data.description}
             </p>
           )}

@@ -7,12 +7,12 @@ interface Props {
 const { prev, next } = Astro.props;
 ---
 
-<nav class="flex justify-between items-center mt-10 pt-6 border-t" style="border-color: var(--color-amber);">
+<nav class="flex justify-between items-center mt-10 pt-6 border-t" style="border-color: var(--color-accent);">
   {prev ? (
     <a
       href={`/christmas/${prev.year}/`}
       class="flex items-center gap-2 text-sm font-medium hover:underline"
-      style="font-family: var(--font-sans); color: var(--color-brown);"
+      style="font-family: var(--font-sans); color: var(--color-heading);"
     >
       ← {prev.year}
     </a>
@@ -21,7 +21,7 @@ const { prev, next } = Astro.props;
   <a
     href="/christmas/"
     class="text-sm hover:underline"
-    style="font-family: var(--font-sans); color: var(--color-brown-light);"
+    style="font-family: var(--font-sans); color: var(--color-link);"
   >
     All Years
   </a>
@@ -30,7 +30,7 @@ const { prev, next } = Astro.props;
     <a
       href={`/christmas/${next.year}/`}
       class="flex items-center gap-2 text-sm font-medium hover:underline"
-      style="font-family: var(--font-sans); color: var(--color-brown);"
+      style="font-family: var(--font-sans); color: var(--color-heading);"
     >
       {next.year} →
     </a>

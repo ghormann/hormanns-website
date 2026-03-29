@@ -9,26 +9,26 @@ const { stats } = Astro.props;
 {stats && Object.keys(stats).length > 0 && (
   <div
     class="rounded-lg p-4 my-6"
-    style="background-color: var(--color-amber); border-left: 4px solid var(--color-brown);"
+    style="background-color: var(--color-accent); border-left: 4px solid var(--color-heading);"
   >
-    <h3 class="mt-0 mb-3 text-base font-semibold" style="font-family: var(--font-sans); color: var(--color-brown);">
+    <h3 class="mt-0 mb-3 text-base font-semibold" style="font-family: var(--font-sans); color: var(--color-heading);">
       By the Numbers
     </h3>
     <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
       {Object.entries(stats).map(([key, val]) => (
         /^stat_\d+$/.test(key) ? (
-          <div class="col-span-2 flex gap-2 text-sm py-1 border-b" style="border-color: var(--color-amber-dark);">
-            <span style="color: var(--color-brown);">•</span>
-            <span style="font-family: var(--font-sans); color: var(--color-brown);">
+          <div class="col-span-2 flex gap-2 text-sm py-1 border-b" style="border-color: var(--color-accent-hover);">
+            <span style="color: var(--color-heading);">•</span>
+            <span style="font-family: var(--font-sans); color: var(--color-heading);">
               {typeof val === 'number' ? val.toLocaleString() : val}
             </span>
           </div>
         ) : (
-          <div class="flex justify-between gap-2 text-sm py-1 border-b" style="border-color: var(--color-amber-dark);">
-            <dt style="font-family: var(--font-sans); color: var(--color-brown-light);" class="capitalize">
+          <div class="flex justify-between gap-2 text-sm py-1 border-b" style="border-color: var(--color-accent-hover);">
+            <dt style="font-family: var(--font-sans); color: var(--color-link);" class="capitalize">
               {key.replace(/_/g, ' ')}
             </dt>
-            <dd class="font-semibold text-right" style="color: var(--color-brown);">
+            <dd class="font-semibold text-right" style="color: var(--color-heading);">
               {typeof val === 'number' ? val.toLocaleString() : val}
             </dd>
           </div>
