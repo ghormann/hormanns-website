@@ -6,7 +6,7 @@ const pages = (await getCollection('technology', ({ data }) => !data.draft))
   .sort((a, b) => a.data.order - b.data.order);
 ---
 
-<PageLayout title="Christmas Technology — The Hormanns">
+<PageLayout title="Christmas Technology — The Hormanns" description="The technology behind the Hormann Christmas light display — RGB pixels, E1.31, xLights, FPP, custom controllers, and interactive features.">
   <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-accent);">
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Christmas Technology</h1>
   </div>
