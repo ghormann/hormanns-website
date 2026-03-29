@@ -15,13 +15,14 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, heroImage, heroImageAlt, videos, photos, showFavDisplays } = entry.data;
+const { title, description, heroImage, heroImageAlt, videos, photos, showFavDisplays } = entry.data;
+const ogImage = heroImage ?? undefined;
 const abs = (p: string) => (p.startsWith('/') || p.startsWith('http') ? p : `/${p}`);
 const heroSrc = heroImage ?? (photos?.[0]?.src ? abs(photos[0].src) : null);
 const heroAlt = heroImageAlt ?? photos?.[0]?.caption ?? title;
 ---
 
-<PageLayout title={`${title} — The Hormanns`}>
+<PageLayout title={`${title} — The Hormanns`} description={description} ogImage={ogImage}>
   <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">{title}</h1>
   </div>
