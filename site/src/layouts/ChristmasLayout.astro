@@ -6,11 +6,13 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
+  jsonLd?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, ogImage, jsonLd } = Astro.props;
 ---
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} ogImage={ogImage} jsonLd={jsonLd}>
   <NavBar />
   <main class="max-w-4xl mx-auto px-4 pt-20 pb-8">
     <slot />
