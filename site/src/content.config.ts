@@ -19,6 +19,7 @@ const christmas = defineCollection({
     title: z.string(),
     year: z.number(),
     decade: z.enum(['2000-2009', '2010-2019', '2020-Today']),
+    description: z.string().optional(),
     heroImage: z.string().nullish(),
     heroImageAlt: z.string().nullish(),
     stats: z.record(z.string(), z.union([z.string(), z.number()])).nullish(),
