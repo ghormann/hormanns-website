@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy-dev": "npm run build && rsync -avz -e \"ssh -p 7777\" --chmod=a+rX dist/ .htaccess ghormann@ns2.thehormanns.net:/var/www/ghormann-dev/"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.8",
