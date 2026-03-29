@@ -1,0 +1,65 @@
+RewriteEngine On
+
+# Redirect old /new/ pages to new URLs
+
+# Home
+RewriteRule ^new/home\.phtml$ / [R=301,L]
+RewriteRule ^new/intro\.phtml$ / [R=301,L]
+
+# Christmas index
+RewriteRule ^new/christmas\.phtml$ /christmas/ [R=301,L]
+RewriteRule ^new/christmasBase\.phtml$ /christmas/ [R=301,L]
+
+# Christmas year pages
+RewriteRule ^new/christmas2001\.phtml$ /christmas/2001/ [R=301,L]
+RewriteRule ^new/christmas2002\.phtml$ /christmas/2002/ [R=301,L]
+RewriteRule ^new/christmas2003\.phtml$ /christmas/2003/ [R=301,L]
+RewriteRule ^new/christmas2004\.phtml$ /christmas/2004/ [R=301,L]
+RewriteRule ^new/christmas2008\.phtml$ /christmas/2008/ [R=301,L]
+RewriteRule ^new/christmas2010\.phtml$ /christmas/2010/ [R=301,L]
+RewriteRule ^new/christmas2011\.phtml$ /christmas/2011/ [R=301,L]
+RewriteRule ^new/christmas2012\.phtml$ /christmas/2012/ [R=301,L]
+RewriteRule ^new/christmas2013\.phtml$ /christmas/2013/ [R=301,L]
+RewriteRule ^new/christmas2014\.phtml$ /christmas/2014/ [R=301,L]
+RewriteRule ^new/christmas2015\.phtml$ /christmas/2015/ [R=301,L]
+RewriteRule ^new/christmas2016\.phtml$ /christmas/2016/ [R=301,L]
+RewriteRule ^new/christmas2017\.phtml$ /christmas/2017/ [R=301,L]
+RewriteRule ^new/christmas2018\.phtml$ /christmas/2018/ [R=301,L]
+RewriteRule ^new/christmas2019\.phtml$ /christmas/2019/ [R=301,L]
+RewriteRule ^new/christmas2020\.phtml$ /christmas/2020/ [R=301,L]
+RewriteRule ^new/christmas2021\.phtml$ /christmas/2021/ [R=301,L]
+RewriteRule ^new/christmas2022\.phtml$ /christmas/2022/ [R=301,L]
+RewriteRule ^new/christmas2023\.phtml$ /christmas/2023/ [R=301,L]
+RewriteRule ^new/christmas2024\.phtml$ /christmas/2024/ [R=301,L]
+RewriteRule ^new/christmas2025\.phtml$ /christmas/2025/ [R=301,L]
+
+# Christmas subdirectories
+RewriteRule ^new/christmas/(.*)$ /christmas/ [R=301,L]
+
+# People pages
+RewriteRule ^new/greg\.phtml$ /greg/ [R=301,L]
+RewriteRule ^new/mary\.phtml$ /mary/ [R=301,L]
+RewriteRule ^new/resume\.phtml$ /greg/ [R=301,L]
+
+# Pictures
+RewriteRule ^new/pictures\.phtml$ /pictures/ [R=301,L]
+
+# Wedding
+RewriteRule ^new/wedding/(.*)$ /wedding/$1 [R=301,L]
+
+# Technology pages
+RewriteRule ^new/grid\.php$ /technology/grid/ [R=301,L]
+RewriteRule ^new/clock\.php$ /technology/clock/ [R=301,L]
+RewriteRule ^new/snowmen\.php$ /technology/snowmen/ [R=301,L]
+RewriteRule ^new/DMX\.phtml$ /technology/dmx/ [R=301,L]
+RewriteRule ^new/christmas_info_board\.phtml$ /technology/info-board/ [R=301,L]
+RewriteRule ^new/parallel320\.phtml$ /technology/parallel-320/ [R=301,L]
+RewriteRule ^new/parallel_boxes\.phtml$ /technology/parallel-8/ [R=301,L]
+RewriteRule ^new/text_message\.phtml$ /technology/text-message/ [R=301,L]
+RewriteRule ^new/voting\.phtml$ /technology/voting/ [R=301,L]
+RewriteRule ^new/classes\.phtml$ /technology/ [R=301,L]
+RewriteRule ^new/favDisplays\.phtml$ /technology/ [R=301,L]
+RewriteRule ^new/favDisplaysWide\.phtml$ /technology/ [R=301,L]
+
+# Catch-all for remaining /new/ pages
+RewriteRule ^new/(.*)$ / [R=301,L]
