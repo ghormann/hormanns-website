@@ -35,8 +35,8 @@ const decades = ['2020-Today', '2010-2019', '2000-2009'] as const;
               year={y.data.year}
               heroImage={y.data.heroImage}
               highlight={
-                y.data.stats?.lights_smart
-                  ? `${Number(y.data.stats.lights_smart).toLocaleString()} smart lights`
+                y.data.stats?.pixel_count
+                  ? `${Number(y.data.stats.pixel_count).toLocaleString()} Pixels`
                   : undefined
               }
             />
