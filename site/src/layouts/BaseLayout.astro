@@ -5,9 +5,23 @@ import LightboxModal from '../components/LightboxModal.astro';
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;  // root-relative ("/path") or absolute URL; falls back to site default
+  jsonLd?: string;   // pre-serialized JSON-LD object string; injected as application/ld+json
 }
 
-const { title, description = 'The Hormann Family Website' } = Astro.props;
+const {
+  title,
+  description = 'The Hormann Family Website',
+  ogImage,
+  jsonLd,
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://www.thehormanns.net');
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
+const defaultOgImage = new URL('/christmas/2025/the_hormanns_2025.jpg', siteUrl).href;
+const resolvedOgImage = ogImage
+  ? (ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl).href)
+  : defaultOgImage;
 ---
 <!doctype html>
 <html lang="en">
@@ -15,10 +29,31 @@ const { title, description = 'The Hormann Family Website' } = Astro.props;
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="author" content="Greg Hormann" />
-  <meta name="keywords" content="Greg, Mary, Hormann, Christmas" />
+  <meta name="keywords" content="Greg, Mary, Hormann, Christmas, Liberty Township, Ohio" />
   <meta name="description" content={description} />
   <meta name="google-site-verification" content="Wm_ACFhrB0gCaV1A9Xq2b1gBr6e4S7F04bavC20BcKY" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href={canonicalUrl} />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="The Hormanns" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:image" content={resolvedOgImage} />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={resolvedOgImage} />
+
   <title>{title}</title>
+
+  <!-- JSON-LD Structured Data -->
+  {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
 
   <!-- Google Fonts: Lora (serif body) + Inter (sans UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,13 +63,13 @@ const { title, description = 'The Hormann Family Website' } = Astro.props;
     rel="stylesheet"
   />
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-16040992-1"></script>
+  <!-- Google Analytics GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KKDNTP0TWZ"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'UA-16040992-1');
+    gtag('config', 'G-KKDNTP0TWZ');
   </script>
 </head>
 <body>
