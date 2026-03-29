@@ -34,7 +34,7 @@ const description: string =
   entry.data.description ??
   (pixelCount
     ? `Hormann Christmas Light Display ${year} — ${pixelCount.toLocaleString()} pixels synchronized to music in Liberty Township, Ohio.`
-    : `Hormann animated Christmas light display, ${year}, Liberty Township, Ohio.`);
+    : (entry.data.short_description ?? `Hormann animated Christmas light display, ${year}, Liberty Township, Ohio.`));
 
 // ogImage: use heroImage if present (root-relative or absolute).
 const ogImage = heroImage ?? undefined;

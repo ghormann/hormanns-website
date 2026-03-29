@@ -37,7 +37,7 @@ const decades = ['2020-Today', '2010-2019', '2000-2009'] as const;
               highlight={
                 y.data.stats?.pixel_count
                   ? `${Number(y.data.stats.pixel_count).toLocaleString()} Pixels`
-                  : undefined
+                  : y.data.short_description
               }
             />
           ))}
