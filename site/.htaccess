@@ -7,7 +7,7 @@ RewriteRule ^new/home\.phtml$ / [R=301,L]
 RewriteRule ^new/intro\.phtml$ / [R=301,L]
 
 # Christmas index
-RewriteRule ^new/christmas\.phtml$ /christmas/ [R=301,L]
+RewriteRule ^new/christmas\.phtml$ /christmas/our-story/ [R=301,L]
 RewriteRule ^new/christmasBase\.phtml$ /christmas/ [R=301,L]
 
 # Christmas year pages
@@ -60,6 +60,9 @@ RewriteRule ^new/voting\.phtml$ /technology/voting/ [R=301,L]
 RewriteRule ^new/classes\.phtml$ /technology/ [R=301,L]
 RewriteRule ^new/favDisplays\.phtml$ /technology/ [R=301,L]
 RewriteRule ^new/favDisplaysWide\.phtml$ /technology/ [R=301,L]
+
+# Sitemap
+RewriteRule ^new/map\.phtml$ /sitemap/ [R=301,L]
 
 # Catch-all for remaining /new/ pages
 RewriteRule ^new/(.*)$ / [R=301,L]
