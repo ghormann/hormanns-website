@@ -27,9 +27,44 @@ export async function getStaticPaths() {
 const { entry, prev, next } = Astro.props;
 const { Content } = await render(entry);
 const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisplays } = entry.data;
+
+// Build a unique meta description for this year's page.
+const pixelCount = typeof stats?.pixel_count === 'number' ? stats.pixel_count : undefined;
+const description: string =
+  entry.data.description ??
+  (pixelCount
+    ? `Hormann Christmas Light Display ${year} — ${pixelCount.toLocaleString()} pixels synchronized to music in Liberty Township, Ohio.`
+    : `Hormann animated Christmas light display, ${year}, Liberty Township, Ohio.`);
+
+// ogImage: use heroImage if present (root-relative or absolute).
+const ogImage = heroImage ?? undefined;
+
+// Event JSON-LD for this year's display.
+const eventJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: `Hormann Christmas Light Display ${year}`,
+  description,
+  startDate: `${year}-12-01`,
+  endDate: `${year}-12-31`,
+  location: {
+    '@type': 'Place',
+    name: 'Hormann Residence',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Liberty Township',
+      addressRegion: 'OH',
+      addressCountry: 'US',
+    },
+  },
+  organizer: {
+    '@type': 'Person',
+    name: 'Greg Hormann',
+  },
+});
 ---
 
-<ChristmasLayout title={title}>
+<ChristmasLayout title={title} description={description} ogImage={ogImage} jsonLd={eventJsonLd}>
   <!-- Hero heading strip -->
   <div
     class="rounded-lg px-6 py-4 mb-4 -mx-2"
