@@ -5,9 +5,35 @@ import YouTubeGrid from '../components/YouTubeGrid.astro';
 import FavDisplays from '../components/FavDisplays.astro';
 
 const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display' }];
+
+const websiteJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: 'The Hormanns',
+      url: 'https://www.thehormanns.net',
+    },
+    {
+      '@type': 'Person',
+      name: 'Greg Hormann',
+      url: 'https://www.thehormanns.net/greg/',
+    },
+    {
+      '@type': 'Person',
+      name: 'Mary Hormann',
+      url: 'https://www.thehormanns.net/mary/',
+    },
+  ],
+});
 ---
 
-<PageLayout title="Greg and Mary Hormann" description="The personal website of Greg and Mary Hormann — family, Christmas lights, and technology.">
+<PageLayout
+  title="Greg and Mary Hormann — Liberty Township, Ohio"
+  description="The personal website of Greg and Mary Hormann — family, Christmas lights, and technology in Liberty Township, Ohio (Cincinnati area)."
+  ogImage="/christmas/2025/the_hormanns_2025.jpg"
+  jsonLd={websiteJsonLd}
+>
 
   <!-- Hero heading -->
   <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-accent);">
