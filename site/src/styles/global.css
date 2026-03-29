@@ -1,14 +1,17 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand palette */
-  --color-cream: #F8F5D6;
-  --color-amber: #EBBD82;
-  --color-amber-dark: #d4a060;
-  --color-brown: #6B3F1F;
-  --color-brown-light: #8B5A2B;
-  --color-green-deep: #1A3C2A;
-  --color-card: #FEFCF5;
+  /* Brand palette — Festive Warmth (Christmas) */
+  --color-cream: #F5F0E8;
+  --color-amber: #C8A840;        /* gold — hero banners, accent */
+  --color-amber-dark: #A88C2A;   /* darker gold — hover on gold surfaces */
+  --color-brown: #8B1C1C;        /* Christmas red — headings */
+  --color-brown-light: #2D6A4F;  /* forest green — links */
+  --color-green-deep: #1A3C2A;   /* dark green — footer */
+  --color-green-nav: #1A4A2A;    /* deep green — nav bar */
+  --color-green-nav-dark: #15381F; /* darker green — nav hover */
+  --color-nav-text: #F5EDD0;     /* warm cream — text on green nav */
+  --color-card: #FDFAF3;
   --color-text: #1C1410;
 
   /* Typography */
@@ -33,6 +36,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--color-brown-light);
   text-decoration: underline;
 }
+
 
 /* Smooth focus ring */
 :focus-visible {

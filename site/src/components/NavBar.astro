@@ -16,13 +16,13 @@ const inTechnology = currentPath.startsWith('/technology/');
 
 <nav
   class="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-4 py-2"
-  style="background-color: var(--color-amber);"
+  style="background-color: var(--color-green-nav);"
 >
   <!-- Brand -->
   <a
     href="/"
     class="text-2xl font-bold italic shrink-0"
-    style="color: var(--color-brown); font-family: var(--font-serif);"
+    style="color: var(--color-nav-text); font-family: var(--font-serif);"
   >
     The Hormanns
   </a>
@@ -31,7 +31,7 @@ const inTechnology = currentPath.startsWith('/technology/');
   <details class="group md:hidden">
     <summary
       class="list-none cursor-pointer px-3 py-1 rounded text-sm font-medium select-none"
-      style="color: var(--color-brown); background: var(--color-amber-dark);"
+      style="color: var(--color-nav-text); background: var(--color-green-nav-dark);"
     >
       <span class="group-open:hidden">☰ Menu</span>
       <span class="hidden group-open:inline">✕ Close</span>
@@ -39,13 +39,13 @@ const inTechnology = currentPath.startsWith('/technology/');
     <!-- Mobile menu panel -->
     <div
       class="absolute top-full left-0 right-0 shadow-lg p-4 flex flex-col gap-2"
-      style="background-color: var(--color-amber);"
+      style="background-color: var(--color-green-nav);"
     >
       <a href="/" class={`nav-link${isActive('/') ? ' nav-link--active' : ''}`}>Home</a>
       <a href="/greg/" class={`nav-link${isActive('/greg/') ? ' nav-link--active' : ''}`}>Greg</a>
       <a href="/mary/" class={`nav-link${isActive('/mary/') ? ' nav-link--active' : ''}`}>Mary</a>
       <a href="/pictures/" class={`nav-link${isActive('/pictures/') ? ' nav-link--active' : ''}`}>Pictures</a>
-      <hr style="border-color: var(--color-amber-dark);" />
+      <hr style="border-color: var(--color-green-nav-dark);" />
       <span class="nav-link font-semibold">Christmas Display</span>
       <div class="pl-3 flex flex-wrap gap-x-3">
         {recentYears.map(y => (
@@ -54,7 +54,7 @@ const inTechnology = currentPath.startsWith('/technology/');
       </div>
       <a href="/christmas/" class={`nav-link pl-3 text-sm${isActive('/christmas/') ? ' nav-link--active' : ''}`}>All Years</a>
       <a href="/christmas/our-story/" class={`nav-link pl-3 text-sm${isActive('/christmas/our-story/') ? ' nav-link--active' : ''}`}>Our Story</a>
-      <hr style="border-color: var(--color-amber-dark);" />
+      <hr style="border-color: var(--color-green-nav-dark);" />
       <a href="/technology/" class={`nav-link font-semibold${isActive('/technology/') ? ' nav-link--active' : ''}`}>Technology</a>
       <a href="/technology/clock/" class={`nav-link pl-3 text-sm${isActive('/technology/clock/') ? ' nav-link--active' : ''}`}>The Clock</a>
       <a href="/technology/snowmen/" class={`nav-link pl-3 text-sm${isActive('/technology/snowmen/') ? ' nav-link--active' : ''}`}>The Snowmen</a>
@@ -63,7 +63,7 @@ const inTechnology = currentPath.startsWith('/technology/');
       <a href="/technology/text-message/" class={`nav-link pl-3 text-sm${isActive('/technology/text-message/') ? ' nav-link--active' : ''}`}>Texting Your Name</a>
       <a href="/technology/voting/" class={`nav-link pl-3 text-sm${isActive('/technology/voting/') ? ' nav-link--active' : ''}`}>Voting for Songs</a>
       <a href="/technology/info-board/" class={`nav-link pl-3 text-sm${isActive('/technology/info-board/') ? ' nav-link--active' : ''}`}>Information Board</a>
-      <hr style="border-color: var(--color-amber-dark);" />
+      <hr style="border-color: var(--color-green-nav-dark);" />
       <a href="/sitemap/" class={`nav-link${isActive('/sitemap/') ? ' nav-link--active' : ''}`}>Site Map</a>
     </div>
   </details>
@@ -96,7 +96,7 @@ const inTechnology = currentPath.startsWith('/technology/');
         {recentYears.map(y => (
           <li><a href={`/christmas/${y.data.year}/`} class={`dropdown-item${isActive(`/christmas/${y.data.year}/`) ? ' dropdown-item--active' : ''}`}>{y.data.year}</a></li>
         ))}
-        <li><hr style="border-color: var(--color-amber-dark);" /></li>
+        <li><hr style="border-color: var(--color-green-nav-dark);" /></li>
         <li><a href="/christmas/" class={`dropdown-item${isActive('/christmas/') ? ' dropdown-item--active' : ''}`}>All Years</a></li>
         <li><a href="/christmas/our-story/" class={`dropdown-item${isActive('/christmas/our-story/') ? ' dropdown-item--active' : ''}`}>Our Story</a></li>
       </ul>
@@ -112,12 +112,12 @@ const inTechnology = currentPath.startsWith('/technology/');
         <li><a href="/technology/clock/" class={`dropdown-item${isActive('/technology/clock/') ? ' dropdown-item--active' : ''}`}>The Clock</a></li>
         <li><a href="/technology/snowmen/" class={`dropdown-item${isActive('/technology/snowmen/') ? ' dropdown-item--active' : ''}`}>The Snowmen</a></li>
         <li><a href="/technology/grid/" class={`dropdown-item${isActive('/technology/grid/') ? ' dropdown-item--active' : ''}`}>The Grid</a></li>
-        <li><hr style="border-color: var(--color-amber-dark);" /></li>
+        <li><hr style="border-color: var(--color-green-nav-dark);" /></li>
         <li><a href="/technology/dmx/" class={`dropdown-item${isActive('/technology/dmx/') ? ' dropdown-item--active' : ''}`}>DMX / E1.31</a></li>
         <li><a href="/technology/text-message/" class={`dropdown-item${isActive('/technology/text-message/') ? ' dropdown-item--active' : ''}`}>Texting Your Name</a></li>
         <li><a href="/technology/voting/" class={`dropdown-item${isActive('/technology/voting/') ? ' dropdown-item--active' : ''}`}>Voting for Songs</a></li>
         <li><a href="/technology/info-board/" class={`dropdown-item${isActive('/technology/info-board/') ? ' dropdown-item--active' : ''}`}>Information Board</a></li>
-        <li><hr style="border-color: var(--color-amber-dark);" /></li>
+        <li><hr style="border-color: var(--color-green-nav-dark);" /></li>
         <li><a href="/technology/parallel-8/" class={`dropdown-item text-sm${isActive('/technology/parallel-8/') ? ' dropdown-item--active' : ''}`}>Simple Controller (Legacy)</a></li>
         <li><a href="/technology/parallel-320/" class={`dropdown-item text-sm${isActive('/technology/parallel-320/') ? ' dropdown-item--active' : ''}`}>320 Controller (Legacy)</a></li>
       </ul>
@@ -131,17 +131,17 @@ const inTechnology = currentPath.startsWith('/technology/');
 
 <style>
   .nav-link {
-    color: var(--color-brown);
+    color: var(--color-nav-text);
     text-decoration: none;
     font-family: var(--font-sans);
   }
   .nav-link:hover {
-    color: var(--color-brown-light);
+    color: #ffffff;
     text-decoration: underline;
   }
 
   .nav-btn {
-    color: var(--color-brown);
+    color: var(--color-nav-text);
     background: none;
     border: none;
     cursor: pointer;
@@ -153,10 +153,10 @@ const inTechnology = currentPath.startsWith('/technology/');
     white-space: nowrap;
   }
   .nav-btn:hover {
-    background-color: var(--color-amber-dark);
+    background-color: var(--color-green-nav-dark);
   }
   .nav-btn--active {
-    border-bottom: 2px solid var(--color-brown);
+    border-bottom: 2px solid var(--color-nav-text);
     padding-bottom: calc(0.4rem - 2px);
   }
 
@@ -167,10 +167,10 @@ const inTechnology = currentPath.startsWith('/technology/');
     top: 100%;
     left: 0;
     min-width: 12rem;
-    background-color: var(--color-amber);
-    border: 1px solid var(--color-amber-dark);
+    background-color: var(--color-green-nav);
+    border: 1px solid var(--color-green-nav-dark);
     border-radius: 0.25rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     list-style: none;
     margin: 0;
     padding: 0.25rem 0;
@@ -185,16 +185,16 @@ const inTechnology = currentPath.startsWith('/technology/');
   .dropdown-item {
     display: block;
     padding: 0.3rem 0.75rem;
-    color: var(--color-brown);
+    color: var(--color-nav-text);
     text-decoration: none;
     font-size: 0.875rem;
     font-family: var(--font-sans);
   }
   .dropdown-item:hover {
-    background-color: var(--color-amber-dark);
+    background-color: var(--color-green-nav-dark);
   }
   .dropdown-item--active {
-    background-color: var(--color-amber-dark);
+    background-color: var(--color-green-nav-dark);
     font-weight: 600;
   }
 
