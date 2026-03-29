@@ -117,7 +117,7 @@ Replace the UA snippet in `BaseLayout.astro`:
 </script>
 ```
 
-**Replace with GA4 snippet using the new `G-XXXXXXXXXX` measurement ID.** The user must create a GA4 property in Google Analytics and supply the new ID. The snippet structure is identical — only the ID changes.
+**Replace with GA4 snippet using measurement ID `G-KKDNTP0TWZ`.** The snippet structure is identical to the old UA snippet — only the ID changes.
 
 ---
 
