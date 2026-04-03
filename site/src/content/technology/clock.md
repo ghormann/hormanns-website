@@ -1,6 +1,6 @@
 ---
 title: "The Countdown Clock"
-description: "Our giant pixel countdown clock — from 49 incandescent circuits to 7,000+ RGB pixels."
+description: "Our giant pixel countdown clock — now 7,000+ RGB pixels."
 heroImage: https://img.youtube.com/vi/z0MqBhNhmZU/maxresdefault.jpg
 order: 1
 videos:

@@ -1,6 +1,6 @@
 ---
 title: "Song Voting"
-description: "Viewers vote for the next song via a mobile-friendly website at vote-now.org."
+description: "Viewers vote for the next song via a mobile-friendly website."
 order: 6
 videos: []
 photos:

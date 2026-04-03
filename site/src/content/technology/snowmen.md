@@ -1,6 +1,6 @@
 ---
 title: "The Snowmen"
-description: "Two animated snowmen having a snowball fight — from rope lights to 13,000 RGB pixels."
+description: "Two animated snowmen having a snowball fight — now 13,000 RGB pixels."
 heroImage: https://img.youtube.com/vi/0W53e9QcRPk/maxresdefault.jpg
 order: 2
 videos:
@@ -62,11 +62,10 @@ photos:
     thumb: "christmas/2002/_2002_snowman_6.jpg"
 ---
 
-The snowmen were added to our display in 2002. The idea came after seeing a video by Drew Heckman of two snowmen having a snowball fight. By 2017, the snowmen were getting rather old and hard to maintain. We initially attempted to fully retire them that year, but after a few requests from the local neighborhood children, we brought them back for the end of 2017 and 2018 — earning praise from the neighborhood kids! Knowing they could not survive another season, we fully rebuilt them in newer technology for 2019.
+The snowmen were added to our display in 2002. The idea came after seeing a video by Drew Heckman of two snowmen having a snowball fight. By 2017, the snowmen were getting rather old and hard to maintain. We initially attempted to fully retire them that year, but after a few requests from the local neighborhood children, we brought them back for the end of 2017 earning praise from the neighborhood kids! Knowing they could not survive another season, we fully rebuilt them in newer technology for 2019.
 
 ## Digital Version (2019–present)
-
-During 2019, we completely redesigned the snowmen from the ground up. The snowmen are now made of 5 different [pixel grids](/technology/dmx/) for a total of 13,256 RGB pixels, making the snowman the single largest element in our display. In an attempt to balance cost and quality, the bodies of the snowman have pixels separated by 1" while the other parts of the display use 2" spacing. The snowman leverages 5 volt pixels, about 13 power supplies, and a dedicated Falcon F16v3 controller.
+During 2019, we completely redesigned the snowmen from the ground up. The snowmen are now made of 5 different [pixel grids](/technology/dmx/) for a total of 13,256 RGB pixels, making [the snowman](https://www.youtube.com/watch?v=GPOL_nibIAU) the single largest element in our display until the tunnel was introduced in 2023.. In an attempt to balance cost and quality, the bodies of the snowman have pixels separated by 1" while the other parts of the display use 2" spacing. The snowman leverages 5 volt pixels, about 13 power supplies, and a dedicated Falcon F16v3 controller.
 
 A [custom Linux program](https://github.com/ghormann/GregsLights) controls the snowman along with the clock. The grids are held up by 1" galvanized pipe and numerous guide wires, with a pulley system to move the grids into position on the frame.
 
