@@ -15,11 +15,26 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const { title, description, heroImage, heroImageAlt, videos, photos, showFavDisplays } = entry.data;
+const { title, description, heroImage, heroImageAlt, videos, photos, sectionSidebars, showFavDisplays } = entry.data;
 const ogImage = heroImage ?? undefined;
 const abs = (p: string) => (p.startsWith('/') || p.startsWith('http') ? p : `/${p}`);
 const heroSrc = heroImage ?? (photos?.[0]?.src ? abs(photos[0].src) : null);
 const heroAlt = heroImageAlt ?? photos?.[0]?.caption ?? title;
+
+// Build sidebar data for client script: resolve photo indices to actual photo objects
+const clientPhotos = photos.map(p => ({
+  src: abs(p.src),
+  caption: p.caption,
+  thumb: p.thumb ? abs(p.thumb) : undefined,
+}));
+const clientSidebars = sectionSidebars.map(s => ({
+  heading: s.heading,
+  maxPhotos: s.maxPhotos,
+  photos: s.photoIndices.slice(0, s.maxPhotos).map(i => ({
+    index: i,
+    ...clientPhotos[i],
+  })),
+}));
 ---
 
 <PageLayout title={`${title} — The Hormanns`} description={description} ogImage={ogImage}>
@@ -60,6 +75,104 @@ const heroAlt = heroImageAlt ?? photos?.[0]?.caption ?? title;
       ← Back to Technology
     </a>
   </div>
+
+  {clientSidebars.length > 0 && (
+    <script define:vars={{ clientSidebars, allPhotos: clientPhotos }}>
+      function buildSidebar(sidebarDef) {
+        const col = document.createElement('div');
+        col.className = 'section-sidebar';
+        sidebarDef.photos.forEach(photo => {
+          const thumb = photo.thumb ?? photo.src;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'sidebar-thumb';
+          btn.setAttribute('aria-label', photo.caption ?? 'View photo');
+          btn.dataset.index = String(photo.index);
+          const img = document.createElement('img');
+          img.src = thumb;
+          img.alt = photo.caption ?? '';
+          img.loading = 'lazy';
+          btn.appendChild(img);
+          btn.addEventListener('click', () => {
+            window.dispatchEvent(new CustomEvent('openLightbox', {
+              detail: { photos: allPhotos, index: photo.index, opener: btn }
+            }));
+          });
+          col.appendChild(btn);
+        });
+        return col;
+      }
+
+      function removeSidebars() {
+        const prose = document.querySelector('.prose');
+        if (!prose) return;
+        prose.querySelectorAll('.section-with-sidebar').forEach(wrapper => {
+          const textCol = wrapper.querySelector('.section-text');
+          if (textCol) {
+            while (textCol.firstChild) {
+              prose.insertBefore(textCol.firstChild, wrapper);
+            }
+          }
+          wrapper.remove();
+        });
+      }
+
+      function injectSidebars() {
+        const prose = document.querySelector('.prose');
+        if (!prose) return;
+        if (prose.querySelector('.section-with-sidebar')) return; // already injected
+
+        const h2s = prose.querySelectorAll('h2');
+        h2s.forEach(h2 => {
+          const headingText = h2.textContent?.trim() ?? '';
+          const def = clientSidebars.find(s => headingText.startsWith(s.heading.split('(')[0].trim()));
+          if (!def || def.photos.length === 0) return;
+
+          const sectionNodes = [h2];
+          let node = h2.nextSibling;
+          while (node && !(node.nodeType === 1 && node.tagName === 'H2')) {
+            sectionNodes.push(node);
+            node = node.nextSibling;
+          }
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'section-with-sidebar';
+          const textCol = document.createElement('div');
+          textCol.className = 'section-text';
+          sectionNodes.forEach(n => textCol.appendChild(n));
+          const sidebar = buildSidebar(def);
+          wrapper.appendChild(textCol);
+          wrapper.appendChild(sidebar);
+
+          if (node) {
+            prose.insertBefore(wrapper, node);
+          } else {
+            prose.appendChild(wrapper);
+          }
+        });
+      }
+
+      function updateSidebars() {
+        if (window.innerWidth >= 900) {
+          injectSidebars();
+        } else {
+          removeSidebars();
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateSidebars);
+      } else {
+        updateSidebars();
+      }
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(updateSidebars, 100);
+      });
+    </script>
+  )}
 </PageLayout>
 
 <style>
@@ -71,4 +184,43 @@ const heroAlt = heroImageAlt ?? photos?.[0]?.caption ?? title;
   :global(.prose h2) { color: var(--color-heading); margin-top: 1.5em; margin-bottom: 0.5em; font-size: 1.25rem; font-weight: 600; }
   :global(.prose h3) { color: var(--color-heading); margin-top: 1.5em; margin-bottom: 0.5em; }
   .prose img { max-width: 100%; border-radius: 0.5rem; }
+
+  :global(.section-with-sidebar) {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  :global(.section-text) {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  :global(.section-sidebar) {
+    flex: 0 0 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 0.25rem;
+  }
+  :global(.sidebar-thumb) {
+    display: block;
+    width: 100%;
+    border: none;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  :global(.sidebar-thumb:hover) {
+    transform: scale(1.04);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.35);
+  }
+  :global(.sidebar-thumb img) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+  }
 </style>

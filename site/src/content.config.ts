@@ -31,6 +31,12 @@ const christmas = defineCollection({
   }),
 });
 
+const sectionSidebarSchema = z.object({
+  heading: z.string(),
+  photoIndices: z.array(z.number()),
+  maxPhotos: z.number().default(4),
+});
+
 const technology = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/technology' }),
   schema: z.object({
@@ -41,6 +47,7 @@ const technology = defineCollection({
     heroImageAlt: z.string().nullish(),
     videos: z.array(videoSchema).default([]),
     photos: z.array(photoSchema).default([]),
+    sectionSidebars: z.array(sectionSidebarSchema).default([]),
     draft: z.boolean().default(false),
     showFavDisplays: z.boolean().default(false),
   }),

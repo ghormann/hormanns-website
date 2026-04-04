@@ -60,6 +60,13 @@ photos:
   - src: "christmas/2002/2002_snowman_6.jpg"
     caption: "Snowball splat on the face — original snowman animation"
     thumb: "christmas/2002/_2002_snowman_6.jpg"
+sectionSidebars:
+  - heading: "Digital Version (2019–present)"
+    photoIndices: [1, 2, 3, 6]
+    maxPhotos: 4
+  - heading: "Original Version (2002–2018)"
+    photoIndices: [8, 9, 10, 11]
+    maxPhotos: 4
 ---
 
 The snowmen were added to our display in 2002. The idea came after seeing a video by Drew Heckman of two snowmen having a snowball fight. By 2017, the snowmen were getting rather old and hard to maintain. We initially attempted to fully retire them that year, but after a few requests from the local neighborhood children, we brought them back for the end of 2017 earning praise from the neighborhood kids! Knowing they could not survive another season, we fully rebuilt them in newer technology for 2019.
@@ -71,7 +78,7 @@ A [custom Linux program](https://github.com/ghormann/GregsLights) controls the s
 
 These new snowmen are more flexible than the original design. You see better arm and snowball movement, hats that can be knocked off, the ability to stick multiple snowballs on the nose or on the ground, and a neat "duck the snowball" trick. Every so often, one of them has had enough and pulls out a big cannon to fire a massive snowball at the other.
 
-For 2020 we gave the snowman a new ability: viewers can log into our website and select one of 7 different characters for the snowman on the right. Nothing like throwing a snowball at Hans Gruber during the Holiday season!
+For 2020 we gave the snowman a new ability: viewers can log into our website and select one of 7 different characters for the snowman on the right. Nothing like throwing a snowball at Hans Gruber during the Holiday season!  In the years since 2020, we've been adding new characters (usually 1-2 per year).
 
 ## Original Version (2002–2018)
 
@@ -99,4 +106,4 @@ These snowmen only required 14 circuits to produce "animation" — important at 
 
 The body (rope light) and face (mini lights) were static lights that were always powered.
 
-*Note: Most pictures were taken before the mini-light cords were covered in black electrical tape to prevent them from being seen. The wires are not visible at night.*
+*Note: Most pictures of the original snowmen were taken before the mini-light cords were covered in black electrical tape to prevent them from being seen. After this tape was added, the wires were not visible at night.*
