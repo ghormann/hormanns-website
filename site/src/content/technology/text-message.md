@@ -15,12 +15,12 @@ photos:
 showFavDisplays: true
 ---
 
-In 2018, we added the ability for viewers to supply their first name via text message and have it included in the display. The name immediately displays on the small grid under the display, and then every 10 minutes or so, a 1-minute sequence is displayed where 13 names are included on the 18' × 8' grid. Starting in 2019, viewers can see their spot in the queue using the same [website used for voting](/technology/voting/).
+In 2018, we added the ability for viewers to supply their first name via text message and have it included in the display. The name immediately displays on the small grid under the [clock](/technology/clock), and then every 10 minutes or so, a 1-minute sequence is displayed where 13 names are included on the [18' × 8' grid](/technology/grid). Starting in 2019, viewers can see their spot in the queue using the same [website used for voting](/technology/voting/).
 
 ## How it Works
 
 1. We use the Twilio service to convert inbound text messages to API calls on our web server.
-2. Our web server (Apache + Python) accepts the message from Twilio.
+2. Our web server (python fastAPI) accepts the message from Twilio.
 3. The Python code validates the name against a whitelist of valid first names provided by the [Social Security Administration](https://www.ssa.gov/oact/babynames/limits.html).
 4. If the name isn't in the whitelist, a text message is sent to the admin and the sender is notified that the name needs review.
 5. For valid names, an MQTT message is generated and sent to both the Clock VM and the xLights VM box where it will be added to a local queue.

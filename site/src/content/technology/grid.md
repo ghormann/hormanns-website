@@ -7,6 +7,8 @@ videos:
   - id: "9T0EQ4NDi6g"
     title: "Full Grid (2020)"
     thumb: https://img.youtube.com/vi/9T0EQ4NDi6g/hqdefault.jpg
+  - id: "f1N9lGrLd8M"
+    title: "Outdoor setup (2023)"
   - id: "EhCaSn63lMk"
     title: "Names on the Big Grid"
   - id: "HjcuMDTyxBY"
@@ -33,9 +35,10 @@ The large grid on the house was added to our display in 2015. Plenty of others h
 The grid is constructed using:
 
 - 5 sheets of [PixNode Mounting Net](http://www.holidaycoro.com/product-p/775.htm) — we initially tested with 3" spacing but ended up using 2" spacing in the final design
-- 4,876 [12V RGB Smart "Bullet" Pixels](http://www.holidaycoro.com/Smart-Pixel-LED-RGB-8mm-12mm-Nodes-12v-DC-p/711.htm)
-- 2 [AlphaPix 4](http://www.holidaycoro.com/AlphaPix-4-V2-RGB-Pixel-Controller-p/722-v2.htm) controllers
+- 4,876 count of 12V RGB Smart "Bullet" Pixels
+- 2 [AlphaPix 4](http://www.holidaycoro.com/AlphaPix-4-V2-RGB-Pixel-Controller-p/722-v2.htm) controllers (later replaced by a single [Kulp K8-B](https://kulplights.com/product/k8-b/))
 - 8 [12V 350-Watt Power Supplies](http://www.holidaycoro.com/350w-Dual-Output-Power-Supply-p/49.htm) *(overkill now that we run at 25% power)*
 - Loads of 4" zip ties to secure the sheets together
 - Multiple spools of 14-gauge underground landscape wiring to supply power
-- A [professional lighting truss](https://www.pssl.com/Lighting-Truss?c=C0000N98&noidx=1&by=Category) *(the first year, galvanized pipe was used — not a good choice)*
+- A [professional lighting truss](https://shop.solotech.com/collections/lighting-truss) *(the first year, galvanized pipe was used — not a good choice)*
+- 16" ground anchors with  stainless steel guide wires that hold the truss in place
