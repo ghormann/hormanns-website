@@ -38,8 +38,8 @@ const inTechnology = currentPath.startsWith('/technology/');
     </summary>
     <!-- Mobile menu panel -->
     <div
-      class="absolute top-full left-0 right-0 shadow-lg p-4 flex flex-col gap-2"
-      style="background-color: var(--color-nav-bg);"
+      class="absolute top-full left-0 right-0 shadow-lg p-4 flex flex-col gap-2 overflow-y-auto"
+      style="background-color: var(--color-nav-bg); max-height: calc(100dvh - 3rem);"
     >
       <a href="/" class={`nav-link${isActive('/') ? ' nav-link--active' : ''}`}>Home</a>
       <a href="/greg/" class={`nav-link${isActive('/greg/') ? ' nav-link--active' : ''}`}>Greg</a>
