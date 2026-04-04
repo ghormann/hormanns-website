@@ -62,8 +62,8 @@ photos:
     thumb: "christmas/2002/_2002_snowman_6.jpg"
 sectionSidebars:
   - heading: "Digital Version (2019–present)"
-    photoIndices: [1, 2, 3, 6]
-    maxPhotos: 4
+    photoIndices: [6, 1, 2]
+    maxPhotos: 3
   - heading: "Original Version (2002–2018)"
     photoIndices: [8, 9, 10, 11]
     maxPhotos: 4

@@ -10,7 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy-dev": "npm run build && rsync -avz -e \"ssh -p 7777\" --chmod=a+rX dist/ .htaccess ghormann@ns2.thehormanns.net:/var/www/ghormann-dev/"
+    "deploy-dev": "npm run build && rsync -avz -e \"ssh -p 7777\" --chmod=a+rX dist/ .htaccess ghormann@ns2.thehormanns.net:/var/www/ghormann-dev/",
+    "deploy-prod": "npm run build && rsync -avz -e \"ssh -p 7777\" --chmod=a+rX dist/ .htaccess ghormann@lin1.thehormanns.net:/var/www/ghormann/"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.8",
