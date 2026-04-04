@@ -41,6 +41,25 @@ photos:
   - src: "christmas/2001/boxes/tools.jpg"
     caption: "The Tools"
     thumb: "christmas/2001/boxes/_tools.jpg"
+sectionSidebars:
+  - heading: "Schematic"
+    photoIndices: [2]
+    maxPhotos: 1
+  - heading: "Solid State Relays"
+    photoIndices: [1]
+    maxPhotos: 1
+  - heading: "Relay Boxes"
+    photoIndices: [4]
+    maxPhotos: 1
+  - heading: "Electrical Boxes"
+    photoIndices: [5, 6]
+    maxPhotos: 2
+  - heading: "The Wired Relay Box"
+    photoIndices: [9, 10]
+    maxPhotos: 2
+  - heading: "The Control Wires"
+    photoIndices: [11]
+    maxPhotos: 1
 ---
 
 > **Note:** The information on this page is extremely old. Although this can technically still be done today, there are much better solutions available now. This page is kept for historical reference only.

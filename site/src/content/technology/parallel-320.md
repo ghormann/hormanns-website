@@ -29,6 +29,17 @@ photos:
     caption: "138 Decoder"
   - src: "images/320write.gif"
     caption: "Write Cycle Animation"
+  - src: "images/parallel_port.jpg"
+    caption: "DB-25 Parallel Port Connector"
+  - src: "images/pinout.gif"
+    caption: "Parallel Port Pinout Diagram"
+sectionSidebars:
+  - heading: "The Parallel Port"
+    photoIndices: [10, 11]
+    maxPhotos: 2
+  - heading: "How a Write Works"
+    photoIndices: [9]
+    maxPhotos: 1
 ---
 
 > **Note:** The information on this page is rather old and was never fully completed. Although this can technically still be built and used today, there are much better solutions available. This page is kept for historical reference only. If you are looking for an inexpensive DIY AC solution that also supports dimming, check out the [Renard](http://doityourselfchristmas.com/wiki/index.php?title=Renard_Main_Page) set of solutions.
@@ -41,16 +52,42 @@ After the 2001 season, I wasn't sure how to expand beyond the [original 8-port d
 
 ## The Parallel Port
 
-The parallel port is a great way to interface a PC to external devices because (1) every PC has one, and (2) it's easy to program. The parallel port has 8 output wires (OUTPUT), 5 input wires (STATUS), and 4 that are bi-directional (CONTROL).
+The parallel port was a great way to interface a PC to external devices because (at the time) every PC has one, and it's easy to program. The parallel port has 8 output wires (OUTPUT), 5 input wires (STATUS), and 4 that are bi-directional (CONTROL).
+
+| Pin | Label | Function | Type |
+|-----|-------|----------|------|
+| 1 | C0 (~) | Strobe | Control |
+| 2 | D0 | Data Bit 0 | Output |
+| 3 | D1 | Data Bit 1 | Output |
+| 4 | D2 | Data Bit 2 | Output |
+| 5 | D3 | Data Bit 3 | Output |
+| 6 | D4 | Data Bit 4 | Output |
+| 7 | D5 | Data Bit 5 | Output |
+| 8 | D6 | Data Bit 6 | Output |
+| 9 | D7 | Data Bit 7 | Output |
+| 10 | S6 | Acknowledge | Status |
+| 11 | S7 (~) | Busy | Status |
+| 12 | S5 | PE: Paper Tray Empty | Status |
+| 13 | S4 | Printer On-Line | Status |
+| 14 | C1 (~) | Auto Linefeed After Carriage Return | Control |
+| 15 | S3 | Printer Error | Status |
+| 16 | C2 | Initialize Printer | Control |
+| 17 | C3 (~) | Select/Deselect Printer | Control |
+| 18–25 | — | Unused / Ground | — |
 
 In "Standard" mode, both the 8 data bits and the 4 control bits work as latched output pins. This means all 12 bits stay "on" or "off" until they are set differently — making very simple circuits for controlling lights.
 
 The control bits are always two positions above the base address of the parallel port. For example, if your parallel port is at port 888 (0x378 hex) then the control address is at 890 (0x37A hex). This means pins 2–8 are controlled by setting the 8 bits on port 888, while pins 1, 14, 16, 17 are attached to the lower 4 bits on port 890.
 
-To calculate what number to write, add up the bit values:
-- Bit #1 = 1 / Bit #2 = 2 / Bit #3 = 4 / Bit #4 = 8
-- Bit #5 = 16 / Bit #6 = 32 / Bit #7 = 64 / Bit #8 = 128
-- Example: Bits 2, 4, and 6 → 2 + 8 + 32 = **42**
+To calculate what number to write, add up the values for each bit you want on:
+
+| Bit | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|-----|---|---|---|---|----|----|----|----|
+| Value | 1 | 2 | 4 | 8 | 16 | 32 | 64 | 128 |
+
+*Examples:* 
+- To set Bits 1 and 2 to send voltage, and the others to not → 1 + 2 = **3**. 
+- To set Bits 2, 4, and 6 to send voltage and the otehrs to not → 2 + 8 + 32 = **42**.
 
 ## The Design
 

@@ -184,6 +184,10 @@ const clientSidebars = sectionSidebars.map(s => ({
   :global(.prose h2) { color: var(--color-heading); margin-top: 1.5em; margin-bottom: 0.5em; font-size: 1.25rem; font-weight: 600; }
   :global(.prose h3) { color: var(--color-heading); margin-top: 1.5em; margin-bottom: 0.5em; }
   .prose img { max-width: 100%; border-radius: 0.5rem; }
+  :global(.prose table) { border-collapse: collapse; width: 100%; margin-bottom: 1em; font-size: 0.9em; }
+  :global(.prose th), :global(.prose td) { border: 1px solid var(--color-accent); padding: 0.4em 0.75em; text-align: left; }
+  :global(.prose th) { background-color: var(--color-accent); font-weight: 600; color: var(--color-heading); }
+  :global(.prose tr:nth-child(even) td) { background-color: color-mix(in srgb, var(--color-accent) 40%, transparent); }
 
   :global(.section-with-sidebar) {
     display: flex;
