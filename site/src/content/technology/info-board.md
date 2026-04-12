@@ -11,6 +11,8 @@ videos:
     title: "Initial Concept"
   - id: "kgoQNgluk2M"
     title: "How it Works"
+  - id: "n6P2rToCZOI"
+    title: "Info Board Repair (2024)"
 photos:
   - src: "christmas/power_box/box_closed.jpg"
     caption: "Power Monitoring Box"

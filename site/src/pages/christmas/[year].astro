@@ -40,13 +40,15 @@ const description: string =
 const ogImage = heroImage ?? undefined;
 
 // Event JSON-LD for this year's display.
-const eventJsonLd = JSON.stringify({
+const siteBase = 'https://www.thehormanns.net';
+const eventJsonLdObj: Record<string, unknown> = {
   '@context': 'https://schema.org',
   '@type': 'Event',
   name: `Hormann Christmas Light Display ${year}`,
   description,
   startDate: `${year}-12-01`,
   endDate: `${year}-12-31`,
+  eventStatus: 'https://schema.org/EventScheduled',
   location: {
     '@type': 'Place',
     name: 'Hormann Residence',
@@ -60,8 +62,14 @@ const eventJsonLd = JSON.stringify({
   organizer: {
     '@type': 'Person',
     name: 'Greg Hormann',
+    url: siteBase,
   },
-});
+};
+if (heroImage) {
+  const imageUrl = heroImage.startsWith('http') ? heroImage : `${siteBase}${heroImage}`;
+  eventJsonLdObj.image = imageUrl;
+}
+const eventJsonLd = JSON.stringify(eventJsonLdObj);
 ---
 
 <ChristmasLayout title={title} description={description} ogImage={ogImage} jsonLd={eventJsonLd}>
