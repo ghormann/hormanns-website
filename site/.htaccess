@@ -1,5 +1,9 @@
 RewriteEngine On
 
+# Redirect www to non-www (canonical domain)
+RewriteCond %{HTTP_HOST} ^www\.thehormanns\.net [NC]
+RewriteRule ^(.*)$ https://thehormanns.net/$1 [R=301,L]
+
 # Redirect old /new/ pages to new URLs
 
 # Home

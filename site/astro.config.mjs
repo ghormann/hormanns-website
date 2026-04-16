@@ -7,7 +7,7 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://www.thehormanns.net',
+  site: 'https://thehormanns.net',
   integrations: [vue(), sitemap()],
 
   vite: {
