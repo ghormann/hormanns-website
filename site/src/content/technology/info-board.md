@@ -25,6 +25,8 @@ photos:
     caption: "Chart of Amps for Each Circuit"
   - src: "christmas/power_box/grafana_summary.jpg"
     caption: "Average Amps/sec by Song"
+  - src: "christmas/2025/IMG_7510_popcorn.JPG"
+    caption: "Free Popcorn Night"
   - src: "christmas/power_box/board_construction.jpg"
     caption: "Under Construction"
   - src: "christmas/power_box/sign_daytime.jpg"
