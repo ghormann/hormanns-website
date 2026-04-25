@@ -69,16 +69,16 @@ sectionSidebars:
     maxPhotos: 4
 ---
 
-The snowmen were added to our display in 2002. The idea came after seeing a video by Drew Heckman of two snowmen having a snowball fight. By 2017, the snowmen were getting rather old and hard to maintain. We initially attempted to fully retire them that year, but after a few requests from the local neighborhood children, we brought them back for the end of 2017 earning praise from the neighborhood kids! Knowing they could not survive another season, we fully rebuilt them in newer technology for 2019.
+The snowmen were added to our display in [2002](/christmas/2002/). The idea came after seeing a video by Drew Heckman of two snowmen having a snowball fight. By [2017](/christmas/2017/), the snowmen were getting rather old and hard to maintain. We initially attempted to fully retire them that year, but after a few requests from the local neighborhood children, we brought them back for the end of 2017 earning praise from the neighborhood kids! Knowing they could not survive another season, we fully rebuilt them in newer technology for [2019](/christmas/2019/).
 
 ## Digital Version (2019–present)
-During 2019, we completely redesigned the snowmen from the ground up. The snowmen are now made of 5 different [pixel grids](/technology/dmx/) for a total of 13,256 RGB pixels, making [the snowman](https://www.youtube.com/watch?v=GPOL_nibIAU) the single largest element in our display until the tunnel was introduced in 2023.. In an attempt to balance cost and quality, the bodies of the snowman have pixels separated by 1" while the other parts of the display use 2" spacing. The snowman leverages 5 volt pixels, about 13 power supplies, and a dedicated Falcon F16v3 controller.
+During [2019](/christmas/2019/), we completely redesigned the snowmen from the ground up. The snowmen are now made of 5 different [pixel grids](/technology/dmx/) for a total of 13,256 RGB pixels, making [the snowman](https://www.youtube.com/watch?v=GPOL_nibIAU) the single largest element in our display until the tunnel was introduced in 2023.. In an attempt to balance cost and quality, the bodies of the snowman have pixels separated by 1" while the other parts of the display use 2" spacing. The snowman leverages 5 volt pixels, about 13 power supplies, and a dedicated Falcon F16v3 controller.
 
 A [custom Linux program](https://github.com/ghormann/GregsLights) controls the snowman along with the clock. The grids are held up by 1" galvanized pipe and numerous guide wires, with a pulley system to move the grids into position on the frame.
 
 These new snowmen are more flexible than the original design. You see better arm and snowball movement, hats that can be knocked off, the ability to stick multiple snowballs on the nose or on the ground, and a neat "duck the snowball" trick. Every so often, one of them has had enough and pulls out a big cannon to fire a massive snowball at the other.
 
-For 2020 we gave the snowman a new ability: viewers can log into our website and select one of 7 different characters for the snowman on the right. Nothing like throwing a snowball at Hans Gruber during the Holiday season!  In the years since 2020, we've been adding new characters (usually 1-2 per year).
+For [2020](/christmas/2020/) we gave the snowman a new ability: viewers can log into our website and select one of 7 different characters for the snowman on the right. Nothing like throwing a snowball at Hans Gruber during the Holiday season!  In the years since 2020, we've been adding new characters (usually 1-2 per year).
 
 ## Original Version (2002–2018)
 

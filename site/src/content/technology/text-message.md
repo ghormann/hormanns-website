@@ -15,7 +15,7 @@ photos:
 showFavDisplays: true
 ---
 
-In 2018, we added the ability for viewers to supply their first name via text message and have it included in the display. The name immediately displays on the small grid under the [clock](/technology/clock), and then every 10 minutes or so, a 1-minute sequence is displayed where 13 names are included on the [18' × 8' grid](/technology/grid). Starting in 2019, viewers can see their spot in the queue using the same [website used for voting](/technology/voting/).
+In [2018](/christmas/2018/), we added the ability for viewers to supply their first name via text message and have it included in the display. The name immediately displays on the small grid under the [clock](/technology/clock), and then every 10 minutes or so, a 1-minute sequence is displayed where 13 names are included on the [18' × 8' grid](/technology/grid). Starting in [2019](/christmas/2019/), viewers can see their spot in the queue using the same [website used for voting](/technology/voting/).
 
 ## How it Works
 

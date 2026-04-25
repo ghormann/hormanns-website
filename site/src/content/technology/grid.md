@@ -30,7 +30,7 @@ photos:
     caption: "Back of Grid (Stored)"
 ---
 
-The large grid on the house was added to our display in 2015. Plenty of others have created grids, but our goal was to go over the top and create a very large grid. We ended up with an 18ft × 8ft grid mounted over our front door.
+The large grid on the house was added to our display in [2015](/christmas/2015/). Plenty of others have created grids, but our goal was to go over the top and create a very large grid. We ended up with an 18ft × 8ft grid mounted over our front door.
 
 The grid is constructed using:
 

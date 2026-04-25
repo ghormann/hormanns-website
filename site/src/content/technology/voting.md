@@ -24,7 +24,7 @@ sectionSidebars:
     maxPhotos: 1
 ---
 
-The [text your name](/technology/text-message/) feature from 2018 worked so well that we wanted to add an additional interactive element in 2019. After some thought, we got the idea of allowing viewers to vote for the next song. After considering a few different implementations, we decided upon a simple website designed for the mobile phone — and that is how [vote-now.org](https://vote-now.org) was born.
+The [text your name](/technology/text-message/) feature from [2018](/christmas/2018/) worked so well that we wanted to add an additional interactive element in [2019](/christmas/2019/). After some thought, we got the idea of allowing viewers to vote for the next song. After considering a few different implementations, we decided upon a simple website designed for the mobile phone — and that is how [vote-now.org](https://vote-now.org) was born.
 
 ## How it Works
 

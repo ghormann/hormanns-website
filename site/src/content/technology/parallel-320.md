@@ -46,7 +46,7 @@ sectionSidebars:
 
 > **Standard disclaimer:** I'm not responsible for anyone hooking these circuits up and the results that follow their use.
 
-After the 2001 season, I wasn't sure how to expand beyond the [original 8-port design](/technology/parallel-8/). Luckily, I came across Hill Robertson's design that can control up to 320 individual circuits. I modified it slightly, but it is really still the same design.
+After the [2001](/christmas/2001/) season, I wasn't sure how to expand beyond the [original 8-port design](/technology/parallel-8/). Luckily, I came across Hill Robertson's design that can control up to 320 individual circuits. I modified it slightly, but it is really still the same design.
 
 *(Note: If you need a much smaller number of circuits, check out the [original 8-port design](/technology/parallel-8/). These can always be converted to work with this design with little effort.)*
 
