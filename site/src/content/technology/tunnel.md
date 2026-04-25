@@ -8,16 +8,14 @@ videos:
     title: "Tunnel of Lights (2023)"
   - id: "XngMaYWBpOI"
     title: "Tunnel Rainbow (2024)"
-  - id: "nQgYmLia6iU"
-    title: "Tunnel Buttons (2024)"
-  - id: "glANXkb4Blc"
-    title: "The Tunnel (2022)"
   - id: "YDi3pQPqkAU"
     title: "Tunnel Setup (2025) - Day 4"
   - id: "kzf8Az4GdAg"
     title: "Tunnel Setup (2025) - Day 5"
   - id: "2QdMEqkct1c"
     title: "Plugging everything in (2024)"
+  - id: "nQgYmLia6iU"
+    title: "Tunnel Buttons (2024)"
 photos:
   - src: "christmas/2022/20221105_164622.jpg"
     caption: "Building tunnel frame sections being painted - Nov 2022"
@@ -25,6 +23,8 @@ photos:
     caption: "Assembling the tunnel on our 25 wedding anniversary - Nov 2022"
   - src: "christmas/2025/tunnel_1.jpg"
     caption: "Grid hung, but not wired yet - Nov 2025"
+  - src: "christmas/2025/tunnel_buttons.jpg"
+    caption: "Tunnel Buttons - Nov 2025"
   - src: "christmas/2025/tunnel_3.jpg"
     caption: "Open for Business - Nov 2025"
   - src: "christmas/2025/tunnel_4.jpg"
@@ -50,10 +50,10 @@ After the structure is standing a whole [second day](https://www.youtube.com/wat
 
 Like the [snowmen](/technology/snowmen/), the tunnel uses [5V WS2811 RGB pixels](/technology/dmx/) rather than the 12V pixels used in older elements. The 5V pixels cost less, are more power efficient, and have fewer reliability issues — but they require more frequent power injection along the data runs to avoid voltage drop problems. 16 Dedicated 5V power supplies are mounted in a weatherproof behind the tunnel.
 
-To control the pixels, we use a 32-port controller from [Kulp Lights](https://kulplights.com/) that runs FPP[https://falconchristmas.github.io/] to send the WS2811 serial signal the pixels understand. This controller is its own isolated player sepereated from the rest of the show. All sequencing is done in [xLights](https://xlights.org/).
+To control the pixels, we use a 32-port controller from [Kulp Lights](https://kulplights.com/) that runs [FPP](https://falconchristmas.github.io/) to send the WS2811 serial signal the pixels understand. This controller is its own isolated player sepereated from the rest of the show. All sequencing is done in [xLights](https://xlights.org/).
 
-## Interactive Push Buttons (2024)
+## Interactive Buttons (2024)
 
-In [2024](/christmas/2024/) we added **push button controls** mounted at the tunnel entrance. Visitors can press the buttons to trigger color effects on the tunnel in real time. The buttons connect through a custom controller that sends MQTT messages to the [GregsLights](https://github.com/ghormann/GregsLights) control program, which responds by firing tunnel-specific animations.
+In [2024](/christmas/2024/) we added push button controls mounted at the tunnel entrance. Visitors can press the buttons to select the sequence displayed in the on the tunnel. The buttons are wired into a raspberi Pi running [FPP](https://falconchristmas.github.io/) and that action sends MQTT messages that is both picked up by our stats server and the Kulp Lights controller actually controling the pixels in the tunnel.
 
-The buttons were an immediate hit. In the [2024](/christmas/2024/) season alone, visitors pressed the tunnel buttons **40,846 times**. In [2025](/christmas/2025/) the total was **39,661 presses** — showing the interactive element consistently draws engagement throughout the season.
+The buttons were an immediate hit. In the [2024](/christmas/2024/) season alone, visitors pressed the tunnel buttons 40,846 times. In [2025](/christmas/2025/) the total was 39,661 presses — showing the interactive element consistently draws engagement throughout the season.
