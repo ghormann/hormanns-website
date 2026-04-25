@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- Above firewall: Web Server -->
+    <mxCell id="2" value="Web Server" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=14;" vertex="1" parent="1">
+      <mxGeometry x="40" y="90" width="130" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Above firewall: Twilio -->
+    <mxCell id="3" value="Twilio" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=14;" vertex="1" parent="1">
+      <mxGeometry x="300" y="90" width="120" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Above firewall: Phone (user) -->
+    <mxCell id="4" value="Phone" style="shape=mxgraph.android.phone2;strokeColor=#666666;strokeWidth=2;fillColor=#f5f5f5;fontColor=#333333;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="530" y="50" width="60" height="100" as="geometry" />
+    </mxCell>
+
+    <!-- Above firewall: Admin Phone -->
+    <mxCell id="5" value="Admin Phone" style="shape=mxgraph.android.phone2;strokeColor=#666666;strokeWidth=2;fillColor=#f5f5f5;fontColor=#333333;fontSize=12;" vertex="1" parent="1">
+      <mxGeometry x="700" y="50" width="60" height="100" as="geometry" />
+    </mxCell>
+
+    <!-- Firewall line -->
+    <mxCell id="6" value="Firewall" style="endArrow=none;startArrow=none;html=1;strokeColor=#FF0000;strokeWidth=2;align=right;verticalAlign=bottom;fontSize=12;fontColor=#FF0000;" edge="1" parent="1">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="0" y="270" as="sourcePoint" />
+        <mxPoint x="920" y="270" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+
+    <!-- Below firewall: MQTT Broker -->
+    <mxCell id="7" value="MQTT Broker" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=14;" vertex="1" parent="1">
+      <mxGeometry x="40" y="340" width="130" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Below firewall: Clock and Snowman controller -->
+    <mxCell id="8" value="Clock and Snowman&#xa;controller" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=14;" vertex="1" parent="1">
+      <mxGeometry x="40" y="500" width="160" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Below firewall: XLights Render -->
+    <mxCell id="9" value="XLights Render" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=14;" vertex="1" parent="1">
+      <mxGeometry x="280" y="500" width="130" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Below firewall: fppscheduler -->
+    <mxCell id="10" value="fppscheduler" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=14;" vertex="1" parent="1">
+      <mxGeometry x="510" y="340" width="130" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Below firewall: FPP Main Show -->
+    <mxCell id="11" value="FPP Main Show" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=14;" vertex="1" parent="1">
+      <mxGeometry x="730" y="310" width="140" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Below firewall: FPP Tunnel -->
+    <mxCell id="12" value="FPP Tunnel" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=14;" vertex="1" parent="1">
+      <mxGeometry x="730" y="430" width="140" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Below firewall: FPP Tunnel Info -->
+    <mxCell id="13" value="FPP Tunnel Info" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;fontSize=14;" vertex="1" parent="1">
+      <mxGeometry x="730" y="550" width="140" height="60" as="geometry" />
+    </mxCell>
+
+    <!-- Phone → Twilio: Text Messages -->
+    <mxCell id="20" value="Text Messages" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;fontColor=#0000FF;fontSize=11;" edge="1" source="4" target="3" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Twilio → Web Server: API -->
+    <mxCell id="21" value="API" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;fontColor=#0000FF;fontSize=11;" edge="1" source="3" target="2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Phone → Web Server: HTTPS -->
+    <mxCell id="22" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#333333;fontColor=#333333;fontSize=11;" edge="1" source="4" target="2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Admin Phone → Web Server: HTTPS -->
+    <mxCell id="23" value="HTTPS" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#333333;fontColor=#333333;fontSize=11;" edge="1" source="5" target="2" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- Web Server → MQTT Broker: MQTT -->
+    <mxCell id="24" value="MQTT" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;fontColor=#0000FF;fontSize=11;" edge="1" source="2" target="7" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- MQTT Broker → Clock and Snowman controller: MQTT -->
+    <mxCell id="25" value="MQTT" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;fontColor=#0000FF;fontSize=11;" edge="1" source="7" target="8" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- MQTT Broker → XLights Render: MQTT -->
+    <mxCell id="26" value="MQTT" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;fontColor=#0000FF;fontSize=11;" edge="1" source="7" target="9" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- MQTT Broker → fppscheduler: MQTT -->
+    <mxCell id="27" value="MQTT" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0000FF;fontColor=#0000FF;fontSize=11;" edge="1" source="7" target="10" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- fppscheduler → FPP Main Show: REST API -->
+    <mxCell id="28" value="REST API" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#333333;fontColor=#333333;fontSize=11;" edge="1" source="10" target="11" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- fppscheduler → FPP Tunnel: REST API -->
+    <mxCell id="29" value="REST API" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#333333;fontColor=#333333;fontSize=11;" edge="1" source="10" target="12" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- fppscheduler → FPP Tunnel Info: REST API -->
+    <mxCell id="30" value="REST API" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#333333;fontColor=#333333;fontSize=11;" edge="1" source="10" target="13" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>
