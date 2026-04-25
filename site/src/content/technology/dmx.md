@@ -2,6 +2,7 @@
 title: "DMX / E1.31 with Pixels"
 description: "How RGB pixels and the E1.31 protocol replaced AC circuits in our display."
 order: 4
+navGroup: 2
 videos:
   - id: "yt2iT4zrkDo"
     title: "Replacing a Pixel"

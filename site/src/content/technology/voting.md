@@ -2,6 +2,7 @@
 title: "Song Voting"
 description: "Viewers vote for the next song via a mobile-friendly website."
 order: 6
+navGroup: 2
 videos: []
 photos:
   - src: "christmas/2019/Website/Current.jpg"

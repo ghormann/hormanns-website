@@ -2,6 +2,7 @@
 title: "Texting Your Name"
 description: "Text your first name to have it displayed on the 18ft × 8ft grid during the show."
 order: 5
+navGroup: 2
 videos:
   - id: "EhCaSn63lMk"
     title: "On the Big Grid"

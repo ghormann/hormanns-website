@@ -3,6 +3,7 @@ title: "The Countdown Clock"
 description: "Our giant pixel countdown clock — now 7,000+ RGB pixels."
 heroImage: https://img.youtube.com/vi/z0MqBhNhmZU/maxresdefault.jpg
 order: 1
+navGroup: 1
 videos:
   - id: "MnXRQG9p0ps"
     title: "Original Version (2009)"

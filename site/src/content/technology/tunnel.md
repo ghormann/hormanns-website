@@ -3,6 +3,7 @@ title: "The Tunnel"
 description: "A massive walk-through tunnel of RGB pixels — the largest single element in our display."
 heroImage: https://img.youtube.com/vi/HpcExG1dQpo/maxresdefault.jpg
 order: 2.5
+navGroup: 1
 videos:
   - id: "HpcExG1dQpo"
     title: "Tunnel of Lights (2023)"

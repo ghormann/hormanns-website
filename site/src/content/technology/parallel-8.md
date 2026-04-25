@@ -2,6 +2,7 @@
 title: "8-Port Parallel Port Controller"
 description: "How to build a simple 8-circuit controller using solid state relays and a parallel port — the original controller used in 2001."
 order: 8
+navGroup: 3
 videos: []
 photos:
   - src: "christmas/2001/boxes/full_box.jpg"

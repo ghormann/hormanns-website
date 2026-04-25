@@ -2,6 +2,7 @@
 title: "320-Circuit Parallel Port Controller"
 description: "The Hill-Robertson design for controlling up to 320 individually switchable circuits from a parallel port."
 order: 9
+navGroup: 3
 videos: []
 photos:
   - src: "christmas/2008/hill320_front.jpg"
