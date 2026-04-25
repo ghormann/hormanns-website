@@ -12,53 +12,45 @@ videos:
     title: "Tunnel Buttons (2024)"
   - id: "glANXkb4Blc"
     title: "The Tunnel (2022)"
-  - id: "A52b5S2XGXg"
-    title: "Setup: Roof and Tunnel (2023)"
-  - id: "STx_4p-lqiU"
-    title: "Setup: Mega Tree and Tunnel (2023)"
-  - id: "Zfi6tDEdeUk"
-    title: "Setup: More Tunnel Construction (2023)"
-  - id: "fLudpz4hYtA"
-    title: "Setup: Tunnel (2024)"
-  - id: "VgT0AFCre8k"
-    title: "Setup: Tunnel and Snowmen (2024)"
+  - id: "YDi3pQPqkAU"
+    title: "Tunnel Setup (2025) - Day 4"
+  - id: "kzf8Az4GdAg"
+    title: "Tunnel Setup (2025) - Day 5"
+  - id: "2QdMEqkct1c"
+    title: "Plugging everything in (2024)"
 photos:
   - src: "christmas/2022/20221105_164622.jpg"
-    caption: "Building tunnel frame sections in the garage - Nov 5, 2022"
-  - src: "christmas/2022/20221110_104639.jpg"
-    caption: "Assembling truss sections in the yard - Nov 10, 2022"
-  - src: "christmas/2022/20221110_164838.jpg"
-    caption: "Raising the pixel grid with a lift - Nov 10, 2022"
-  - src: "christmas/2024/20241220_220327.jpg"
-    caption: "Naughty or Nice tunnel - Dec 20, 2024"
+    caption: "Building tunnel frame sections being painted - Nov 2022"
+  - src: "christmas/2025/tunnel_2.jpg"
+    caption: "Assembling the tunnel on our 25 wedding anniversary - Nov 2022"
+  - src: "christmas/2025/tunnel_1.jpg"
+    caption: "Grid hung, but not wired yet - Nov 2025"
+  - src: "christmas/2025/tunnel_3.jpg"
+    caption: "Open for Business - Nov 2025"
+  - src: "christmas/2025/tunnel_4.jpg"
+    caption: "Lets Dance in the Tunnel - Dec 2025"
 sectionSidebars:
-  - heading: "Construction (2022)"
+  - heading: "Construction"
     photoIndices: [0, 1, 2]
     maxPhotos: 3
   - heading: "Interactive Buttons (2024)"
-    photoIndices: [3]
-    maxPhotos: 1
+    photoIndices: [3, 4]
+    maxPhotos: 2
 ---
 
-The tunnel was added to our display in [2022](/christmas/2022/), on the right side of the yard after moving the [countdown clock](/technology/clock/) to the far left to make room. When fully assembled it forms a 16x8 foot walk-through arch of RGB pixels that visitors can walk though and be surrounded  by lights. With more pixels than [the snowmen](/technology/snowmen/) (13,256), the tunnel became the **single largest element in our display**.
+The tunnel was added to our display in [2022](/christmas/2022/), on the right side of the yard after moving the [countdown clock](/technology/clock/) to the far left to make room. When fully assembled it forms a 16x8 foot walk-through arch of RGB pixels that visitors can walk though and be surrounded  by lights. With more pixels than [the snowmen](/technology/snowmen/) (13,256), the tunnel became the single largest element in our display with 22,754 pixels. Almost half of those pixels (8,930) make up the back of the tunnel where the pixels are space 1" apart.  (The sides and top are 2".)
 
 ## Construction
 
-The tunnel frame is built from aluminum truss sections assembled in the yard each season. Construction typically spans several setup days — in [2023](/christmas/2023/), dedicated setup days stretched from roof and tunnel work all the way through pixel wiring and snowmen integration. A mechanical lift is used to raise the pixel grids into position on the truss at height.
+The tunnel frame is built from a wood frame assembled in the yard each season. Construction typically spans two days and can be done with two people (but works best with at least three). [Day1](https://www.youtube.com/watch?v=YDi3pQPqkAU) is focused on getting the frame up and secure. Each side goes up individually and we leverage the lift to hold the left side in place while assembling the right side.  Once the right side is standing, tie down straps hold it up right until we can use the left to get the support bars in the top and back in place. Tie down straps are also part of the final support structure to hold it in place during high wind.
 
-Each season the tunnel goes up in pieces:
-
-1. Truss sections are pre-built in the garage
-2. Sections are assembled end-to-end in the yard
-3. Pixel grids are lifted into place on the frame
-4. Power and data cabling is run along the frame
-5. The full structure is anchored with ground stakes and guide wires
+After the structure is standing a whole [second day](https://www.youtube.com/watch?v=kzf8Az4GdAg) dedicated to suspend the lights and plugging them in.  This takes a uprisinly large maount of time because each section needs to be level and perfectly aligned otherwise the patterns won't display correctly. The lift is very helpful, especially in getting the top pixels in place. WHile the sides are held in place with rope and pulleys, the top we need to use wrench straps to pull everything tight.
 
 ## Pixels and Controllers
 
-Like the [snowmen](/technology/snowmen/), the tunnel uses **5V WS2811 RGB smart pixels** rather than the 12V pixels used in most of our other elements. The 5V pixels cost less, are more power efficient, and have fewer reliability issues — but they require more frequent power injection along the data runs to avoid voltage drop problems. Dedicated 5V power supplies are mounted in weatherproof enclosures directly on the frame alongside the pixel controllers.
+Like the [snowmen](/technology/snowmen/), the tunnel uses [5V WS2811 RGB pixels](/technology/dmx/) rather than the 12V pixels used in older elements. The 5V pixels cost less, are more power efficient, and have fewer reliability issues — but they require more frequent power injection along the data runs to avoid voltage drop problems. 16 Dedicated 5V power supplies are mounted in a weatherproof behind the tunnel.
 
-Control uses the [E1.31 (sACN) protocol](/technology/dmx/) over Ethernet, with Falcon controllers from [Kulp Lights](https://kulplights.com/) receiving the data stream and converting it to the WS2811 serial signal the pixels understand. The tunnel required additional pixel controllers as it was expanded — in [2023](/christmas/2023/) we went from 11 controllers display-wide to 13, and in [2024](/christmas/2024/) to 15.
+To control the pixels, we use a 32-port controller from [Kulp Lights](https://kulplights.com/) that runs FPP[https://falconchristmas.github.io/] to send the WS2811 serial signal the pixels understand. This controller is its own isolated player sepereated from the rest of the show. All sequencing is done in [xLights](https://xlights.org/).
 
 ## Interactive Push Buttons (2024)
 
