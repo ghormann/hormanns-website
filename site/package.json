@@ -14,7 +14,7 @@
     "deploy-prod": "npm run build && rsync -avz -e \"ssh -p 7777\" --chmod=a+rX dist/ .htaccess ghormann@lin1.thehormanns.net:/var/www/ghormann/"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.8",
+    "@astrojs/check": "^0.9.2",
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/vue": "^6.0.1",
     "@tailwindcss/vite": "^4.2.2",
