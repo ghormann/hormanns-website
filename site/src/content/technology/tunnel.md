@@ -20,7 +20,7 @@ photos:
   - src: "christmas/2022/20221105_164622.jpg"
     caption: "Building tunnel frame sections being painted - Nov 2022"
   - src: "christmas/2025/tunnel_2.jpg"
-    caption: "Assembling the tunnel on our 25 wedding anniversary - Nov 2022"
+    caption: "Assembling the tunnel on our 25th wedding anniversary - Nov 2022"
   - src: "christmas/2025/tunnel_1.jpg"
     caption: "Grid hung, but not wired yet - Nov 2025"
   - src: "christmas/2025/tunnel_buttons.jpg"

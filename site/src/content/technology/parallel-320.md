@@ -87,7 +87,7 @@ To calculate what number to write, add up the values for each bit you want on:
 
 *Examples:* 
 - To set Bits 1 and 2 to send voltage, and the others to not → 1 + 2 = **3**. 
-- To set Bits 2, 4, and 6 to send voltage and the otehrs to not → 2 + 8 + 32 = **42**.
+- To set Bits 2, 4, and 6 to send voltage and the others to not → 2 + 8 + 32 = **42**.
 
 ## The Design
 
