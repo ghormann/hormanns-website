@@ -8,6 +8,8 @@ videos:
   - id: "ksmsWpjH3jE"
     title: "Information Board in Action"
     thumb: https://img.youtube.com/vi/ksmsWpjH3jE/hqdefault.jpg
+  - id: "up6Ib9ZQnq8"
+    title: "Halloween and Fall Sequence"
   - id: "8WGW7Ky4HIU"
     title: "Initial Concept"
   - id: "kgoQNgluk2M"

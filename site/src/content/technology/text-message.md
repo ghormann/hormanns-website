@@ -32,11 +32,11 @@ In [2018](/christmas/2018/), we added the ability for viewers to supply their fi
 4. If the name isn't in the whitelist, a text message is sent to the admin and the sender is notified that the name needs review.
 5. For valid names, an MQTT message is generated and sent to both the Clock Controller Service and the xLights Render Service where it will be added to a local queues.
 6. The Clock Controller runs a [custom C++ program](https://github.com/ghormann/GregsLights) that always drains the queue of names before doing any other greetings or graphics.
-7. The xLights Render Service is an Ubuntu VM running a Python process. The name is added to the queue, and the current queue is always published every 2 seconds so that the web server knows the current status.
-8. The xLights Render Service takes the next 13 names from the queue and generates a new xLights .xml file by loading a template with %NAME_1%, %NAME_2%, … %NAME_C% placeholders and doing a simple replace. If there aren't enough names, it selects a few from the database since the sequence is designed to always play 13 names.
-9. Once the .xml file is generated, the Python process runs `xLights -r WISH_Names.xml` to generate the .seq file.
+7. The [xLights Render Service](https://github.com/ghormann/xlights-render) is an Ubuntu container running a Python process and xLights for Linux. The name is added to the queue, and the current queue is always published every 2 seconds so that the web server knows the current status.
+8. The xLights Render Service takes the next 13 names from the queue and generates a new xLights sequence file (.xsq) by loading a template with %NAME_1%, %NAME_2%, … %NAME_C% placeholders and doing a simple replace. If there aren't enough names, it selects a few from the database since the sequence is designed to always play 13 names.
+9. Once the .xsq file is generated, the Python process runs `xLights -r WISH_Names.xsq` to generate the .seq file.
 10. As soon as the .seq file is generated, the Python process uses the FPP API to upload Wish_names.seq to the FPP Main Player and sends a signal via MQTT to let the webserver and fppscheduler now that the names are ready.
-11. The fppscheduler will schecule this as the next song to play using the REST API of the FPP Main Player.
+11. The fppscheduler will schedule this as the next song to play using the REST API of the FPP Main Player.
 12. While all this is happening, both the [Voting Website](/technology/voting/) and Stats server monitor all traffic and provide updates to both the admin and end users.
 
 ## Admin Interfaces
@@ -46,5 +46,5 @@ The web server also contains an admin page that allows us to remotely monitor th
 ## Source Code
 
 - [Web Server](https://github.com/ghormann/christmasnamechecker)
-- [xLights VM Server](https://bitbucket.org/ghormann/xlightsnamegen)
+- [xLights Render](https://github.com/ghormann/xlights-render)
 - [Stats Tracker](https://github.com/ghormann/ChristmasStats)
