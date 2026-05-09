@@ -26,6 +26,8 @@ videos:
     title: "Current Version (all pixels)"
   - id: "aGOOmF0B3fM"
     title: "GUI Program (Current)"
+  - id: "F3GRL6wnUWo"
+    title: "Clock: Early November"
   - id: "IPzWfIm7C5c"
     title: "Text Your Name"
 photos:
