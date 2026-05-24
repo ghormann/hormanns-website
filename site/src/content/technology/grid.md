@@ -8,8 +8,8 @@ videos:
   - id: "9T0EQ4NDi6g"
     title: "Full Grid (2020)"
     thumb: https://img.youtube.com/vi/9T0EQ4NDi6g/hqdefault.jpg
-  - id: "f1N9lGrLd8M"
-    title: "Outdoor setup (2023)"
+  - id: "m1sNMfIQm5k"
+    title: "Setup with Voiceover"
   - id: "EhCaSn63lMk"
     title: "Names on the Big Grid"
   - id: "HjcuMDTyxBY"
