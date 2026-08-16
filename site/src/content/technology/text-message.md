@@ -8,6 +8,8 @@ videos:
     title: "On the Big Grid"
   - id: "IPzWfIm7C5c"
     title: "On the Clock"
+  - id: "s9nfcFMzzqk"
+    title: "Midnight Name Scroll"
 photos:
   - src: "images/grid_names.jpg"
     caption: "Grid Names"
@@ -38,6 +40,10 @@ In [2018](/christmas/2018/), we added the ability for viewers to supply their fi
 10. As soon as the .seq file is generated, the Python process uses the FPP API to upload Wish_names.seq to the FPP Main Player and sends a signal via MQTT to let the webserver and fppscheduler now that the names are ready.
 11. The fppscheduler will schedule this as the next song to play using the REST API of the FPP Main Player.
 12. While all this is happening, both the [Voting Website](/technology/voting/) and Stats server monitor all traffic and provide updates to both the admin and end users.
+
+## Midnight Christmas Eve Display
+
+At midnight on Christmas Eve, the system switches things up: instead of the usual 13-name sequence, it produces an extended display that scrolls through the last 300 names received. You can see it in action [on YouTube](https://www.youtube.com/watch?v=s9nfcFMzzqk).
 
 ## Admin Interfaces
 
