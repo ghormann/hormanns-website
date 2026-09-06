@@ -48,7 +48,7 @@ const websiteJsonLd = JSON.stringify({
         Both of us are big on <a href="/christmas/">Christmas</a>.
         Mary likes the shopping and interior decorating, and Greg is big on outside Christmas displays.
         In <a href="/christmas/2001/">2001</a>, Greg
-        started experimenting with animated displays controlled by a computer. Twenty-five years later, we have over 75,000 lights synchronized to 73 minutes of music leveraging
+        started experimenting with animated displays controlled by a computer. Twenty-five years later, we have over 75,000 lights synchronized to <span id="music-stats">73 minutes of music</span> leveraging
         <a href="https://xlights.org" target="_blank" rel="noopener noreferrer">xLights</a>,
         <a href="https://github.com/FalconChristmas/fpp" target="_blank" rel="noopener noreferrer">FPP</a>,
         and <a href="/technology/dmx/">pixels controlled by E1.31</a>.
@@ -101,5 +101,26 @@ const websiteJsonLd = JSON.stringify({
   </p>
 
   <FavDisplays wide />
+
+  <script>
+    fetch('https://vote-now.org/api/model')
+      .then((res) => res.json())
+      .then((data) => {
+        const songs = data?.model?.songs;
+        if (!Array.isArray(songs) || songs.length === 0) return;
+
+        const totalMinutes = Math.floor(
+          songs.reduce((sum, song) => sum + (song.duration ?? 0), 0) / 60
+        );
+
+        const el = document.getElementById('music-stats');
+        if (el) {
+          el.textContent = `over ${totalMinutes} minutes of music across ${songs.length} songs`;
+        }
+      })
+      .catch(() => {
+        // Leave the default text in place if the request fails.
+      });
+  </script>
 
 </PageLayout>
