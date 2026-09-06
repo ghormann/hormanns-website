@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import YearCard from '../../components/YearCard.astro';
 import FavDisplays from '../../components/FavDisplays.astro';
+import { yearsOfDisplay, yearsOfDisplayWords } from '../../lib/displayYears';
 
 const allYears = (await getCollection('christmas', ({ data }) => !data.draft))
   .sort((a, b) => b.data.year - a.data.year);
@@ -10,11 +11,11 @@ const allYears = (await getCollection('christmas', ({ data }) => !data.draft))
 const decades = ['2020-Today', '2010-2019', '2000-2009'] as const;
 ---
 
-<PageLayout title="Christmas Light Display — Liberty Township, Ohio | The Hormanns" description="25 years of animated Christmas lights at the Hormann house in Liberty Township, Ohio (Cincinnati area). Over 75,000 pixels synchronized to music.">
+<PageLayout title="Christmas Light Display — Liberty Township, Ohio | The Hormanns" description={`${yearsOfDisplay} years of animated Christmas lights at the Hormann house in Liberty Township, Ohio (Cincinnati area). Over 75,000 pixels synchronized to music.`}>
   <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-accent);">
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Christmas Display</h1>
     <p class="mt-2 text-sm" style="color: var(--color-link); font-family: var(--font-sans);">
-      25 years of animated RGB lights, music, and Christmas magic in Liberty Township, Ohio.
+      {yearsOfDisplayWords} years of animated RGB lights, music, and Christmas magic in Liberty Township, Ohio.
     </p>
   </div>
 

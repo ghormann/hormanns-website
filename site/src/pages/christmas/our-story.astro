@@ -1,6 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import RecentDisplays from '../../components/RecentDisplays.astro';
+import { yearsOfDisplayWords } from '../../lib/displayYears';
 ---
 
 <style>
@@ -14,7 +15,7 @@ import RecentDisplays from '../../components/RecentDisplays.astro';
   <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-accent);">
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Our Story</h1>
     <p class="mt-2 text-sm" style="color: var(--color-link); font-family: var(--font-sans);">
-      25 years of animated Christmas lights — how it all began.
+      {yearsOfDisplayWords} years of animated Christmas lights — how it all began.
     </p>
   </div>
 
