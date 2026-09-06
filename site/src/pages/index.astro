@@ -55,6 +55,7 @@ const websiteJsonLd = JSON.stringify({
         If you are curious about the history of our display, we've captured <a href="/christmas/our-story/">our story</a>
         which is also summarized in a <a href="https://www.youtube.com/watch?v=Nd7ADGezo3s">2021 on stage presentation</a>.
       </p>
+      <p id="car-count" class="text-sm mb-3" hidden></p>
       <RecentDisplays />
     </div>
     <div>
@@ -116,6 +117,16 @@ const websiteJsonLd = JSON.stringify({
         const el = document.getElementById('music-stats');
         if (el) {
           el.textContent = `over ${totalMinutes} minutes of music across ${songs.length} songs`;
+        }
+
+        const totalCars = data?.model?.cars?.['total-cars'];
+        const carEl = document.getElementById('car-count');
+        if (carEl && typeof totalCars === 'number' && totalCars > 0) {
+          carEl.textContent =
+            totalCars === 1
+              ? 'Right now, we estimate 1 car is parked outside watching our display!'
+              : `Right now, we estimate ${totalCars} cars are parked outside watching our display!`;
+          carEl.hidden = false;
         }
       })
       .catch(() => {
