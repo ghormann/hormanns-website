@@ -10,10 +10,13 @@ export async function getStaticPaths() {
   const entries = await getCollection('christmas', ({ data }) => !data.draft);
   const sorted = entries.sort((a, b) => a.data.year - b.data.year);
 
+  const latestYear = sorted[sorted.length - 1]?.data.year;
+
   return sorted.map((entry, i) => ({
     params: { year: String(entry.data.year) },
     props: {
       entry,
+      isLatestYear: entry.data.year === latestYear,
       prev: sorted[i - 1]
         ? { year: sorted[i - 1].data.year, slug: sorted[i - 1].id }
         : undefined,
@@ -24,7 +27,7 @@ export async function getStaticPaths() {
   }));
 }
 
-const { entry, prev, next } = Astro.props;
+const { entry, prev, next, isLatestYear } = Astro.props;
 const { Content } = await render(entry);
 const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisplays } = entry.data;
 
@@ -36,43 +39,73 @@ const description: string =
     ? `Hormann Christmas Light Display ${year} — ${pixelCount.toLocaleString()} pixels synchronized to music in Liberty Township, Ohio.`
     : (entry.data.short_description ?? `Hormann animated Christmas light display, ${year}, Liberty Township, Ohio.`));
 
+// The <title> targets how people search for the display; the <h1> keeps the
+// friendlier wording from the content file.
+const seoTitle = `Christmas Lights ${year} — The Hormanns, Liberty Township OH`;
+
 // ogImage: use heroImage if present (root-relative or absolute).
 const ogImage = heroImage ?? undefined;
 
-// Event JSON-LD for this year's display.
-const siteBase = 'https://www.thehormanns.net';
-const eventJsonLdObj: Record<string, unknown> = {
-  '@context': 'https://schema.org',
-  '@type': 'Event',
-  name: `Hormann Christmas Light Display ${year}`,
-  description,
-  startDate: `${year}-12-01`,
-  endDate: `${year}-12-31`,
-  eventStatus: 'https://schema.org/EventScheduled',
-  location: {
-    '@type': 'Place',
-    name: 'Hormann Residence',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Liberty Township',
-      addressRegion: 'OH',
-      addressCountry: 'US',
-    },
+// Canonical host comes from astro.config.mjs (`site`) so structured data can never
+// drift from the canonical/sitemap URLs.
+const siteBase = (Astro.site ?? new URL('https://thehormanns.net')).origin;
+
+// The display is a live Event only for the most recent year; earlier years are an
+// archive, and a long-past Event gets dropped from search features anyway.
+const place = {
+  '@type': 'Place',
+  name: 'Hormann Residence',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '6656 Devon Drive',
+    addressLocality: 'Liberty Township',
+    addressRegion: 'OH',
+    postalCode: '45044',
+    addressCountry: 'US',
   },
-  organizer: {
-    '@type': 'Person',
-    name: 'Greg Hormann',
-    url: siteBase,
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 39.395325,
+    longitude: -84.3991475,
   },
 };
+
+const author = {
+  '@type': 'Person',
+  name: 'Greg Hormann',
+  url: `${siteBase}/greg/`,
+};
+
+const jsonLdObj: Record<string, unknown> = isLatestYear
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'Event',
+      name: `Hormann Christmas Light Display ${year}`,
+      description,
+      startDate: `${year}-12-01`,
+      endDate: `${year}-12-31`,
+      eventStatus: 'https://schema.org/EventScheduled',
+      location: place,
+      organizer: author,
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      name: `Hormann Christmas Light Display ${year}`,
+      description,
+      datePublished: `${year}-12-01`,
+      contentLocation: place,
+      author,
+    };
+
+jsonLdObj.url = `${siteBase}/christmas/${year}/`;
 if (heroImage) {
-  const imageUrl = heroImage.startsWith('http') ? heroImage : `${siteBase}${heroImage}`;
-  eventJsonLdObj.image = imageUrl;
+  jsonLdObj.image = heroImage.startsWith('http') ? heroImage : `${siteBase}${heroImage}`;
 }
-const eventJsonLd = JSON.stringify(eventJsonLdObj);
+const jsonLd = JSON.stringify(jsonLdObj);
 ---
 
-<ChristmasLayout title={title} description={description} ogImage={ogImage} jsonLd={eventJsonLd}>
+<ChristmasLayout title={seoTitle} description={description} ogImage={ogImage} jsonLd={jsonLd}>
   <!-- Hero heading strip -->
   <div
     class="rounded-lg px-6 py-4 mb-4 -mx-2"

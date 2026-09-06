@@ -22,23 +22,27 @@ function yearCountInWords(n: number): string {
 const yearsOfDisplay = new Date().getFullYear() - 2000;
 const yearsOfDisplayWords = yearCountInWords(yearsOfDisplay);
 
+// Canonical host comes from astro.config.mjs (`site`) so structured data can never
+// drift from the canonical/sitemap URLs.
+const siteBase = (Astro.site ?? new URL('https://thehormanns.net')).origin;
+
 const websiteJsonLd = JSON.stringify({
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'WebSite',
       name: 'The Hormanns',
-      url: 'https://www.thehormanns.net',
+      url: `${siteBase}/`,
     },
     {
       '@type': 'Person',
       name: 'Greg Hormann',
-      url: 'https://www.thehormanns.net/greg/',
+      url: `${siteBase}/greg/`,
     },
     {
       '@type': 'Person',
       name: 'Mary Hormann',
-      url: 'https://www.thehormanns.net/mary/',
+      url: `${siteBase}/mary/`,
     },
   ],
 });
