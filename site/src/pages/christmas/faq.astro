@@ -24,8 +24,8 @@ const faqs: { q: string; a: string }[] = [
     a: `Nothing. The display is completely free and there is no ticket or reservation. We do collect ${CHARITY.accepts} for ${CHARITY.beneficiary} in partnership with the ${CHARITY.partner}, but donating is never required.`,
   },
   {
-    q: 'What radio station do I tune to?',
-    a: `Tune your car radio to <strong>${DISPLAY.fmFrequency}</strong>. The frequency is also shown on the <a href="/technology/info-board/">information sign above the garage</a>, and the show plays through your own speakers. It is a low-power transmitter by design, so the signal only carries a few hundred feet &mdash; if you are not picking it up, move closer to the house.`,
+    q: 'How do I hear the music?',
+    a: `Two ways. From your car, tune the radio to <strong>${DISPLAY.fmFrequency}</strong> &mdash; the frequency is also shown on the <a href="/technology/info-board/">information sign above the garage</a>. It is a low-power transmitter by design, so the signal only carries a few hundred feet; if you are not picking it up, move closer to the house. If you would rather get out and walk around, we also run <strong>outdoor speakers</strong> at the display, so you do not need a radio at all.`,
   },
   {
     q: 'Why is my car radio out of sync with the lights?',
@@ -37,7 +37,7 @@ const faqs: { q: string; a: string }[] = [
   },
   {
     q: 'Can I stay in my car?',
-    a: 'Yes. Most visitors watch from the street with the radio on, and that is the warmest way to do it. You are also welcome to get out and walk around.',
+    a: 'Yes. Most visitors watch from the street with the radio on, and that is the warmest way to do it. You are also welcome to get out and walk around &mdash; our outdoor speakers mean you can still hear the show away from your car.',
   },
   {
     q: 'Can I walk through the light tunnel?',
@@ -119,7 +119,7 @@ const jsonLd = graph(
   breadcrumbList(base, [...crumbs, { name: 'FAQ', path: '/christmas/faq/' }]),
 );
 
-const description = `Answers to common questions about visiting the Hormann Christmas light display in Liberty Township, Ohio — hours, dates, radio station, parking, donations, and how ${yearsOfDisplay} years of lights actually work.`;
+const description = `Answers to common questions about visiting the Hormann Christmas light display in Liberty Township, Ohio — hours, dates, the ${DISPLAY.fmFrequency} radio station, parking, donations, and how ${yearsOfDisplay} years of lights actually work.`;
 ---
 
 <PageLayout

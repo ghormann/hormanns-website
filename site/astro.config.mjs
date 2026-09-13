@@ -13,7 +13,6 @@ export default defineConfig({
   // the rest of the display content.
   redirects: {
     '/press': '/christmas/press/',
-    '/press/': '/christmas/press/',
   },
   // Verified safe: rendered visible text is byte-identical across all pages with
   // compression on vs. off. The earlier missing-space issue is handled at the

@@ -71,7 +71,7 @@ export function touristAttraction(base: string, image?: string) {
     '@id': `${base}/christmas/visit/#attraction`,
     name: DISPLAY.name,
     description:
-      'A free, computer-controlled Christmas light display with tens of thousands of RGB pixels synchronized to music over FM radio, in Liberty Township, Ohio (Cincinnati area).',
+      'A free, computer-controlled Christmas light display with tens of thousands of RGB pixels synchronized to music, heard over FM radio or outdoor speakers, in Liberty Township, Ohio (Cincinnati area).',
     url: `${base}/christmas/visit/`,
     address: postalAddress,
     geo,

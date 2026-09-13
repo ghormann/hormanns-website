@@ -116,3 +116,18 @@ export function season(now: Date = new Date()): Season {
  * enough to be correct if that request never completes.
  */
 export const SHOW_DEFAULTS = { songs: 28, minutes: 73 } as const;
+
+/**
+ * Whether the homepage should surface the "Come See the Lights" block.
+ *
+ * Visitor information is only useful in the run-up to and through the season,
+ * so it shows from October 1 through January 15 and stays hidden the rest of
+ * the year. Exported so the page and its client-side script agree on the rule.
+ */
+export const VISIT_WINDOW = { startMonth: 9, endMonth: 0, endDay: 15 } as const; // Oct 1 – Jan 15
+
+export function inVisitWindow(now: Date = new Date()): boolean {
+  const month = now.getMonth();
+  if (month >= VISIT_WINDOW.startMonth) return true; // Oct, Nov, Dec
+  return month === VISIT_WINDOW.endMonth && now.getDate() <= VISIT_WINDOW.endDay; // Jan 1–15
+}

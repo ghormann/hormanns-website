@@ -6,7 +6,7 @@ import FavDisplays from '../components/FavDisplays.astro';
 import VisitFacts from '../components/VisitFacts.astro';
 import ShowStats from '../components/ShowStats.astro';
 import Img from '../components/Img.astro';
-import { yearsOfDisplayWords, season, SHOW_DEFAULTS } from '../lib/displayYears';
+import { yearsOfDisplayWords, season, SHOW_DEFAULTS, inVisitWindow } from '../lib/displayYears';
 import { DISPLAY, origin, absolute, touristAttraction, breadcrumbList, person, graph } from '../lib/site';
 
 const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display' }];
@@ -45,8 +45,14 @@ const websiteJsonLd = graph(
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Meet Greg and Mary Hormann</h1>
   </div>
 
-  <!-- Visit call to action: the question most first-time visitors arrive with -->
-  <section class="mb-10">
+  <!--
+    Visit call to action: the question most first-time visitors arrive with,
+    but only relevant from October through mid-January. The initial state is
+    decided at build time so there is no flash and it still behaves without
+    JavaScript; the inline script below re-checks on load so a stale build
+    can't leave it showing in July.
+  -->
+  <section id="visit-cta" class="mb-10" hidden={!inVisitWindow()}>
     <h2 class="text-xl font-semibold mb-3" style="color: var(--color-heading);">Come See the Lights</h2>
     <VisitFacts compact />
     <p class="brown-links text-sm" style="font-family: var(--font-sans);">
@@ -55,6 +61,17 @@ const websiteJsonLd = graph(
       <a href="/christmas/giving/">Giving back</a>
     </p>
   </section>
+
+  <script is:inline>
+    // Keep in sync with inVisitWindow() in src/lib/displayYears.ts.
+    (function () {
+      var el = document.getElementById('visit-cta');
+      if (!el) return;
+      var now = new Date();
+      var m = now.getMonth();
+      el.hidden = !(m >= 9 || (m === 0 && now.getDate() <= 15));
+    })();
+  </script>
 
   <!-- Christmas display section -->
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">

@@ -5,6 +5,8 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Img from '../../components/Img.astro';
 import VisitFacts from '../../components/VisitFacts.astro';
 import DisplayMap from '../../components/DisplayMap.astro';
+import CoverageList from '../../components/CoverageList.astro';
+import { coverageFor, coverageSchema } from '../../lib/coverage';
 import YouTubeGrid from '../../components/YouTubeGrid.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import StatBlock from '../../components/StatBlock.astro';
@@ -56,6 +58,9 @@ const ogImage = heroImage ?? undefined;
 // drift from the canonical/sitemap URLs.
 const siteBase = origin(Astro.site);
 
+// Press that ran during this season, shown at the foot of the page.
+const yearCoverage = coverageFor(year);
+
 const author = person(siteBase, 'Greg Hormann', 'greg');
 const pageUrl = `${siteBase}/christmas/${year}/`;
 const absHero = heroImage ? absolute(siteBase, heroImage) : undefined;
@@ -77,6 +82,7 @@ const creativeWork: Record<string, unknown> = {
   author,
   url: pageUrl,
   ...(absHero ? { image: absHero } : {}),
+  ...(yearCoverage.length > 0 ? { subjectOf: coverageSchema(yearCoverage, absHero) } : {}),
 };
 
 // The live Event is canonically on /christmas/visit/; the current season's page
@@ -86,7 +92,7 @@ const currentEvent = isCurrentSeason
       '@type': 'Event',
       '@id': `${siteBase}/christmas/visit/#event-${currentSeason.year}`,
       name: `Hormann Christmas Light Display ${currentSeason.year}`,
-      description: `Free drive-up Christmas light show in Liberty Township, Ohio, open nightly ${SHOW_HOURS_TEXT} from ${currentSeason.openText} through ${currentSeason.closeText}.`,
+      description: `Free Christmas light show in Liberty Township, Ohio, with music on ${DISPLAY.fmFrequency} or outdoor speakers. Open nightly ${SHOW_HOURS_TEXT} from ${currentSeason.openText} through ${currentSeason.closeText}.`,
       startDate: currentSeason.startDateIso,
       endDate: currentSeason.endDateIso,
       eventStatus: 'https://schema.org/EventScheduled',
@@ -231,6 +237,19 @@ const jsonLd = graph(
     <!-- Stats -->
   {stats && <StatBlock stats={stats} />}
 
+
+  {yearCoverage.length > 0 && (
+    <section class="mt-10">
+      <h2 class="text-xl font-semibold mb-1" style="color: var(--color-heading);">In the News</h2>
+      <p class="text-sm mb-3" style="color: var(--color-link); font-family: var(--font-sans);">
+        Coverage of the display during the {year} season.
+      </p>
+      <CoverageList items={yearCoverage} showDates />
+      <p class="text-sm mt-3 brown-links" style="font-family: var(--font-sans);">
+        <a href="/christmas/press/">All press coverage &amp; media kit &rarr;</a>
+      </p>
+    </section>
+  )}
 
   <!-- Location section (shown on all Christmas year pages) -->
   <h2 class="text-xl font-semibold mt-10 mb-2" id="house_address" style="color: var(--color-heading);">Location</h2>

@@ -1,0 +1,76 @@
+---
+import { COVERAGE_LABEL, type Coverage } from '../lib/coverage';
+
+interface Props {
+  items: Coverage[];
+  /** Show the publication date on each row (year pages, where the year is implied). */
+  showDates?: boolean;
+}
+
+const { items, showDates = false } = Astro.props;
+
+const fmt = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric' });
+// Parse as local time: `new Date('2025-12-22')` is UTC midnight and can render
+// as the previous day in US timezones.
+const asDate = (iso: string) => {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d);
+};
+---
+
+<ul class="coverage-list">
+  {items.map(c => (
+    <li>
+      <span class={`coverage-tag coverage-tag--${c.type}`}>{COVERAGE_LABEL[c.type]}</span>
+      <a href={c.url} target="_blank" rel="noopener">{c.title}</a>
+      <span class="coverage-outlet">
+        &mdash; {c.outlet}{showDates && `, ${fmt.format(asDate(c.date))}`}
+      </span>
+      {c.note && <span class="coverage-note">{c.note}</span>}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .coverage-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+  }
+
+  .coverage-list li + li {
+    margin-top: 0.6rem;
+  }
+
+  .coverage-tag {
+    display: inline-block;
+    margin-right: 0.5rem;
+    padding: 0.05rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    vertical-align: middle;
+    background-color: var(--color-accent);
+    color: var(--color-heading);
+  }
+
+  .coverage-outlet {
+    color: var(--color-link);
+  }
+
+  .coverage-note {
+    display: block;
+    margin-top: 0.15rem;
+    margin-left: 2.6rem;
+    font-size: 0.75rem;
+    color: var(--color-link);
+    opacity: 0.8;
+  }
+
+  @media (max-width: 520px) {
+    .coverage-note { margin-left: 0; }
+  }
+</style>

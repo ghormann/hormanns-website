@@ -22,7 +22,7 @@ const event = {
   '@type': 'Event',
   '@id': `${base}/christmas/visit/#event-${s.year}`,
   name: `Hormann Christmas Light Display ${s.year}`,
-  description: `A free drive-up Christmas light show in Liberty Township, Ohio. Tens of thousands of RGB pixels synchronized to music, broadcast to visitors' car radios on ${DISPLAY.fmFrequency}. Open nightly ${SHOW_HOURS_TEXT} from ${s.openText} through ${s.closeText}.`,
+  description: `A free drive-up Christmas light show in Liberty Township, Ohio. Tens of thousands of RGB pixels synchronized to music, heard on ${DISPLAY.fmFrequency} from your car or on outdoor speakers if you walk around. Open nightly ${SHOW_HOURS_TEXT} from ${s.openText} through ${s.closeText}.`,
   image,
   startDate: s.startDateIso,
   endDate: s.endDateIso,
@@ -69,7 +69,7 @@ const jsonLd = graph(
 );
 
 const title = `Plan Your Visit — Christmas Lights in Liberty Township, Ohio (${s.year})`;
-const description = `Free drive-up Christmas light show at ${fullAddress}. Open nightly ${SHOW_HOURS_TEXT}, ${s.openText} through ${s.closeText}. Music over FM radio, song voting, and a walk-through light tunnel.`;
+const description = `Free Christmas light show at ${fullAddress}. Open nightly ${SHOW_HOURS_TEXT}, ${s.openText} through ${s.closeText}. Music on ${DISPLAY.fmFrequency} or outdoor speakers, song voting, and a walk-through light tunnel.`;
 ---
 
 <PageLayout title={title} description={description} ogImage={heroImage} jsonLd={jsonLd}>
@@ -115,10 +115,11 @@ const description = `Free drive-up Christmas light show at ${fullAddress}. Open 
 
     <h2 class="text-2xl font-bold mt-8 mb-3">How to hear the music</h2>
     <p>
-      The lights are synchronized to music broadcast over a low-power FM transmitter. Tune your
-      car radio to <strong>{DISPLAY.fmFrequency}</strong> &mdash; also shown on the
-      <a href="/technology/info-board/">information sign above the garage</a> &mdash; and the show
-      plays through your own speakers.
+      There are two ways to hear the show. If you're watching from your car, tune the radio to
+      <strong>{DISPLAY.fmFrequency}</strong> &mdash; also shown on the
+      <a href="/technology/info-board/">information sign above the garage</a> &mdash; and the
+      music plays through your own speakers. If you'd rather get out and walk around, we run
+      <strong>outdoor speakers</strong> at the display, so you don't need a radio at all.
     </p>
     <p>
       A few vehicles — some newer Lexus and Cadillac models in particular — buffer the analog FM

@@ -1,103 +1,19 @@
 ---
+import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import { season, SHOW_HOURS_TEXT, yearsOfDisplay, SHOW_DEFAULTS } from '../../lib/displayYears';
 import ShowStats from '../../components/ShowStats.astro';
+import CoverageList from '../../components/CoverageList.astro';
+import Img from '../../components/Img.astro';
+import { coverage, coverageByYear, coverageSchema } from '../../lib/coverage';
 import { DISPLAY, CHARITY, fullAddress, origin, absolute, breadcrumbList, touristAttraction, graph } from '../../lib/site';
 
 const base = origin(Astro.site);
 const s = season();
 const heroImage = '/christmas/2025/the_hormanns_2025.jpg';
 
-// Coverage we can point to. Every `date` below was verified against the source
-// (article datePublished, YouTube uploadDate, or the date in the URL path) —
-// do not guess one in, since these also feed the structured data.
-// `type` drives the label: a broadcast segment reads differently from an article.
-const coverage: {
-  outlet: string;
-  title: string;
-  url: string;
-  date: string; // ISO, as published
-  type: 'segment' | 'article' | 'social';
-  note?: string;
-}[] = [
-  {
-    outlet: 'Lakota East Spark',
-    title: 'Story Behind the Lights',
-    url: 'https://lakotaeastsparkonline.com/story-behind-the-lights/',
-    date: '2025-12-29',
-    type: 'article',
-    note: 'A long-form student feature by Madison Cline on how the display came together.',
-  },
-  {
-    outlet: 'Cincy Xmas Lights',
-    title: 'Featured on Cincy Xmas Lights',
-    url: 'https://www.facebook.com/watch/?v=1381945109428225',
-    date: '2025-12-22',
-    type: 'social',
-    note: 'A Facebook community with more than 36,000 followers that highlights Christmas displays around Cincinnati.',
-  },
-  {
-    outlet: 'The Cincinnati Enquirer',
-    title: 'Christmas lights near me: Cincinnati homes decorated for the holidays',
-    url: 'https://www.cincinnati.com/story/entertainment/2024/12/21/christmas-lights-near-me-cincinnati-homes-decorated-for-the-holidays/77104341007/',
-    date: '2024-12-21',
-    type: 'article',
-  },
-  {
-    outlet: 'WKRC Local 12',
-    title: "Bob Herzog visits Christmas at the Hormann's",
-    url: 'https://www.youtube.com/watch?v=sJhgrT7oHVo',
-    date: '2023-12-21',
-    type: 'segment',
-  },
-  {
-    outlet: 'WLWT 5',
-    title: '25 Nights of Lights: The best-dressed Christmas homes around Cincinnati',
-    url: 'https://www.wlwt.com/article/christmas-lights-cincinnati-list/45975101',
-    date: '2023-12-04',
-    type: 'article',
-  },
-  {
-    outlet: 'WLWT 5',
-    title: "Create your own display at this home's high tech Christmas light show in Liberty Township",
-    url: 'https://www.youtube.com/watch?v=KFL8tMQSX0Q',
-    date: '2023-12-01',
-    type: 'segment',
-  },
-  {
-    outlet: 'FOX19 NOW',
-    title: "Catherine's Celebration of Lights: Christmas at the Hormanns",
-    url: 'https://www.youtube.com/watch?v=CzXgFfJLD0k',
-    date: '2023-11-22',
-    type: 'segment',
-  },
-  {
-    outlet: 'FOX19 NOW',
-    title: 'Live broadcast from the display',
-    url: 'https://www.youtube.com/watch?v=cqIseHP-Axw',
-    date: '2023-11-22',
-    type: 'segment',
-  },
-  {
-    outlet: 'WLWT 5',
-    title: 'You get to control the show at this Christmas lights display in Liberty Township',
-    url: 'https://www.wlwt.com/article/you-get-to-control-the-show-at-this-christmas-lights-display-in-liberty-township/38398417',
-    date: '2021-12-01',
-    type: 'article',
-  },
-];
-
-// Newest first, grouped by the year the story actually ran.
-const coverageYear = (c: (typeof coverage)[number]) => Number(c.date.slice(0, 4));
-const coverageByYear = [...new Set(coverage.map(coverageYear))]
-  .sort((a, b) => b - a)
-  .map(year => ({
-    year,
-    items: coverage
-      .filter(c => coverageYear(c) === year)
-      .sort((a, b) => b.date.localeCompare(a.date)),
-  }));
+const grouped = coverageByYear();
 
 // `value: null` means the cell is rendered specially below (live show figures).
 const factSheet: { label: string; value: string | null; href?: string }[] = [
@@ -109,13 +25,67 @@ const factSheet: { label: string; value: string | null; href?: string }[] = [
   { label: 'Running since', value: `2001 \u2014 ${yearsOfDisplay} seasons` },
   { label: 'Scale', value: '75,805 individually controlled RGB pixels' },
   { label: 'Show length', value: null },
-  { label: 'Audio', value: `Low-power FM broadcast \u2014 visitors tune to ${DISPLAY.fmFrequency}` },
+  { label: 'Audio', value: `Low-power FM broadcast on ${DISPLAY.fmFrequency}, plus outdoor speakers for visitors on foot` },
   { label: 'Charity', value: `${CHARITY.accepts} for ${CHARITY.beneficiary}, with the ${CHARITY.partner}` },
   { label: 'Interactive', value: 'Song voting, name texting, and a button-controlled walk-through tunnel' },
   // Link text, not a bare URL: a raw URL is one unbreakable word and forces
   // the whole page to scroll sideways on a phone.
   { label: 'Facebook', value: 'The Hormann Christmas Display', href: DISPLAY.facebookUrl },
   { label: 'Contact', value: 'Greg Hormann \u2014 ghormann@gmail.com', href: 'mailto:ghormann@gmail.com' },
+];
+
+// Counted from the content collection so the claim can never drift from what
+// is actually published.
+const allYears = (await getCollection('christmas', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.year - a.data.year);
+const totalPhotos = allYears.reduce((n, y) => n + (y.data.photos?.length ?? 0), 0);
+const totalVideos = allYears.reduce((n, y) => n + (y.data.videos?.length ?? 0), 0);
+const latestSeason = allYears[0];
+
+// Aerial footage is spread across several seasons, so count it rather than
+// naming a year that will go stale.
+const droneVideos = allYears.flatMap(y => y.data.videos.filter(v => /drone/i.test(v.title)));
+const droneYears = [...new Set(
+  allYears.filter(y => y.data.videos.some(v => /drone/i.test(v.title))).map(y => y.data.year),
+)].sort((a, b) => a - b);
+
+const pressPhotos = [
+  {
+    src: '/christmas/2025/the_hormanns_2025.jpg',
+    year: 2025,
+    caption: 'The full display on the 25th anniversary season. The sign at right shows the FM frequency and live power draw.',
+    alt: 'The Hormann Christmas light display lit up for its 25th anniversary season, with a "25th Anniversary" message across the pixel grid',
+  },
+  {
+    src: '/christmas/2024/the_hormanns_zoom.png',
+    year: 2024,
+    caption: 'The 2024 display in white, showing the arches, mini trees and the grid above the front door.',
+    alt: 'Wide view of the 2024 Hormann Christmas light display in white, with arches and stars filling the front yard',
+  },
+  {
+    src: '/christmas/2025/IMG_7581_zoom.JPG',
+    year: 2025,
+    caption: 'Family photos sing along on the matrix panels while the grid spells out the lyrics.',
+    alt: 'The display in green and white spelling "LOVE LOVE LOVE", with singing family faces on matrix panels either side',
+  },
+  {
+    src: '/christmas/2024/20241220_220327.jpg',
+    year: 2024,
+    caption: 'Inside the walk-through tunnel, where buttons let visitors change what the lights do.',
+    alt: 'Two visitors standing inside the walk-through light tunnel beneath a "Naughty or Nice" sign',
+  },
+  {
+    src: '/christmas/2025/20251222_211104.jpg',
+    year: 2025,
+    caption: 'The donation table. Visitors give food and cash for local food banks all season.',
+    alt: 'Bags of donated groceries stacked behind a hand-painted "Donations Here" sign at the display',
+  },
+  {
+    src: '/christmas/2025/IMG_7510_popcorn.JPG',
+    year: 2025,
+    caption: 'Free popcorn night — volunteers hand out popcorn to visitors under the information sign.',
+    alt: 'Two volunteers sitting at a popcorn table beneath a lit sign reading "Free Popcorn Tonight"',
+  },
 ];
 
 const crumbs = [
@@ -128,16 +98,7 @@ const crumbs = [
 const jsonLd = graph(
   {
     ...touristAttraction(base, absolute(base, heroImage)),
-    subjectOf: coverage.map(c => ({
-      '@type': c.type === 'segment' ? 'VideoObject' : c.type === 'social' ? 'SocialMediaPosting' : 'NewsArticle',
-      name: c.title,
-      url: c.url,
-      ...(c.type === 'segment' ? { uploadDate: c.date } : { datePublished: c.date }),
-      publisher: { '@type': 'Organization', name: c.outlet },
-      ...(c.type === 'segment'
-        ? { thumbnailUrl: absolute(base, heroImage), description: `${c.outlet} coverage of the Hormann Christmas light display.` }
-        : {}),
-    })),
+    subjectOf: coverageSchema(coverage, absolute(base, heroImage)),
   },
   breadcrumbList(base, [...crumbs, { name: 'Press', path: '/christmas/press/' }]),
 );
@@ -202,13 +163,37 @@ const jsonLd = graph(
       </li>
     </ul>
 
-    <h2 class="text-2xl font-bold mt-8 mb-3">Photos and video</h2>
+    <h2 class="text-2xl font-bold mt-8 mb-3">Photos</h2>
     <p>
-      Our <a href="/pictures/">photo galleries</a> and
-      <a href="/christmas/2025/">current season page</a> hold high-resolution images and dozens
-      of videos of individual songs, plus day-by-day setup footage. You're welcome to use them
-      with credit to Greg &amp; Mary Hormann. Email us if you need something specific — drone
-      footage, a particular element, or an interview.
+      These are cleared for editorial use with credit to <strong>Greg &amp; Mary Hormann</strong>.
+      Click any image for the full-resolution file.
+    </p>
+
+    <div class="press-photos not-prose">
+      {pressPhotos.map(photo => (
+        <figure>
+          <a href={photo.src} target="_blank" rel="noopener">
+            <Img src={photo.src} alt={photo.alt} sizes="(max-width: 640px) 100vw, 420px" />
+          </a>
+          <figcaption>
+            <span class="press-photo-year">{photo.year}</span>
+            {photo.caption}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <p>
+      More is available: our <a href="/pictures/">photo galleries</a> hold {totalPhotos} photos
+      across every season, and the <a href="/christmas/">season pages</a> link {totalVideos}
+      videos &mdash; individual songs, day-by-day setup and takedown, and
+      {' '}{droneVideos.length} aerial drone shots of the show across
+      {' '}{droneYears.length} seasons between {droneYears[0]} and
+      {' '}{droneYears[droneYears.length - 1]}. The
+      <a href={`/christmas/${latestSeason.data.year}/`}> {latestSeason.data.year} season page</a>
+      {' '}alone has {latestSeason.data.videos.length}. Email us if you need something specific
+      that isn't here.
+
     </p>
 
     <h2 class="text-2xl font-bold mt-8 mb-3">Coverage</h2>
@@ -217,26 +202,12 @@ const jsonLd = graph(
       area's holiday lights round-ups and community pages.
     </p>
 
-    {coverageByYear.map(({ year, items }) => (
+    {grouped.map(({ year, items }) => (
       <section class="mt-5">
-        <h3 class="text-base font-semibold mb-2" style="color: var(--color-heading); font-family: var(--font-sans);">{year}</h3>
-        <ul class="m-0 p-0 list-none space-y-2">
-          {items.map(c => (
-            <li class="text-sm" style="font-family: var(--font-sans);">
-              <span
-                class="inline-block mr-2 px-2 py-0.5 rounded text-xs font-semibold align-middle"
-                style="background-color: var(--color-accent); color: var(--color-heading);"
-              >
-                {c.type === 'segment' ? 'TV' : c.type === 'social' ? 'Social' : 'Article'}
-              </span>
-              <a href={c.url} target="_blank" rel="noopener">{c.title}</a>
-              <span style="color: var(--color-link);"> — {c.outlet}</span>
-              {c.note && (
-                <span class="block ml-11 text-xs mt-0.5" style="color: var(--color-link); opacity: 0.8;">{c.note}</span>
-              )}
-            </li>
-          ))}
-        </ul>
+        <h3 class="text-base font-semibold mb-2" style="color: var(--color-heading); font-family: var(--font-sans);">
+          <a href={`/christmas/${year}/`} class="brown-links">{year}</a>
+        </h3>
+        <CoverageList items={items} showDates />
       </section>
     ))}
 
@@ -258,6 +229,44 @@ const jsonLd = graph(
 </PageLayout>
 
 <style>
+  .press-photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+    margin: 1.25rem 0 1.5rem;
+  }
+
+  .press-photos figure {
+    margin: 0;
+  }
+
+  .press-photos img {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    display: block;
+    background-color: var(--color-card-bg);
+  }
+
+  .press-photos figcaption {
+    margin-top: 0.4rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--color-link);
+  }
+
+  .press-photo-year {
+    display: inline-block;
+    margin-right: 0.4rem;
+    padding: 0.05rem 0.35rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    background-color: var(--color-accent);
+    color: var(--color-heading);
+  }
+
   .fact-sheet {
     margin: 0 0 1rem;
     font-family: var(--font-sans);
