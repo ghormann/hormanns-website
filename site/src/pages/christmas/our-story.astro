@@ -1,6 +1,7 @@
 ---
 import PageLayout from '../../layouts/PageLayout.astro';
 import RecentDisplays from '../../components/RecentDisplays.astro';
+import TechnologyGrid from '../../components/TechnologyGrid.astro';
 import { yearsOfDisplayWords } from '../../lib/displayYears';
 ---
 
@@ -165,6 +166,11 @@ import { yearsOfDisplayWords } from '../../lib/displayYears';
 
   <div class="mt-10">
     <RecentDisplays />
+  </div>
+
+  <div class="mt-10">
+    <h2 class="text-2xl font-bold mb-4" style="color: var(--color-heading);">Technology</h2>
+    <TechnologyGrid />
   </div>
 
 </PageLayout>
