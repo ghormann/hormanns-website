@@ -1,4 +1,6 @@
 ---
+import Img from './Img.astro';
+
 interface Photo {
   src: string;
   caption?: string;
@@ -8,9 +10,11 @@ interface Photo {
 interface Props {
   photos: Photo[];
   id?: string;
+  /** Used as alt text for photos that have no caption of their own. */
+  altFallback?: string;
 }
 
-const { photos, id = 'gallery' } = Astro.props;
+const { photos, id = 'gallery', altFallback = 'Photo from the Hormann Christmas light display' } = Astro.props;
 const abs = (p: string) => (p.startsWith('/') || p.startsWith('http') ? p : `/${p}`);
 
 // Normalize for the client-side script (absolute paths only)
@@ -34,10 +38,9 @@ const clientPhotos = photos.map(p => ({
             data-lightbox-index={i}
             class="block rounded overflow-hidden shadow hover:shadow-md transition-shadow bg-amber-100"
           >
-            <img
+            <Img
               src={thumb}
-              alt={p.caption ?? ''}
-              loading="lazy"
+              alt={p.caption || altFallback}
               class="w-full aspect-video object-cover hover:scale-105 transition-transform duration-200"
             />
           </a>

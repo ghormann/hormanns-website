@@ -28,8 +28,11 @@ const { videos, cols = 2 } = Astro.props;
           <div class="relative overflow-hidden aspect-video bg-gray-200">
             <img
               src={thumb}
-              alt={v.title}
+              alt={`${v.title} — Hormann Christmas light display video`}
               loading="lazy"
+              decoding="async"
+              width="640"
+              height="480"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
             />
             <!-- Play overlay -->

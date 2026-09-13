@@ -1,0 +1,169 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { season } from '../../lib/displayYears';
+import { DISPLAY, CHARITY, VENMO_URL, origin, absolute, breadcrumbList, touristAttraction, person, graph } from '../../lib/site';
+
+const base = origin(Astro.site);
+const s = season();
+const heroImage = '/christmas/2025/20251222_211104.jpg';
+
+// Donation totals are read straight from each year's stats block, so adding
+// `food_donated_lbs` / `cash_donated` to a year file is all it takes to appear here.
+const years = (await getCollection('christmas', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.year - a.data.year);
+
+const parseCash = (v: unknown): number | null => {
+  if (typeof v === 'number') return v;
+  if (typeof v === 'string') {
+    const n = Number(v.replace(/[^0-9.]/g, ''));
+    return Number.isFinite(n) ? n : null;
+  }
+  return null;
+};
+
+const giving = years
+  .map(y => ({
+    year: y.data.year,
+    food: typeof y.data.stats?.food_donated_lbs === 'number' ? y.data.stats.food_donated_lbs : null,
+    cash: parseCash(y.data.stats?.cash_donated),
+  }))
+  .filter(g => g.food !== null || g.cash !== null);
+
+const totalFood = giving.reduce((sum, g) => sum + (g.food ?? 0), 0);
+const totalCash = giving.reduce((sum, g) => sum + (g.cash ?? 0), 0);
+// Show cents only when there are any, so "$2,610" stays clean but "$2,142.70"
+// doesn't render as "$2,142.7".
+const usd = (n: number) =>
+  n.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: Number.isInteger(n) ? 0 : 2,
+    maximumFractionDigits: 2,
+  });
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Christmas Display', path: '/christmas/' },
+];
+
+const jsonLd = graph(
+  {
+    '@type': 'DonateAction',
+    name: `Food and cash drive at the Hormann Christmas Light Display`,
+    description: `Visitors to the display donate ${CHARITY.accepts} for ${CHARITY.beneficiary}, collected in partnership with the ${CHARITY.partner}.`,
+    url: `${base}/christmas/giving/`,
+    recipient: { '@type': 'Organization', name: CHARITY.partner },
+    agent: person(base, 'Greg Hormann', 'greg'),
+    location: { '@id': `${base}/christmas/visit/#attraction` },
+  },
+  touristAttraction(base, absolute(base, heroImage)),
+  breadcrumbList(base, [...crumbs, { name: 'Giving Back', path: '/christmas/giving/' }]),
+);
+
+const description = `Visitors to the Hormann Christmas light display in Liberty Township, Ohio have donated ${totalFood > 0 ? `${totalFood.toLocaleString()} lbs of food and ` : ''}${usd(totalCash)} to local food banks. Admission is always free.`;
+---
+
+<PageLayout
+  title="Giving Back — Food Bank Drive at the Christmas Display | The Hormanns"
+  description={description}
+  ogImage={heroImage}
+  jsonLd={jsonLd}
+>
+
+  <Breadcrumbs crumbs={crumbs} current="Giving Back" />
+
+  <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Giving Back</h1>
+    <p class="mt-2 text-sm" style="color: var(--color-link); font-family: var(--font-sans);">
+      The display is free. What we ask for instead goes to {CHARITY.beneficiary}.
+    </p>
+  </div>
+
+  {giving.length > 0 && (
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+      {totalFood > 0 && (
+        <div class="rounded-lg px-5 py-6 text-center" style="background-color: var(--color-card-bg);">
+          <div class="text-4xl font-bold" style="color: var(--color-heading); font-family: var(--font-serif);">
+            {totalFood.toLocaleString()} lbs
+          </div>
+          <div class="text-sm mt-1" style="color: var(--color-link); font-family: var(--font-sans);">of food collected</div>
+        </div>
+      )}
+      {totalCash > 0 && (
+        <div class="rounded-lg px-5 py-6 text-center" style="background-color: var(--color-card-bg);">
+          <div class="text-4xl font-bold" style="color: var(--color-heading); font-family: var(--font-serif);">
+            {usd(totalCash)}
+          </div>
+          <div class="text-sm mt-1" style="color: var(--color-link); font-family: var(--font-sans);">donated by visitors</div>
+        </div>
+      )}
+    </div>
+  )}
+
+  <div class="prose brown-links" style="max-width: none;">
+
+    <p>
+      We have never charged anyone to see the lights and we never will. What we do ask is that
+      if the display made your evening a little better, you bring something for a neighbor who
+      needs it more.
+    </p>
+
+    <p>
+      In partnership with the <strong>{CHARITY.partner}</strong>, we collect
+      {CHARITY.accepts} in support of {CHARITY.beneficiary}. There is a
+      donation booth to the left of the display, open every night the show is on, and you can
+      also give online through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a>
+      ({CHARITY.treasurer} is the treasurer). Every dollar and every can goes to the food banks — none of it comes
+      back to us.
+    </p>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">What visitors have given</h2>
+
+    {giving.length > 0 ? (
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse" style="font-family: var(--font-sans);">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--color-accent);">
+              <th class="py-2 pr-4">Season</th>
+              <th class="py-2 pr-4">Food collected</th>
+              <th class="py-2">Cash donated</th>
+            </tr>
+          </thead>
+          <tbody>
+            {giving.map(g => (
+              <tr style="border-bottom: 1px solid var(--color-accent);">
+                <td class="py-2 pr-4"><a href={`/christmas/${g.year}/`}>{g.year}</a></td>
+                <td class="py-2 pr-4">{g.food !== null ? `${g.food.toLocaleString()} lbs` : '—'}</td>
+                <td class="py-2">{g.cash !== null ? usd(g.cash) : '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <p>We're still tallying this season's totals — check back in January.</p>
+    )}
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">How to give</h2>
+    <ul>
+      <li><strong>At the display:</strong> the donation booth to the left of the show, open every night the lights are on.</li>
+      <li><strong>Online:</strong> through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a> — {CHARITY.treasurer} is the treasurer for the {CHARITY.partner}.</li>
+      <li><strong>Most useful right now:</strong> non-perishable food and grocery gift cards.</li>
+    </ul>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">Come see it</h2>
+    <p>
+      The {s.year} season runs {s.openText} through {s.closeText}.
+      <a href="/christmas/visit/">Plan your visit →</a>
+    </p>
+
+    <p class="text-sm mt-8" style="opacity: 0.85;">
+      Are you a reporter covering local holiday displays or food bank drives? Our
+      <a href="/christmas/press/">press page</a> has photos, dates, and contact information.
+    </p>
+
+  </div>
+
+</PageLayout>

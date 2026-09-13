@@ -1,0 +1,293 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import { season, SHOW_HOURS_TEXT, yearsOfDisplay, SHOW_DEFAULTS } from '../../lib/displayYears';
+import ShowStats from '../../components/ShowStats.astro';
+import { DISPLAY, CHARITY, fullAddress, origin, absolute, breadcrumbList, touristAttraction, graph } from '../../lib/site';
+
+const base = origin(Astro.site);
+const s = season();
+const heroImage = '/christmas/2025/the_hormanns_2025.jpg';
+
+// Coverage we can point to. Every `date` below was verified against the source
+// (article datePublished, YouTube uploadDate, or the date in the URL path) —
+// do not guess one in, since these also feed the structured data.
+// `type` drives the label: a broadcast segment reads differently from an article.
+const coverage: {
+  outlet: string;
+  title: string;
+  url: string;
+  date: string; // ISO, as published
+  type: 'segment' | 'article' | 'social';
+  note?: string;
+}[] = [
+  {
+    outlet: 'Lakota East Spark',
+    title: 'Story Behind the Lights',
+    url: 'https://lakotaeastsparkonline.com/story-behind-the-lights/',
+    date: '2025-12-29',
+    type: 'article',
+    note: 'A long-form student feature by Madison Cline on how the display came together.',
+  },
+  {
+    outlet: 'Cincy Xmas Lights',
+    title: 'Featured on Cincy Xmas Lights',
+    url: 'https://www.facebook.com/watch/?v=1381945109428225',
+    date: '2025-12-22',
+    type: 'social',
+    note: 'A Facebook community with more than 36,000 followers that highlights Christmas displays around Cincinnati.',
+  },
+  {
+    outlet: 'The Cincinnati Enquirer',
+    title: 'Christmas lights near me: Cincinnati homes decorated for the holidays',
+    url: 'https://www.cincinnati.com/story/entertainment/2024/12/21/christmas-lights-near-me-cincinnati-homes-decorated-for-the-holidays/77104341007/',
+    date: '2024-12-21',
+    type: 'article',
+  },
+  {
+    outlet: 'WKRC Local 12',
+    title: "Bob Herzog visits Christmas at the Hormann's",
+    url: 'https://www.youtube.com/watch?v=sJhgrT7oHVo',
+    date: '2023-12-21',
+    type: 'segment',
+  },
+  {
+    outlet: 'WLWT 5',
+    title: '25 Nights of Lights: The best-dressed Christmas homes around Cincinnati',
+    url: 'https://www.wlwt.com/article/christmas-lights-cincinnati-list/45975101',
+    date: '2023-12-04',
+    type: 'article',
+  },
+  {
+    outlet: 'WLWT 5',
+    title: "Create your own display at this home's high tech Christmas light show in Liberty Township",
+    url: 'https://www.youtube.com/watch?v=KFL8tMQSX0Q',
+    date: '2023-12-01',
+    type: 'segment',
+  },
+  {
+    outlet: 'FOX19 NOW',
+    title: "Catherine's Celebration of Lights: Christmas at the Hormanns",
+    url: 'https://www.youtube.com/watch?v=CzXgFfJLD0k',
+    date: '2023-11-22',
+    type: 'segment',
+  },
+  {
+    outlet: 'FOX19 NOW',
+    title: 'Live broadcast from the display',
+    url: 'https://www.youtube.com/watch?v=cqIseHP-Axw',
+    date: '2023-11-22',
+    type: 'segment',
+  },
+  {
+    outlet: 'WLWT 5',
+    title: 'You get to control the show at this Christmas lights display in Liberty Township',
+    url: 'https://www.wlwt.com/article/you-get-to-control-the-show-at-this-christmas-lights-display-in-liberty-township/38398417',
+    date: '2021-12-01',
+    type: 'article',
+  },
+];
+
+// Newest first, grouped by the year the story actually ran.
+const coverageYear = (c: (typeof coverage)[number]) => Number(c.date.slice(0, 4));
+const coverageByYear = [...new Set(coverage.map(coverageYear))]
+  .sort((a, b) => b - a)
+  .map(year => ({
+    year,
+    items: coverage
+      .filter(c => coverageYear(c) === year)
+      .sort((a, b) => b.date.localeCompare(a.date)),
+  }));
+
+// `value: null` means the cell is rendered specially below (live show figures).
+const factSheet: { label: string; value: string | null; href?: string }[] = [
+  { label: 'Display', value: DISPLAY.name },
+  { label: 'Location', value: fullAddress, href: DISPLAY.mapUrl },
+  { label: 'Season', value: `${s.openText} through ${s.closeText}` },
+  { label: 'Hours', value: `Nightly, ${SHOW_HOURS_TEXT}` },
+  { label: 'Admission', value: 'Free' },
+  { label: 'Running since', value: `2001 \u2014 ${yearsOfDisplay} seasons` },
+  { label: 'Scale', value: '75,805 individually controlled RGB pixels' },
+  { label: 'Show length', value: null },
+  { label: 'Audio', value: `Low-power FM broadcast \u2014 visitors tune to ${DISPLAY.fmFrequency}` },
+  { label: 'Charity', value: `${CHARITY.accepts} for ${CHARITY.beneficiary}, with the ${CHARITY.partner}` },
+  { label: 'Interactive', value: 'Song voting, name texting, and a button-controlled walk-through tunnel' },
+  // Link text, not a bare URL: a raw URL is one unbreakable word and forces
+  // the whole page to scroll sideways on a phone.
+  { label: 'Facebook', value: 'The Hormann Christmas Display', href: DISPLAY.facebookUrl },
+  { label: 'Contact', value: 'Greg Hormann \u2014 ghormann@gmail.com', href: 'mailto:ghormann@gmail.com' },
+];
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Christmas Display', path: '/christmas/' },
+];
+
+// Press coverage is a genuine entity signal: it tells search engines this place
+// is the subject of independent reporting, not just self-description.
+const jsonLd = graph(
+  {
+    ...touristAttraction(base, absolute(base, heroImage)),
+    subjectOf: coverage.map(c => ({
+      '@type': c.type === 'segment' ? 'VideoObject' : c.type === 'social' ? 'SocialMediaPosting' : 'NewsArticle',
+      name: c.title,
+      url: c.url,
+      ...(c.type === 'segment' ? { uploadDate: c.date } : { datePublished: c.date }),
+      publisher: { '@type': 'Organization', name: c.outlet },
+      ...(c.type === 'segment'
+        ? { thumbnailUrl: absolute(base, heroImage), description: `${c.outlet} coverage of the Hormann Christmas light display.` }
+        : {}),
+    })),
+  },
+  breadcrumbList(base, [...crumbs, { name: 'Press', path: '/christmas/press/' }]),
+);
+---
+
+<PageLayout
+  title="Press & Media Kit — Hormann Christmas Light Display"
+  description={`Media information for the Hormann Christmas light display in Liberty Township, Ohio — dates, hours, photos, statistics, and contact for reporters covering ${s.year} holiday displays.`}
+  ogImage={heroImage}
+  jsonLd={jsonLd}
+>
+
+  <Breadcrumbs crumbs={crumbs} current="Press" />
+
+  <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Press &amp; Media</h1>
+    <p class="mt-2 text-sm" style="color: var(--color-link); font-family: var(--font-sans);">
+      Everything a reporter needs in one place. We're happy to host a crew — just email first.
+    </p>
+  </div>
+
+  <div class="prose brown-links" style="max-width: none;">
+
+    <h2 class="text-2xl font-bold mt-2 mb-3">Fact sheet</h2>
+    <dl class="fact-sheet">
+      {factSheet.map(f => (
+        <div class="fact-row">
+          <dt>{f.label}</dt>
+          <dd>
+            {f.value === null ? (
+              <span data-show-stat="summary">{SHOW_DEFAULTS.minutes} minutes of music across {SHOW_DEFAULTS.songs} songs</span>
+            ) : f.href ? (
+              <a href={f.href} target="_blank" rel="noopener noreferrer">{f.value}</a>
+            ) : (
+              f.value
+            )}
+          </dd>
+        </div>
+      ))}
+    </dl>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">The story angles</h2>
+    <ul>
+      <li>
+        <strong>A quarter century of one family's Christmas.</strong> The display started in 2001
+        with two homemade parallel-port controllers running 8 circuits each. It now runs 75,805
+        individually addressable pixels. <a href="/christmas/our-story/">The full history →</a>
+      </li>
+      <li>
+        <strong>It feeds people.</strong> Visitors donate food and cash to local food banks every
+        season through the {CHARITY.partner}. <a href="/christmas/giving/">Totals by year →</a>
+      </li>
+      <li>
+        <strong>The audience runs the show.</strong> Visitors vote for the next song from their
+        phones, text their names onto an 18ft × 8ft light grid over the front door, and press buttons inside a
+        walk-through tunnel — 39,661 presses last season alone.
+        <a href="/technology/">How it works →</a>
+      </li>
+      <li>
+        <strong>It is all built by hand.</strong> Two weeks off work every November to install,
+        and roughly an hour of programming for every 10 seconds of music.
+      </li>
+    </ul>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">Photos and video</h2>
+    <p>
+      Our <a href="/pictures/">photo galleries</a> and
+      <a href="/christmas/2025/">current season page</a> hold high-resolution images and dozens
+      of videos of individual songs, plus day-by-day setup footage. You're welcome to use them
+      with credit to Greg &amp; Mary Hormann. Email us if you need something specific — drone
+      footage, a particular element, or an interview.
+    </p>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">Coverage</h2>
+    <p>
+      Local stations have broadcast live from the display, and we're regularly included in the
+      area's holiday lights round-ups and community pages.
+    </p>
+
+    {coverageByYear.map(({ year, items }) => (
+      <section class="mt-5">
+        <h3 class="text-base font-semibold mb-2" style="color: var(--color-heading); font-family: var(--font-sans);">{year}</h3>
+        <ul class="m-0 p-0 list-none space-y-2">
+          {items.map(c => (
+            <li class="text-sm" style="font-family: var(--font-sans);">
+              <span
+                class="inline-block mr-2 px-2 py-0.5 rounded text-xs font-semibold align-middle"
+                style="background-color: var(--color-accent); color: var(--color-heading);"
+              >
+                {c.type === 'segment' ? 'TV' : c.type === 'social' ? 'Social' : 'Article'}
+              </span>
+              <a href={c.url} target="_blank" rel="noopener">{c.title}</a>
+              <span style="color: var(--color-link);"> — {c.outlet}</span>
+              {c.note && (
+                <span class="block ml-11 text-xs mt-0.5" style="color: var(--color-link); opacity: 0.8;">{c.note}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <p class="text-sm mt-5" style="opacity: 0.85;">
+      Written about the display and don't see it here?
+      <a href="mailto:ghormann@gmail.com">Send us the link</a> and we'll add it.
+    </p>
+
+    <ShowStats />
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">Contact</h2>
+    <p>
+      Greg Hormann — <a href="mailto:ghormann@gmail.com">ghormann@gmail.com</a>.
+      For visiting details, see <a href="/christmas/visit/">Plan Your Visit</a>.
+    </p>
+
+  </div>
+
+</PageLayout>
+
+<style>
+  .fact-sheet {
+    margin: 0 0 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+  }
+
+  .fact-row {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 0.25rem 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-accent);
+  }
+
+  .fact-row dt {
+    font-weight: 600;
+    color: var(--color-heading);
+  }
+
+  .fact-row dd {
+    margin: 0;
+    /* Long values (URLs, addresses) must wrap rather than widen the page. */
+    overflow-wrap: anywhere;
+  }
+
+  /* Phones: stack label above value so neither column is squeezed. */
+  @media (max-width: 520px) {
+    .fact-row {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
+    }
+  }
+</style>

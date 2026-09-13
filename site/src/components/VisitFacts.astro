@@ -1,0 +1,131 @@
+---
+// The "when / where / how much" block. Used on the Visit page and reused in a
+// tighter form on the homepage and the current season's year page.
+import { season, SHOW_HOURS_TEXT } from '../lib/displayYears';
+import { DISPLAY, fullAddress } from '../lib/site';
+
+interface Props {
+  /** Tighter spacing, no explanatory notes — for use outside the Visit page. */
+  compact?: boolean;
+  /** Drop the Dates row when the surrounding heading already states them. */
+  omitDates?: boolean;
+}
+
+const { compact = false, omitDates = false } = Astro.props;
+const s = season();
+
+const facts = [
+  {
+    key: 'dates',
+    label: 'Dates',
+    value: `${s.openText.replace(/^\w+, /, '')} – ${s.closeText.replace(/^\w+, /, '')}`,
+    note: 'Opens the Tuesday before Thanksgiving and runs through New Year’s Day.',
+  },
+  { key: 'hours', label: 'Hours', value: `Nightly, ${SHOW_HOURS_TEXT}`, note: 'The show runs continuously — arrive any time.' },
+  { key: 'radio', label: 'Radio', value: `Tune to ${DISPLAY.fmFrequency}`, note: 'The music plays through your own car speakers.' },
+  { key: 'cost', label: 'Admission', value: 'Free', note: 'Donations for local food banks are welcome, but never required.' },
+  { key: 'where', label: 'Address', value: fullAddress, href: DISPLAY.mapUrl, note: null },
+].filter(f => !(omitDates && f.key === 'dates'));
+---
+
+<dl class={`visit-facts${compact ? ' visit-facts--compact' : ''}`}>
+  {facts.map(f => (
+    <div class="visit-fact">
+      <dt>{f.label}</dt>
+      <dd>
+        {f.href ? (
+          <a href={f.href} target="_blank" rel="noopener noreferrer">{f.value}</a>
+        ) : (
+          f.value
+        )}
+        {!compact && f.note && <span class="visit-note">{f.note}</span>}
+      </dd>
+    </div>
+  ))}
+</dl>
+
+<style>
+  .visit-facts {
+    margin: 0 0 1.25rem;
+    background-color: var(--color-card-bg);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    font-family: var(--font-sans);
+  }
+
+  .visit-fact {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0.75rem;
+    align-items: baseline;
+    padding: 0.6rem 0.9rem;
+  }
+
+  .visit-fact + .visit-fact {
+    border-top: 1px solid var(--color-accent);
+  }
+
+  .visit-fact dt {
+    font-weight: 600;
+    font-size: 0.8125rem;
+    color: var(--color-heading);
+  }
+
+  .visit-fact dd {
+    margin: 0;
+    font-size: 0.9375rem;
+    color: var(--color-heading);
+  }
+
+  .visit-fact dd a {
+    color: var(--color-link);
+    text-decoration: underline;
+  }
+
+  .visit-note {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.75rem;
+    color: var(--color-link);
+    opacity: 0.8;
+  }
+
+  /* Compact: two columns of facts on wider screens, tighter rows. */
+  .visit-facts--compact {
+    margin-bottom: 0.75rem;
+  }
+
+  .visit-facts--compact .visit-fact {
+    padding: 0.4rem 0.85rem;
+    grid-template-columns: 5.5rem 1fr;
+    gap: 0.5rem;
+  }
+
+  .visit-facts--compact .visit-fact dd {
+    font-size: 0.875rem;
+  }
+
+  @media (min-width: 640px) {
+    .visit-facts--compact {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    /* In two columns the single top border rule no longer lines up. */
+    .visit-facts--compact .visit-fact + .visit-fact {
+      border-top: none;
+    }
+    .visit-facts--compact .visit-fact {
+      border-top: 1px solid var(--color-accent);
+    }
+    .visit-facts--compact .visit-fact:nth-child(-n + 2) {
+      border-top: none;
+    }
+    .visit-facts--compact .visit-fact:nth-child(odd) {
+      border-right: 1px solid var(--color-accent);
+    }
+  }
+
+  @media (max-width: 380px) {
+    .visit-fact { grid-template-columns: 1fr; gap: 0.1rem; }
+  }
+</style>

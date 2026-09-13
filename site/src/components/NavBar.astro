@@ -62,6 +62,10 @@ const inTechnology = currentPath.startsWith('/technology/');
           <a href={`/christmas/${y.data.year}/`} class={`nav-link text-sm${isActive(`/christmas/${y.data.year}/`) ? ' nav-link--active' : ''}`}>{y.data.year}</a>
         ))}
       </div>
+      <a href="/christmas/visit/" class={`nav-link pl-3 text-sm${isActive('/christmas/visit/') ? ' nav-link--active' : ''}`}>Plan Your Visit</a>
+      <a href="/christmas/faq/" class={`nav-link pl-3 text-sm${isActive('/christmas/faq/') ? ' nav-link--active' : ''}`}>FAQ</a>
+      <a href="/christmas/giving/" class={`nav-link pl-3 text-sm${isActive('/christmas/giving/') ? ' nav-link--active' : ''}`}>Giving Back</a>
+      <a href="/christmas/press/" class={`nav-link pl-3 text-sm${isActive('/christmas/press/') ? ' nav-link--active' : ''}`}>Press &amp; Media</a>
       <a href="/christmas/" class={`nav-link pl-3 text-sm${isActive('/christmas/') ? ' nav-link--active' : ''}`}>All Years</a>
       <a href="/christmas/our-story/" class={`nav-link pl-3 text-sm${isActive('/christmas/our-story/') ? ' nav-link--active' : ''}`}>Our Story</a>
       <hr style="border-color: var(--color-nav-hover);" />
@@ -107,6 +111,11 @@ const inTechnology = currentPath.startsWith('/technology/');
         {recentYears.map(y => (
           <li><a href={`/christmas/${y.data.year}/`} class={`dropdown-item${isActive(`/christmas/${y.data.year}/`) ? ' dropdown-item--active' : ''}`}>{y.data.year}</a></li>
         ))}
+        <li><hr style="border-color: var(--color-nav-hover);" /></li>
+        <li><a href="/christmas/visit/" class={`dropdown-item${isActive('/christmas/visit/') ? ' dropdown-item--active' : ''}`}>Plan Your Visit</a></li>
+        <li><a href="/christmas/faq/" class={`dropdown-item${isActive('/christmas/faq/') ? ' dropdown-item--active' : ''}`}>FAQ</a></li>
+        <li><a href="/christmas/giving/" class={`dropdown-item${isActive('/christmas/giving/') ? ' dropdown-item--active' : ''}`}>Giving Back</a></li>
+        <li><a href="/christmas/press/" class={`dropdown-item${isActive('/christmas/press/') ? ' dropdown-item--active' : ''}`}>Press &amp; Media</a></li>
         <li><hr style="border-color: var(--color-nav-hover);" /></li>
         <li><a href="/christmas/" class={`dropdown-item${isActive('/christmas/') ? ' dropdown-item--active' : ''}`}>All Years</a></li>
         <li><a href="/christmas/our-story/" class={`dropdown-item${isActive('/christmas/our-story/') ? ' dropdown-item--active' : ''}`}>Our Story</a></li>

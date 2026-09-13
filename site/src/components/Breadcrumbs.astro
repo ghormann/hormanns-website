@@ -1,0 +1,22 @@
+---
+import type { Crumb } from '../lib/site';
+
+interface Props {
+  crumbs: Crumb[]; // trail excluding the current page's own link target
+  current: string;
+}
+
+const { crumbs, current } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb" class="mb-4 text-sm brown-links" style="font-family: var(--font-sans);">
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 m-0 p-0 list-none">
+    {crumbs.map(c => (
+      <li class="flex items-center gap-2">
+        <a href={c.path}>{c.name}</a>
+        <span aria-hidden="true" style="color: var(--color-link); opacity: 0.6;">/</span>
+      </li>
+    ))}
+    <li aria-current="page" style="color: var(--color-link); opacity: 0.85;">{current}</li>
+  </ol>
+</nav>

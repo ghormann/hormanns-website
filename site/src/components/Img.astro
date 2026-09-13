@@ -1,0 +1,53 @@
+---
+// Renders a public/ image as a <picture> with a WebP source and explicit
+// intrinsic dimensions. Falls back to a plain <img> when the manifest has no
+// entry (e.g. a remote URL, or before the prebuild step has run).
+import manifest from '../../public/_opt/manifest.json';
+
+interface Props {
+  src: string;
+  alt: string;
+  class?: string;
+  style?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+  sizes?: string;
+  width?: number;
+  height?: number;
+}
+
+const {
+  src,
+  alt,
+  class: className,
+  style,
+  loading = 'lazy',
+  fetchpriority,
+  sizes,
+  width,
+  height,
+} = Astro.props;
+
+const abs = src.startsWith('/') || src.startsWith('http') ? src : `/${src}`;
+const entry = (manifest as Record<string, { width: number | null; height: number | null; webp: string }>)[abs];
+
+const w = width ?? entry?.width ?? undefined;
+const h = height ?? entry?.height ?? undefined;
+// Decoding async keeps a long gallery from blocking the main thread.
+const common = { alt: alt || '', class: className, style, loading, width: w, height: h, decoding: 'async' as const };
+---
+
+{entry ? (
+  <picture>
+    <source srcset={entry.webp} type="image/webp" sizes={sizes} />
+    <img src={abs} alt={common.alt} class={className} style={style} loading={loading} width={w} height={h} decoding="async" fetchpriority={fetchpriority} />
+  </picture>
+) : (
+  <img src={abs} alt={common.alt} class={className} style={style} loading={loading} width={w} height={h} decoding="async" fetchpriority={fetchpriority} />
+)}
+
+<style is:global>
+  /* The <picture> wrapper must not introduce a layout box, so utility classes
+     on the <img> (h-full, object-cover, aspect ratios) keep behaving as before. */
+  picture { display: contents; }
+</style>

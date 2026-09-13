@@ -1,23 +1,68 @@
 ---
+import { season, SHOW_HOURS_TEXT } from '../lib/displayYears';
+import { DISPLAY, fullAddress } from '../lib/site';
+
 const year = new Date().getFullYear();
+const s = season();
 ---
 <footer style="background-color: var(--color-footer-bg); color: #d4e8dc;" class="mt-16 py-8">
   <div class="max-w-4xl mx-auto px-4">
     <div class="flex flex-col sm:flex-row justify-between items-start gap-4">
       <div>
         <p class="font-semibold" style="font-family: var(--font-serif);">Greg &amp; Mary Hormann</p>
-        <a href="mailto:ghormann@gmail.com" class="text-sm hover:underline" style="color: #a8d4b8;">
+        <a href="mailto:ghormann@gmail.com" class="footer-link">
           ghormann@gmail.com
         </a>
         <br />
-        <a href="/" class="text-sm hover:underline" style="color: #a8d4b8;">
+        <a href="/" class="footer-link">
           thehormanns.net
         </a>
+        <br />
+        <a
+          href={DISPLAY.facebookUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="footer-link"
+        >
+          Follow the display on Facebook
+        </a>
       </div>
-      <div class="text-sm text-right" style="color: #a8d4b8;">
+      <div class="text-sm" style="color: #a8d4b8;">
+        <p class="font-semibold" style="color: #d4e8dc;">Christmas Display</p>
+        <p>
+          <a href={DISPLAY.mapUrl} target="_blank" rel="noopener noreferrer" class="footer-link">{fullAddress}</a>
+        </p>
+        <p>Nightly {SHOW_HOURS_TEXT}, {s.openText.replace(/^\w+, /, '')} &ndash; {s.closeText.replace(/^\w+, /, '')}</p>
+        <p class="mt-2">
+          <a href="/christmas/visit/" class="footer-link">Plan Your Visit</a> &middot;
+          <a href="/christmas/faq/" class="footer-link">FAQ</a> &middot;
+          <a href="/christmas/giving/" class="footer-link">Giving Back</a> &middot;
+          <a href="/christmas/press/" class="footer-link">Press</a>
+        </p>
+      </div>
+
+      <div class="text-sm sm:text-right" style="color: #a8d4b8;">
         <p>Copyright &copy; 2000&ndash;{year}</p>
         <p>All Rights Reserved</p>
       </div>
     </div>
   </div>
 </footer>
+
+<style>
+  /* Footer links were the same colour and weight as the text around them, so
+     nothing signalled what was clickable. Underline them by default. */
+  .footer-link {
+    color: #cfe9d8;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+    font-size: 0.875rem;
+  }
+
+  .footer-link:hover,
+  .footer-link:focus-visible {
+    color: #ffffff;
+    text-decoration-thickness: 2px;
+  }
+</style>

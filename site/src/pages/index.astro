@@ -3,34 +3,34 @@ import PageLayout from '../layouts/PageLayout.astro';
 import RecentDisplays from '../components/RecentDisplays.astro';
 import YouTubeGrid from '../components/YouTubeGrid.astro';
 import FavDisplays from '../components/FavDisplays.astro';
-import { yearsOfDisplayWords } from '../lib/displayYears';
+import VisitFacts from '../components/VisitFacts.astro';
+import ShowStats from '../components/ShowStats.astro';
+import Img from '../components/Img.astro';
+import { yearsOfDisplayWords, season, SHOW_DEFAULTS } from '../lib/displayYears';
+import { DISPLAY, origin, absolute, touristAttraction, breadcrumbList, person, graph } from '../lib/site';
 
 const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display' }];
 
 // Canonical host comes from astro.config.mjs (`site`) so structured data can never
 // drift from the canonical/sitemap URLs.
-const siteBase = (Astro.site ?? new URL('https://thehormanns.net')).origin;
+const siteBase = origin(Astro.site);
+const s = season();
+const homeImage = '/christmas/2025/the_hormanns_2025.jpg';
 
-const websiteJsonLd = JSON.stringify({
-  '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'WebSite',
-      name: 'The Hormanns',
-      url: `${siteBase}/`,
-    },
-    {
-      '@type': 'Person',
-      name: 'Greg Hormann',
-      url: `${siteBase}/greg/`,
-    },
-    {
-      '@type': 'Person',
-      name: 'Mary Hormann',
-      url: `${siteBase}/mary/`,
-    },
-  ],
-});
+const websiteJsonLd = graph(
+  {
+    '@type': 'WebSite',
+    '@id': `${siteBase}/#website`,
+    name: 'The Hormanns',
+    url: `${siteBase}/`,
+    description:
+      'Greg and Mary Hormann of Liberty Township, Ohio — home of a free animated Christmas light display running since 2001.',
+  },
+  touristAttraction(siteBase, absolute(siteBase, homeImage)),
+  person(siteBase, 'Greg Hormann', 'greg'),
+  person(siteBase, 'Mary Hormann', 'mary'),
+  breadcrumbList(siteBase, [{ name: 'Home', path: '/' }]),
+);
 ---
 
 <PageLayout
@@ -45,6 +45,17 @@ const websiteJsonLd = JSON.stringify({
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Meet Greg and Mary Hormann</h1>
   </div>
 
+  <!-- Visit call to action: the question most first-time visitors arrive with -->
+  <section class="mb-10">
+    <h2 class="text-xl font-semibold mb-3" style="color: var(--color-heading);">Come See the Lights</h2>
+    <VisitFacts compact />
+    <p class="brown-links text-sm" style="font-family: var(--font-sans);">
+      <a href="/christmas/visit/"><strong>Plan your visit</strong></a> &middot;
+      <a href="/christmas/faq/">FAQ</a> &middot;
+      <a href="/christmas/giving/">Giving back</a>
+    </p>
+  </section>
+
   <!-- Christmas display section -->
   <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
     <div class="sm:col-span-2 brown-links">
@@ -54,9 +65,10 @@ const websiteJsonLd = JSON.stringify({
         Mary likes the shopping and interior decorating, and Greg is big on outside Christmas displays.
         In <a href="/christmas/2001/">2001</a>, Greg
         started experimenting with animated displays controlled by a computer. {yearsOfDisplayWords} years later, we have over 75,000 lights synchronized to 
-        <span id="music-stats">73 minutes of music</span> leveraging <a href="https://xlights.org" target="_blank" rel="noopener noreferrer">xLights</a>,
+        <span data-show-stat="summary">{SHOW_DEFAULTS.minutes} minutes of music across {SHOW_DEFAULTS.songs} songs</span> leveraging <a href="https://xlights.org" target="_blank" rel="noopener noreferrer">xLights</a>,
         <a href="https://github.com/FalconChristmas/fpp" target="_blank" rel="noopener noreferrer">FPP</a>,
         and <a href="/technology/dmx/">pixels controlled by E1.31</a>.
+        Tune to {DISPLAY.fmFrequency} when you visit to hear the show.
         If you are curious about the history of our display, we've captured <a href="/christmas/our-story/">our story</a>
         which is also summarized in a <a href="https://www.youtube.com/watch?v=Nd7ADGezo3s">2021 on stage presentation</a>.
       </p>
@@ -91,9 +103,9 @@ const websiteJsonLd = JSON.stringify({
       </p>
     </div>
     <div class="flex justify-center items-start">
-      <img
+      <Img
         src="/wedding/reception/_greg_mary_dancing.jpg"
-        alt="Greg & Mary Dancing"
+        alt="Greg and Mary Hormann dancing at their wedding reception"
         class="rounded-lg shadow max-h-48 object-cover"
       />
     </div>
@@ -108,22 +120,13 @@ const websiteJsonLd = JSON.stringify({
 
   <FavDisplays wide />
 
+  <ShowStats />
+
   <script>
+    // Live car count for visitors deciding whether to head over right now.
     fetch('https://vote-now.org/api/model')
       .then((res) => res.json())
       .then((data) => {
-        const songs = data?.model?.songs;
-        if (!Array.isArray(songs) || songs.length === 0) return;
-
-        const totalMinutes = Math.floor(
-          songs.reduce((sum, song) => sum + (song.duration ?? 0), 0) / 60
-        );
-
-        const el = document.getElementById('music-stats');
-        if (el) {
-          el.textContent = `over ${totalMinutes} minutes of music across ${songs.length} songs`;
-        }
-
         const totalCars = data?.model?.cars?.['total-cars'];
         const carEl = document.getElementById('car-count');
         if (carEl && typeof totalCars === 'number' && totalCars > 0) {
@@ -135,7 +138,7 @@ const websiteJsonLd = JSON.stringify({
         }
       })
       .catch(() => {
-        // Leave the default text in place if the request fails.
+        // Leave the page as rendered if the request fails.
       });
   </script>
 

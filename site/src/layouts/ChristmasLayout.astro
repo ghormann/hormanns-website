@@ -7,12 +7,14 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   jsonLd?: string;
+  noindex?: boolean;
 }
 
-const { title, description, ogImage, jsonLd } = Astro.props;
+const { title, description, ogImage, ogImageAlt, jsonLd, noindex } = Astro.props;
 ---
-<BaseLayout title={title} description={description} ogImage={ogImage} jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} ogImage={ogImage} ogImageAlt={ogImageAlt} jsonLd={jsonLd} noindex={noindex}>
   <NavBar />
   <main class="max-w-4xl mx-auto px-4 pt-20 pb-8">
     <slot />

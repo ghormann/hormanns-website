@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Generated image derivatives (npm run build regenerates these)
+public/_opt/

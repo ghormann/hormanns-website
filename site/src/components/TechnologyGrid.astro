@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import Img from './Img.astro';
 
 const pages = (await getCollection('technology', ({ data }) => !data.draft))
   .sort((a, b) => a.data.order - b.data.order);
@@ -19,10 +20,9 @@ const pages = (await getCollection('technology', ({ data }) => !data.draft))
       >
         {imgSrc ? (
           <div class="relative aspect-video overflow-hidden">
-            <img
+            <Img
               src={imgSrc}
               alt={p.data.title}
-              loading="lazy"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             />
             <div

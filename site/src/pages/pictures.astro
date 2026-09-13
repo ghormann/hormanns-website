@@ -17,8 +17,8 @@ const technologyPages = (
 ---
 
 <PageLayout
-  title="Our Pictures"
-  description="Christmas display photos and family pictures from the Hormanns."
+  title="Christmas Light Display Photos — Liberty Township, Ohio | The Hormanns"
+  description="Photo galleries from every season of the Hormann animated Christmas light display in Liberty Township, Ohio, plus the technology behind it."
 >
   <div
     class="rounded-lg px-6 py-4 mb-8 -mx-2"
@@ -65,7 +65,7 @@ const technologyPages = (
           <h3 class="text-base font-semibold mb-1" style="color: var(--color-heading);">
             <a href={`/technology/${page.id}/`} class="brown-links">{page.data.title}</a>
           </h3>
-          <PhotoGallery photos={page.data.photos} id={`gallery-tech-${page.id}`} />
+          <PhotoGallery photos={page.data.photos} id={`gallery-tech-${page.id}`} altFallback={`${page.data.title} — Hormann Christmas light display`} />
         </div>
       ))
     }

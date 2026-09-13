@@ -1,0 +1,181 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import VisitFacts from '../../components/VisitFacts.astro';
+import DisplayMap from '../../components/DisplayMap.astro';
+import { season, SHOW_HOURS_TEXT, yearsOfDisplayWords } from '../../lib/displayYears';
+import {
+  DISPLAY, CHARITY, VENMO_URL, fullAddress, origin, absolute,
+  touristAttraction, breadcrumbList, place, person, graph,
+} from '../../lib/site';
+
+const base = origin(Astro.site);
+const s = season();
+const heroImage = '/christmas/2025/the_hormanns_2025.jpg';
+const image = absolute(base, heroImage);
+
+const organizer = person(base, 'Greg Hormann', 'greg');
+
+// The canonical Event for the season lives here, on a URL that does not change
+// from year to year, rather than on the newest /christmas/<year>/ page.
+const event = {
+  '@type': 'Event',
+  '@id': `${base}/christmas/visit/#event-${s.year}`,
+  name: `Hormann Christmas Light Display ${s.year}`,
+  description: `A free drive-up Christmas light show in Liberty Township, Ohio. Tens of thousands of RGB pixels synchronized to music, broadcast to visitors' car radios on ${DISPLAY.fmFrequency}. Open nightly ${SHOW_HOURS_TEXT} from ${s.openText} through ${s.closeText}.`,
+  image,
+  startDate: s.startDateIso,
+  endDate: s.endDateIso,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  location: place,
+  organizer,
+  performer: organizer,
+  isAccessibleForFree: true,
+  url: `${base}/christmas/visit/`,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/InStock',
+    validFrom: s.startDateIso,
+    url: `${base}/christmas/visit/`,
+    category: 'Free',
+  },
+};
+
+const attraction = {
+  ...touristAttraction(base, image),
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+    opens: '17:00',
+    closes: '23:00',
+    validFrom: s.startDateIso.slice(0, 10),
+    validThrough: s.endDateIso.slice(0, 10),
+  },
+  event,
+};
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Christmas Display', path: '/christmas/' },
+];
+
+const jsonLd = graph(
+  attraction,
+  event,
+  breadcrumbList(base, [...crumbs, { name: 'Plan Your Visit', path: '/christmas/visit/' }]),
+);
+
+const title = `Plan Your Visit — Christmas Lights in Liberty Township, Ohio (${s.year})`;
+const description = `Free drive-up Christmas light show at ${fullAddress}. Open nightly ${SHOW_HOURS_TEXT}, ${s.openText} through ${s.closeText}. Music over FM radio, song voting, and a walk-through light tunnel.`;
+---
+
+<PageLayout title={title} description={description} ogImage={heroImage} jsonLd={jsonLd}>
+
+  <Breadcrumbs crumbs={crumbs} current="Plan Your Visit" />
+
+  <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Plan Your Visit</h1>
+    <p class="mt-2 text-sm" style="color: var(--color-link); font-family: var(--font-sans);">
+      Everything you need to know before you come see the lights.
+    </p>
+  </div>
+
+  <VisitFacts />
+
+  <div class="prose brown-links" style="max-width: none;">
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">When we're open</h2>
+    <p>
+      Our display opens <strong>two days before Thanksgiving</strong> — {s.openText} this
+      season — and runs every single night through <strong>New Year's Day</strong>, {s.closeText}.
+      The show is on from <strong>{SHOW_HOURS_TEXT}</strong> nightly, rain, snow, or clear skies.
+    </p>
+    <p>
+      Songs play back to back continuously, so there's no set showtime to catch. Most visitors
+      stay for three to five songs, but you are very welcome to stay for the whole hour-plus show
+      if you want to see all of it. Christmas
+      Eve is our busiest and best night — the neighborhood gathers to watch the
+      <a href="/technology/clock/">countdown clock</a> hit zero at midnight.
+    </p>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">Where to find us</h2>
+    <p>
+      We're at
+      <a href={DISPLAY.mapUrl} target="_blank" rel="noopener noreferrer">{fullAddress}</a>,
+      in Liberty Township — about 25 minutes north of downtown Cincinnati and just off
+      the Liberty Way exit of I-75. There are
+      <a href={DISPLAY.coolDisplaysUrl} target="_blank" rel="noopener noreferrer">several other
+      displays</a> worth seeing in the surrounding neighborhoods on the same trip.
+    </p>
+
+    <DisplayMap />
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">How to hear the music</h2>
+    <p>
+      The lights are synchronized to music broadcast over a low-power FM transmitter. Tune your
+      car radio to <strong>{DISPLAY.fmFrequency}</strong> &mdash; also shown on the
+      <a href="/technology/info-board/">information sign above the garage</a> &mdash; and the show
+      plays through your own speakers.
+    </p>
+    <p>
+      A few vehicles — some newer Lexus and Cadillac models in particular — buffer the analog FM
+      signal, which puts the audio slightly behind the lights. If your radio has a "live mode"
+      option, turning it on fixes it. If you see one of us outside, ask: we usually have a
+      portable radio in a pocket you can borrow.
+    </p>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">Watch from your car, or get out and walk</h2>
+    <p>
+      You're welcome to stay in your car and watch from the street — most people do, and it's
+      the warmest option. If you'd rather walk around, you can get out and go through
+      <a href="/technology/tunnel/">the light tunnel</a>, which has buttons inside that let you
+      change what it does. Visitors pressed those buttons 39,661 times last season.
+    </p>
+    <p>
+      Please be considerate of our neighbors: keep headlights and music down, don't block
+      driveways, and take your trash with you. Their patience is the only reason we've been able
+      to keep this going for {yearsOfDisplayWords} years.
+    </p>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">Control the show from your phone</h2>
+    <p>
+      While you're parked out front, open
+      <a href={DISPLAY.interactUrl} target="_blank" rel="noopener noreferrer">vote-now.org</a>
+      to <a href="/technology/voting/">vote for the next song</a>, pick which
+      <a href="/technology/snowmen/">snowmen</a> appear, and see what's playing. You can also
+      <a href="/technology/text-message/">text your first name</a> to have it appear in lights
+      on the grid — names show up below the clock within seconds and in the main display every
+      8–12 minutes, depending on how long the queue is.
+    </p>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">Admission is free — but bring a can of food</h2>
+    <p>
+      There is never a charge to see the display. In partnership with the
+      {CHARITY.partner}, we collect {CHARITY.accepts} for {CHARITY.beneficiary}. There's a
+      donation booth to the left of the display, open every night the show is on, and you can
+      give online through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a>
+      ({CHARITY.treasurer} is the treasurer).
+      <a href="/christmas/giving/">See what visitors have donated so far →</a>
+    </p>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">Enjoyed the display?</h2>
+    <p>
+      The best thing you can do for us is tell someone.
+      <a href={DISPLAY.facebookUrl} target="_blank" rel="noopener noreferrer">Share your photos and
+      say hello on Facebook</a>, find us on our
+      <a href={DISPLAY.coolDisplaysUrl} target="_blank" rel="noopener noreferrer">CoolDisplays.net
+      listing</a>, bring a friend next time, or take a look at
+      <a href="/christmas/our-story/">how the display came to be</a> and
+      <a href="/technology/">the technology that runs it</a>.
+    </p>
+
+    <p class="mt-8">
+      Still have a question? <a href="/christmas/faq/">Read the FAQ →</a>
+    </p>
+
+  </div>
+
+</PageLayout>

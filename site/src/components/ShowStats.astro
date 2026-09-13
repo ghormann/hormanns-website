@@ -1,0 +1,46 @@
+---
+// Live show statistics.
+//
+// Pages render last season's figures from content at build time, then this
+// script refreshes every [data-show-stat] element from the live playlist once
+// the page loads. If the request fails the built-in numbers simply stand.
+//
+// Usage: <span data-show-stat="songs">28</span>
+//        <span data-show-stat="minutes">73</span>
+//        <span data-show-stat="summary">73 minutes of music across 28 songs</span>
+---
+
+<script is:inline>
+  (function () {
+    var nodes = document.querySelectorAll('[data-show-stat]');
+    if (!nodes.length) return;
+
+    fetch('https://vote-now.org/api/queue')
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        var songs = data && data.model && data.model.songs;
+        if (!Array.isArray(songs) || songs.length === 0) return;
+
+        var minutes = Math.round(
+          songs.reduce(function (sum, s) { return sum + (s.duration || 0); }, 0) / 60
+        );
+        var count = songs.length;
+
+        var values = {
+          songs: String(count),
+          minutes: String(minutes),
+          summary: minutes + ' minutes of music across ' + count + ' songs',
+          'songs-word': count === 1 ? 'one song' : count + ' songs',
+          'minutes-word': minutes === 1 ? 'one minute' : minutes + ' minutes',
+        };
+
+        nodes.forEach(function (el) {
+          var v = values[el.getAttribute('data-show-stat')];
+          if (v) el.textContent = v;
+        });
+      })
+      .catch(function () {
+        /* Keep the values rendered at build time. */
+      });
+  })();
+</script>

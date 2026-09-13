@@ -1,4 +1,6 @@
 ---
+import Img from './Img.astro';
+
 interface Props {
   year: number;
   heroImage?: string;
@@ -15,10 +17,9 @@ const { year, heroImage, highlight } = Astro.props;
 >
   {heroImage ? (
     <div class="relative aspect-video overflow-hidden">
-      <img
+      <Img
         src={heroImage}
-        alt={`Christmas ${year}`}
-        loading="lazy"
+        alt={`Christmas ${year} — the Hormann light display`}
         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
       />
       <div

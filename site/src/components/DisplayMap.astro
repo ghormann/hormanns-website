@@ -1,0 +1,49 @@
+---
+// Click-to-activate map. The Google Maps API plus the cooldisplays.net helper
+// are ~heavy third-party scripts; loading them on every archive page cost far
+// more than the map was worth there. Nothing loads until the visitor asks.
+import { DISPLAY, fullAddress } from '../lib/site';
+---
+
+<div id="map-shell" class="rounded-lg overflow-hidden mb-4" style="background-color: var(--color-card-bg);">
+  <button
+    id="map-activate"
+    type="button"
+    class="w-full flex flex-col items-center justify-center gap-2 px-4 py-10 cursor-pointer"
+    style="color: var(--color-heading); font-family: var(--font-sans); background: none; border: none;"
+  >
+    <span class="text-3xl" aria-hidden="true">📍</span>
+    <span class="font-semibold">Show the map</span>
+    <span class="text-xs" style="color: var(--color-link);">{fullAddress}</span>
+  </button>
+  <div id="map" style="width:100%; height:400px; display:none;"></div>
+</div>
+
+<p class="text-sm brown-links mb-4" style="font-family: var(--font-sans);">
+  Prefer your own app?
+  <a href={DISPLAY.mapUrl} target="_blank" rel="noopener noreferrer">Open in Google Maps →</a>
+</p>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById('map-activate');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      btn.textContent = 'Loading map…';
+      btn.disabled = true;
+      var maps = document.createElement('script');
+      maps.src = 'https://maps.google.com/maps/api/js?key=AIzaSyB8l-4-oAlAW16pHHcQ2ncSxofVZx3b8l8&sensor=false';
+      maps.onload = function () {
+        var tools = document.createElement('script');
+        tools.src = 'https://cooldisplays.net/maptools.php';
+        tools.onload = function () {
+          document.getElementById('map').style.display = 'block';
+          btn.remove();
+          if (typeof coolMap !== 'undefined') coolMap.showMap(1, 10, 'map');
+        };
+        document.head.appendChild(tools);
+      };
+      document.head.appendChild(maps);
+    });
+  })();
+</script>

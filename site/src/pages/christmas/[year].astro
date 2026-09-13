@@ -1,10 +1,16 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ChristmasLayout from '../../layouts/ChristmasLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Img from '../../components/Img.astro';
+import VisitFacts from '../../components/VisitFacts.astro';
+import DisplayMap from '../../components/DisplayMap.astro';
 import YouTubeGrid from '../../components/YouTubeGrid.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import StatBlock from '../../components/StatBlock.astro';
 import FavDisplays from '../../components/FavDisplays.astro';
+import { season, SHOW_HOURS_TEXT } from '../../lib/displayYears';
+import { DISPLAY, origin, absolute, place, person, breadcrumbList, touristAttraction, graph } from '../../lib/site';
 
 export async function getStaticPaths() {
   const entries = await getCollection('christmas', ({ data }) => !data.draft);
@@ -48,64 +54,90 @@ const ogImage = heroImage ?? undefined;
 
 // Canonical host comes from astro.config.mjs (`site`) so structured data can never
 // drift from the canonical/sitemap URLs.
-const siteBase = (Astro.site ?? new URL('https://thehormanns.net')).origin;
+const siteBase = origin(Astro.site);
 
-// The display is a live Event only for the most recent year; earlier years are an
-// archive, and a long-past Event gets dropped from search features anyway.
-const place = {
-  '@type': 'Place',
-  name: 'Hormann Residence',
-  address: {
-    '@type': 'PostalAddress',
-    streetAddress: '6656 Devon Drive',
-    addressLocality: 'Liberty Township',
-    addressRegion: 'OH',
-    postalCode: '45044',
-    addressCountry: 'US',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: 39.395325,
-    longitude: -84.3991475,
-  },
+const author = person(siteBase, 'Greg Hormann', 'greg');
+const pageUrl = `${siteBase}/christmas/${year}/`;
+const absHero = heroImage ? absolute(siteBase, heroImage) : undefined;
+
+// Only the season that is actually running (or about to) gets treated as live.
+// `isLatestYear` alone would keep advertising an Event from a season that ended
+// months ago simply because next year's content file doesn't exist yet.
+const currentSeason = season();
+const isCurrentSeason = isLatestYear && year >= currentSeason.year;
+
+// Every year page is an archival CreativeWork describing that season's display.
+const creativeWork: Record<string, unknown> = {
+  '@type': 'CreativeWork',
+  '@id': `${pageUrl}#display`,
+  name: `Hormann Christmas Light Display ${year}`,
+  description,
+  datePublished: `${year}-12-01`,
+  contentLocation: place,
+  author,
+  url: pageUrl,
+  ...(absHero ? { image: absHero } : {}),
 };
 
-const author = {
-  '@type': 'Person',
-  name: 'Greg Hormann',
-  url: `${siteBase}/greg/`,
-};
-
-const jsonLdObj: Record<string, unknown> = isLatestYear
+// The live Event is canonically on /christmas/visit/; the current season's page
+// references that node rather than declaring a competing copy of it.
+const currentEvent = isCurrentSeason
   ? {
-      '@context': 'https://schema.org',
       '@type': 'Event',
-      name: `Hormann Christmas Light Display ${year}`,
-      description,
-      startDate: `${year}-12-01`,
-      endDate: `${year}-12-31`,
+      '@id': `${siteBase}/christmas/visit/#event-${currentSeason.year}`,
+      name: `Hormann Christmas Light Display ${currentSeason.year}`,
+      description: `Free drive-up Christmas light show in Liberty Township, Ohio, open nightly ${SHOW_HOURS_TEXT} from ${currentSeason.openText} through ${currentSeason.closeText}.`,
+      startDate: currentSeason.startDateIso,
+      endDate: currentSeason.endDateIso,
       eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
       location: place,
       organizer: author,
+      performer: author,
+      isAccessibleForFree: true,
+      url: `${siteBase}/christmas/visit/`,
+      ...(absHero ? { image: absHero } : {}),
+      offers: {
+        '@type': 'Offer',
+        price: '0',
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/InStock',
+        validFrom: currentSeason.startDateIso,
+        url: `${siteBase}/christmas/visit/`,
+      },
     }
-  : {
-      '@context': 'https://schema.org',
-      '@type': 'CreativeWork',
-      name: `Hormann Christmas Light Display ${year}`,
-      description,
-      datePublished: `${year}-12-01`,
-      contentLocation: place,
-      author,
-    };
+  : null;
 
-jsonLdObj.url = `${siteBase}/christmas/${year}/`;
-if (heroImage) {
-  jsonLdObj.image = heroImage.startsWith('http') ? heroImage : `${siteBase}${heroImage}`;
-}
-const jsonLd = JSON.stringify(jsonLdObj);
+// Each song video becomes a VideoObject. There are dozens per season and they
+// are the least contested rich result available to this site.
+const videoObjects = videos.map(v => ({
+  '@type': 'VideoObject',
+  name: `${v.title} — Hormann Christmas Light Display ${year}`,
+  description: `${v.title}, sequenced to the Hormann animated Christmas light display in Liberty Township, Ohio (${year} season).`,
+  thumbnailUrl: v.thumb ?? `https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`,
+  uploadDate: `${year}-12-01`,
+  contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
+  embedUrl: `https://www.youtube.com/embed/${v.id}`,
+  creator: author,
+}));
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Christmas Display', path: '/christmas/' },
+];
+
+const jsonLd = graph(
+  creativeWork,
+  currentEvent,
+  touristAttraction(siteBase, absHero),
+  ...videoObjects,
+  breadcrumbList(siteBase, [...crumbs, { name: String(year), path: `/christmas/${year}/` }]),
+);
 ---
 
-<ChristmasLayout title={seoTitle} description={description} ogImage={ogImage} jsonLd={jsonLd}>
+<ChristmasLayout title={seoTitle} description={description} ogImage={ogImage} ogImageAlt={heroImageAlt ?? undefined} jsonLd={jsonLd}>
+  <Breadcrumbs crumbs={crumbs} current={String(year)} />
+
   <!-- Hero heading strip -->
   <div
     class="rounded-lg px-6 py-4 mb-4 -mx-2"
@@ -153,11 +185,25 @@ const jsonLd = JSON.stringify(jsonLdObj);
     </div>
   </nav>
 
+  {isCurrentSeason && (
+    <>
+      <VisitFacts compact />
+      <p class="mb-6 text-sm brown-links" style="font-family: var(--font-sans);">
+        <a href="/christmas/visit/">Plan your visit</a> &middot;
+        <a href="/christmas/faq/">FAQ</a> &middot;
+        <a href="/christmas/giving/">Giving back</a>
+      </p>
+    </>
+  )}
+
   {heroImage && (
-    <img
+    <Img
       src={heroImage}
       alt={heroImageAlt ?? `Christmas ${year} at the Hormanns`}
       class="w-full rounded-lg shadow mb-6"
+      loading="eager"
+      fetchpriority="high"
+      sizes="(max-width: 896px) 100vw, 896px"
     />
   )}
 
@@ -178,7 +224,7 @@ const jsonLd = JSON.stringify(jsonLdObj);
   {photos.length > 0 && (
     <>
       <h2 class="text-xl font-semibold mt-8 mb-2" style="color: var(--color-heading);">Photos</h2>
-      <PhotoGallery photos={photos} />
+      <PhotoGallery photos={photos} altFallback={`The Hormann Christmas light display, ${year}`} />
     </>
   )}
 
@@ -198,21 +244,19 @@ const jsonLd = JSON.stringify(jsonLdObj);
     </a>
     near a number of other enjoyable holiday displays.
   </p>
-  <div id="map" style="width:100%; height:400px; margin-top:10px; margin-bottom:10px;"></div>
+  {isCurrentSeason ? (
+    <DisplayMap />
+  ) : (
+    <p class="mb-4 text-sm brown-links" style="font-family: var(--font-sans);">
+      <a href="/christmas/visit/">See the map and this season’s dates and hours →</a>
+    </p>
+  )}
+
   <div class="text-center mb-4">
-    <a href="https://cooldisplays.net/index.php?page=single&id=1" target="_blank" rel="noopener noreferrer">
-      <img src="https://cooldisplays.net/picture.php?logo=1&width=300" alt="CoolDisplays.net" style="padding:20px; display:inline;" />
+    <a href={DISPLAY.coolDisplaysUrl} target="_blank" rel="noopener noreferrer">
+      <img src="https://cooldisplays.net/picture.php?logo=1&width=300" alt="CoolDisplays.net" width="300" height="100" loading="lazy" style="padding:20px; display:inline;" />
     </a>
   </div>
-
-  <!-- Map scripts (external dependency from cooldisplays.net) -->
-  <script is:inline src="https://maps.google.com/maps/api/js?key=AIzaSyB8l-4-oAlAW16pHHcQ2ncSxofVZx3b8l8&sensor=false"></script>
-  <script is:inline src="https://cooldisplays.net/maptools.php"></script>
-  <script is:inline>
-    if (typeof coolMap !== 'undefined') {
-      coolMap.showMap(1, 10, 'map');
-    }
-  </script>
 
   {showFavDisplays && <FavDisplays />}
 

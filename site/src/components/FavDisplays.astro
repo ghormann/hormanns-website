@@ -39,7 +39,9 @@ const scriptSrc = `https://cooldisplays.net/favToolV2.php?u=${token}`;
     flex-wrap: wrap;
   }
   .fav-wide .cool-summary {
-    min-width: 380px;
+    /* Was a hard 380px, which overflowed narrower phones. Let the column
+       shrink below its preferred width instead of widening the page. */
+    min-width: 0;
     flex: 1 1 380px;
   }
 </style>

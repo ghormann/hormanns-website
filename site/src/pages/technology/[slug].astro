@@ -1,19 +1,36 @@
 ---
 import { getCollection, render } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Img from '../../components/Img.astro';
 import YouTubeGrid from '../../components/YouTubeGrid.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import FavDisplays from '../../components/FavDisplays.astro';
+import { origin, absolute, person, breadcrumbList, graph } from '../../lib/site';
 
 export async function getStaticPaths() {
   const entries = await getCollection('technology', ({ data }) => !data.draft);
-  return entries.map(entry => ({
-    params: { slug: entry.id },
-    props: { entry },
-  }));
+  const years = await getCollection('christmas', ({ data }) => !data.draft);
+
+  return entries.map(entry => {
+    // Which seasons actually mention this piece of technology? Derived from the
+    // links the year write-ups already contain, so the cross-links stay honest
+    // as content is edited rather than drifting out of a hand-kept list.
+    // Tolerate links written with or without the trailing slash.
+    const needle = new RegExp(`\\(/technology/${entry.id}/?[)#]`);
+    const relatedYears = years
+      .filter(y => needle.test(y.body ?? ''))
+      .map(y => y.data.year)
+      .sort((a, b) => b - a);
+
+    return {
+      params: { slug: entry.id },
+      props: { entry, relatedYears },
+    };
+  });
 }
 
-const { entry } = Astro.props;
+const { entry, relatedYears } = Astro.props;
 const { Content } = await render(entry);
 const { title, description, heroImage, heroImageAlt, videos, photos, sectionSidebars, showFavDisplays } = entry.data;
 const ogImage = heroImage ?? undefined;
@@ -27,6 +44,26 @@ const clientPhotos = photos.map(p => ({
   caption: p.caption,
   thumb: p.thumb ? abs(p.thumb) : undefined,
 }));
+const siteBase = origin(Astro.site);
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Technology', path: '/technology/' },
+];
+const jsonLd = graph(
+  {
+    '@type': 'TechArticle',
+    '@id': `${siteBase}/technology/${entry.id}/#article`,
+    headline: title,
+    ...(description ? { description } : {}),
+    url: `${siteBase}/technology/${entry.id}/`,
+    author: person(siteBase, 'Greg Hormann', 'greg'),
+    ...(heroSrc ? { image: absolute(siteBase, heroSrc) } : {}),
+    about: 'Computer-controlled Christmas light displays',
+    isPartOf: { '@type': 'WebSite', name: 'The Hormanns', url: `${siteBase}/` },
+  },
+  breadcrumbList(siteBase, [...crumbs, { name: title, path: `/technology/${entry.id}/` }]),
+);
+
 const clientSidebars = sectionSidebars.map(s => ({
   heading: s.heading,
   maxPhotos: s.maxPhotos,
@@ -37,16 +74,27 @@ const clientSidebars = sectionSidebars.map(s => ({
 }));
 ---
 
-<PageLayout title={`${title} — The Hormanns`} description={description} ogImage={ogImage}>
+<PageLayout
+  title={`${title} — Hormann Christmas Light Display Technology`}
+  description={description}
+  ogImage={ogImage}
+  ogImageAlt={heroAlt}
+  jsonLd={jsonLd}
+>
+  <Breadcrumbs crumbs={crumbs} current={title} />
+
   <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">{title}</h1>
   </div>
 
   {heroSrc && (
-    <img
+    <Img
       src={heroSrc}
       alt={heroAlt}
       class="w-full rounded-lg shadow mb-6"
+      loading="eager"
+      fetchpriority="high"
+      sizes="(max-width: 896px) 100vw, 896px"
     />
   )}
 
@@ -64,16 +112,34 @@ const clientSidebars = sectionSidebars.map(s => ({
   {photos.length > 0 && (
     <>
       <h2 class="text-xl font-semibold mt-8 mb-2" style="color: var(--color-heading);">Photos</h2>
-      <PhotoGallery photos={photos} />
+      <PhotoGallery photos={photos} altFallback={`${title} — Hormann Christmas light display`} />
     </>
   )}
 
-  {showFavDisplays && <FavDisplays />}
+  {relatedYears.length > 0 && (
+    <section class="mt-10">
+      <h2 class="text-xl font-semibold mb-2" style="color: var(--color-heading);">Seasons featuring this</h2>
+      <p class="text-sm mb-3" style="color: var(--color-link); font-family: var(--font-sans);">
+        Years where {title} shows up in the display write-up.
+      </p>
+      <div class="flex flex-wrap gap-2">
+        {relatedYears.map(y => (
+          <a
+            href={`/christmas/${y}/`}
+            class="font-medium px-3 py-1 rounded-full text-sm transition-opacity hover:opacity-80"
+            style="background-color: var(--color-accent); color: var(--color-heading); font-family: var(--font-sans);"
+          >
+            {y}
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 
-  <div class="mt-8 pt-4 border-t" style="border-color: var(--color-accent);">
-    <a href="/technology/" class="text-sm hover:underline" style="font-family: var(--font-sans); color: var(--color-link);">
-      ← Back to Technology
-    </a>
+  <div class="mt-8 pt-4 border-t brown-links text-sm" style="border-color: var(--color-accent); font-family: var(--font-sans);">
+    <a href="/technology/">← Back to Technology</a>
+    <span class="mx-2" aria-hidden="true">·</span>
+    <a href="/christmas/visit/">Come see it in person</a>
   </div>
 
   {clientSidebars.length > 0 && (

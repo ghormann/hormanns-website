@@ -1,0 +1,162 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ShowStats from '../../components/ShowStats.astro';
+import { season, SHOW_HOURS_TEXT, yearsOfDisplay, SHOW_DEFAULTS } from '../../lib/displayYears';
+import { DISPLAY, CHARITY, VENMO_URL, fullAddress, origin, breadcrumbList, touristAttraction, graph } from '../../lib/site';
+
+const base = origin(Astro.site);
+const s = season();
+
+// Answers are plain HTML strings so the same text feeds both the visible page
+// and the FAQPage structured data — they can never drift apart.
+const faqs: { q: string; a: string }[] = [
+  {
+    q: 'When is the Christmas light display open?',
+    a: `We open two days before Thanksgiving &mdash; ${s.openText} this season &mdash; and run every night through New Year&rsquo;s Day, ${s.closeText}. The show is on nightly from ${SHOW_HOURS_TEXT}.`,
+  },
+  {
+    q: 'Where is the display located?',
+    a: `We are at <a href="${DISPLAY.mapUrl}">${fullAddress}</a>, about 25 minutes north of downtown Cincinnati, just off the Liberty Way exit of I-75.`,
+  },
+  {
+    q: 'How much does it cost to visit?',
+    a: `Nothing. The display is completely free and there is no ticket or reservation. We do collect ${CHARITY.accepts} for ${CHARITY.beneficiary} in partnership with the ${CHARITY.partner}, but donating is never required.`,
+  },
+  {
+    q: 'What radio station do I tune to?',
+    a: `Tune your car radio to <strong>${DISPLAY.fmFrequency}</strong>. The frequency is also shown on the <a href="/technology/info-board/">information sign above the garage</a>, and the show plays through your own speakers. It is a low-power transmitter by design, so the signal only carries a few hundred feet &mdash; if you are not picking it up, move closer to the house.`,
+  },
+  {
+    q: 'Why is my car radio out of sync with the lights?',
+    a: 'A few vehicles &mdash; newer Lexus and Cadillac models in particular &mdash; buffer the analog FM signal, which causes a noticeable delay. Some of those radios have a &ldquo;live mode&rdquo; option; turning it on fixes it. If you see one of us outside, ask &mdash; we usually have a portable radio in a pocket you can borrow.',
+  },
+  {
+    q: 'How long is the show?',
+    a: `Songs play back to back continuously, so there is no set showtime to arrive for. The full playlist is currently <span data-show-stat="summary">${SHOW_DEFAULTS.minutes} minutes of music across ${SHOW_DEFAULTS.songs} songs</span>. Most visitors stay for three to five songs, but you are very welcome to settle in for the whole thing.`,
+  },
+  {
+    q: 'Can I stay in my car?',
+    a: 'Yes. Most visitors watch from the street with the radio on, and that is the warmest way to do it. You are also welcome to get out and walk around.',
+  },
+  {
+    q: 'Can I walk through the light tunnel?',
+    a: `Yes. <a href="/technology/tunnel/">The tunnel</a> is open to walk through, and there are buttons inside that let you change what it does. Visitors pressed them 39,661 times last season. If you get a good photo in there, we would love to see it &mdash; <a href="${DISPLAY.facebookUrl}">share it with us on Facebook</a>.`,
+  },
+  {
+    q: 'Can I pick which song plays next?',
+    a: `Yes. From your phone, open <a href="${DISPLAY.interactUrl}">vote-now.org</a> to <a href="/technology/voting/">vote for the next song</a> and choose which <a href="/technology/snowmen/">snowmen</a> appear in the display.`,
+  },
+  {
+    q: 'How do I get my name up in lights?',
+    a: 'Text your first name to the number shown on the information sign and it will appear on the grid. Names are checked against a database of common first names, so an unusual spelling may take longer to appear. Names show below the clock within seconds and in the main display every 8&ndash;12 minutes, depending on the size of the queue. See <a href="/technology/text-message/">how it works</a>.',
+  },
+  {
+    q: 'Where should I park?',
+    a: 'Please do not park directly in front of the traffic cones &mdash; they keep the lane clear. To watch from your car, park on the <strong>opposite side of the street from the house</strong>, or along <strong>Stonington Drive</strong>, which gives the best viewing distance from inside a car. If you would rather get out and walk around the display, park further up <strong>Devon Drive</strong> to stay clear of the traffic watching from their cars. Wherever you end up, please be considerate of our neighbors: do not block driveways, keep headlights and music down, and take your trash with you. Their patience is the only reason we have been able to keep this going.',
+  },
+  {
+    q: 'When is the best time to come to avoid traffic?',
+    a: 'Traffic is generally lightest on school nights, and quietest between <strong>5:00 and 6:30</strong> or <strong>10:00 and 11:00</strong>. It gets heavier the closer you get to Christmas, and Christmas Eve is always very busy &mdash; that is the night the neighborhood gathers to watch the <a href="/technology/clock/">countdown clock</a> hit zero. On the heaviest nights we switch to a shorter playlist to keep traffic moving.',
+  },
+  {
+    q: 'Do you take donations?',
+    a: `Yes &mdash; for ${CHARITY.beneficiary}, not for us. There is a donation booth to the left of the display, open every night the show is on, that accepts ${CHARITY.accepts}. You can also give online through <a href="${VENMO_URL}">Venmo</a> (${CHARITY.treasurer} is the treasurer). <a href="/christmas/giving/">See how much visitors have given</a>.`,
+  },
+  {
+    q: 'How long does the display take to set up?',
+    a: 'We take two weeks off work in November to bring everything outside, mount it, and wire it together. In truth we work on the display year round &mdash; updating songs, building new elements, soldering, repairing, and configuring controllers.',
+  },
+  {
+    q: 'How long does it take to program one song?',
+    a: 'It varies. The most complex songs take roughly an hour of sequencing for every 10 seconds of music &mdash; 20 to 24 hours for a four-minute song. There is a computer in our living room year round so any family member can sequence while relaxing.',
+  },
+  {
+    q: 'How much does it cost you to run?',
+    a: 'The impact on our electric bill is relatively small since everything is LED &mdash; the <a href="/christmas/">yearly stats</a> list the exact figure for each season. As for the electronics and hardware built up over the years, let us just say we could have bought a very nice new mini-van instead.',
+  },
+  {
+    q: 'What do your neighbors think?',
+    a: 'Our neighbors have been remarkably supportive over the years. Polite visitors are the single biggest reason we are able to keep the tradition going.',
+  },
+  {
+    q: 'Is the inside of your house full of lights too?',
+    a: 'No. The inside is rather tame &mdash; the Christmas tree is mostly static lighting.',
+  },
+  {
+    q: 'Where do you store it all?',
+    a: 'Our unfinished basement fills up with about fifty 27-gallon storage containers plus a wall of custom shelving for the small trees and yard stars. The larger items take up half the garage.',
+  },
+  {
+    q: 'How do you control that many lights?',
+    a: 'Every bulb is an individually addressable RGB pixel driven over <a href="/technology/dmx/">E1.31 (sACN)</a> by pixel controllers, sequenced in <a href="https://xlights.org">xLights</a> and played back by <a href="https://github.com/FalconChristmas/fpp">FPP</a>. <a href="/technology/">The technology section</a> walks through each piece.',
+  },
+];
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Christmas Display', path: '/christmas/' },
+];
+
+const stripTags = (html: string) =>
+  html.replace(/<[^>]*>/g, '')
+    .replace(/&mdash;/g, '—').replace(/&ndash;/g, '–')
+    .replace(/&rsquo;/g, '’').replace(/&ldquo;/g, '“').replace(/&rdquo;/g, '”');
+
+const faqPage = {
+  '@type': 'FAQPage',
+  '@id': `${base}/christmas/faq/#faq`,
+  mainEntity: faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: stripTags(f.a) },
+  })),
+};
+
+const jsonLd = graph(
+  faqPage,
+  touristAttraction(base),
+  breadcrumbList(base, [...crumbs, { name: 'FAQ', path: '/christmas/faq/' }]),
+);
+
+const description = `Answers to common questions about visiting the Hormann Christmas light display in Liberty Township, Ohio — hours, dates, radio station, parking, donations, and how ${yearsOfDisplay} years of lights actually work.`;
+---
+
+<PageLayout
+  title="Christmas Lights FAQ — Hours, Radio Station & Directions | The Hormanns"
+  description={description}
+  jsonLd={jsonLd}
+>
+
+  <Breadcrumbs crumbs={crumbs} current="FAQ" />
+
+  <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
+    <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Frequently Asked Questions</h1>
+    <p class="mt-2 text-sm" style="color: var(--color-link); font-family: var(--font-sans);">
+      Planning a visit? Start with <a href="/christmas/visit/" style="text-decoration: underline;">Plan Your Visit</a>.
+    </p>
+  </div>
+
+  <div class="space-y-3">
+    {faqs.map((f, i) => (
+      <details class="group rounded-lg overflow-hidden" style="background-color: var(--color-card-bg);" open={i < 3}>
+        <summary
+          class="cursor-pointer list-none px-4 py-3 font-semibold flex items-start justify-between gap-3"
+          style="color: var(--color-heading); font-family: var(--font-sans);"
+        >
+          <h2 class="text-base font-semibold m-0">{f.q}</h2>
+          <span class="shrink-0 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+        </summary>
+        <div class="px-4 pb-4 leading-relaxed brown-links" set:html={f.a} />
+      </details>
+    ))}
+  </div>
+
+  <p class="mt-8 brown-links" style="font-family: var(--font-sans);">
+    Still stuck? <a href={DISPLAY.facebookUrl} target="_blank" rel="noopener noreferrer">Ask on Facebook</a>
+    or <a href="mailto:ghormann@gmail.com">email us</a> — we read everything.
+  </p>
+
+  <ShowStats />
+
+</PageLayout>
