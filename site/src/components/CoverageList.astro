@@ -44,6 +44,14 @@ const asDate = (iso: string) => {
     margin-top: 0.6rem;
   }
 
+  /* Styled directly rather than relying on an ancestor .prose/.brown-links
+     class — the press page happens to wrap this in one, but year pages
+     don't, which otherwise left these links looking like plain text. */
+  .coverage-list a {
+    color: var(--color-link);
+    text-decoration: underline;
+  }
+
   .coverage-tag {
     display: inline-block;
     margin-right: 0.5rem;

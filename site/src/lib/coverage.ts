@@ -5,6 +5,8 @@
 // (article datePublished, YouTube uploadDate, or the date in the URL path) —
 // do not guess one in, since these values also feed structured data.
 
+import { isoDate } from './displayYears';
+
 export type CoverageType = 'segment' | 'article' | 'social';
 
 export interface Coverage {
@@ -108,6 +110,12 @@ export function coverageByYear(): { year: number; items: Coverage[] }[] {
     .map(year => ({ year, items: coverageFor(year) }));
 }
 
+/** Turns a YouTube watch URL into its embed-page equivalent, for VideoObject.embedUrl. */
+function youtubeEmbedUrl(url: string): string | undefined {
+  const id = url.match(/[?&]v=([^&]+)/)?.[1];
+  return id ? `https://www.youtube.com/embed/${id}` : undefined;
+}
+
 /** schema.org nodes for a set of stories, for use in a page's @graph. */
 export function coverageSchema(items: Coverage[], fallbackImage?: string) {
   return items.map(c => ({
@@ -115,7 +123,9 @@ export function coverageSchema(items: Coverage[], fallbackImage?: string) {
       c.type === 'segment' ? 'VideoObject' : c.type === 'social' ? 'SocialMediaPosting' : 'NewsArticle',
     name: c.title,
     url: c.url,
-    ...(c.type === 'segment' ? { uploadDate: c.date } : { datePublished: c.date }),
+    ...(c.type === 'segment'
+      ? { uploadDate: isoDate(c.date), contentUrl: c.url, ...(youtubeEmbedUrl(c.url) ? { embedUrl: youtubeEmbedUrl(c.url) } : {}) }
+      : { datePublished: isoDate(c.date) }),
     publisher: { '@type': 'Organization', name: c.outlet },
     ...(c.type === 'segment' && fallbackImage
       ? { thumbnailUrl: fallbackImage, description: `${c.outlet} coverage of the Hormann Christmas light display.` }

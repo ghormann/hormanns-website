@@ -83,6 +83,17 @@ export function isoLocal(d: Date, hour: number): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(hour)}:00:00-05:00`;
 }
 
+/**
+ * Turns a plain `YYYY-MM-DD` date (no specific time known) into a schema.org
+ * datetime with a timezone, as midnight US Eastern. Every date this site
+ * records — press coverage, video uploads — falls within the Christmas
+ * season (Nov–Dec), which is EST, so the fixed `-05:00` offset is correct
+ * here even though it wouldn't be for a date in summer.
+ */
+export function isoDate(dateStr: string): string {
+  return `${dateStr}T00:00:00-05:00`;
+}
+
 export interface Season {
   year: number;
   open: Date;

@@ -11,7 +11,7 @@ import YouTubeGrid from '../../components/YouTubeGrid.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import StatBlock from '../../components/StatBlock.astro';
 import FavDisplays from '../../components/FavDisplays.astro';
-import { season, SHOW_HOURS_TEXT } from '../../lib/displayYears';
+import { season, SHOW_HOURS_TEXT, isoDate } from '../../lib/displayYears';
 import { DISPLAY, origin, absolute, place, person, breadcrumbList, touristAttraction, graph } from '../../lib/site';
 
 export async function getStaticPaths() {
@@ -77,7 +77,7 @@ const creativeWork: Record<string, unknown> = {
   '@id': `${pageUrl}#display`,
   name: `Hormann Christmas Light Display ${year}`,
   description,
-  datePublished: `${year}-12-01`,
+  datePublished: isoDate(`${year}-12-01`),
   contentLocation: place,
   author,
   url: pageUrl,
@@ -121,7 +121,7 @@ const videoObjects = videos.map(v => ({
   name: `${v.title} — Hormann Christmas Light Display ${year}`,
   description: `${v.title}, sequenced to the Hormann animated Christmas light display in Liberty Township, Ohio (${year} season).`,
   thumbnailUrl: v.thumb ?? `https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`,
-  uploadDate: `${year}-12-01`,
+  uploadDate: isoDate(`${year}-12-01`),
   contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
   embedUrl: `https://www.youtube.com/embed/${v.id}`,
   creator: author,
