@@ -22,16 +22,16 @@ const factSheet: { label: string; value: string | null; href?: string }[] = [
   { label: 'Season', value: `${s.openText} through ${s.closeText}` },
   { label: 'Hours', value: `Nightly, ${SHOW_HOURS_TEXT}` },
   { label: 'Admission', value: 'Free' },
-  { label: 'Running since', value: `2001 \u2014 ${yearsOfDisplay} seasons` },
+  { label: 'Running since', value: `2001 - ${yearsOfDisplay} seasons` },
   { label: 'Scale', value: '75,805 individually controlled RGB pixels' },
   { label: 'Show length', value: null },
   { label: 'Audio', value: `Low-power FM broadcast on ${DISPLAY.fmFrequency}, plus outdoor speakers for visitors on foot` },
-  { label: 'Charity', value: `${CHARITY.accepts} for ${CHARITY.beneficiary}, with the ${CHARITY.partner}` },
+  { label: 'Charity', value: `${CHARITY.accepts} for ${CHARITY.beneficiary}, with the <a href="${CHARITY.partnerUrl}" target="_blank" rel="noopener noreferrer">${CHARITY.partner}</a>` },
   { label: 'Interactive', value: 'Song voting, name texting, and a button-controlled walk-through tunnel' },
   // Link text, not a bare URL: a raw URL is one unbreakable word and forces
   // the whole page to scroll sideways on a phone.
   { label: 'Facebook', value: 'The Hormann Christmas Display', href: DISPLAY.facebookUrl },
-  { label: 'Contact', value: 'Greg Hormann \u2014 ghormann@gmail.com', href: 'mailto:ghormann@gmail.com' },
+  { label: 'Contact', value: 'Greg Hormann - ghormann@gmail.com', href: 'mailto:ghormann@gmail.com' },
 ];
 
 // Counted from the content collection so the claim can never drift from what
@@ -157,7 +157,7 @@ const jsonLd = graph(
             ) : f.href ? (
               <a href={f.href} target="_blank" rel="noopener noreferrer">{f.value}</a>
             ) : (
-              f.value
+              <Fragment set:html={f.value} />
             )}
           </dd>
         </div>
@@ -173,7 +173,7 @@ const jsonLd = graph(
       </li>
       <li>
         <strong>It feeds people.</strong> Visitors donate food and cash to local food banks every
-        season through the {CHARITY.partner}. <a href="/christmas/giving/">Totals by year →</a>
+        season through the <a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a>. <a href="/christmas/giving/">Totals by year →</a>
       </li>
       <li>
         <strong>The audience runs the show.</strong> Visitors vote for the next song from their
@@ -244,7 +244,7 @@ const jsonLd = graph(
 
     <h2 class="text-2xl font-bold mt-8 mb-3">Contact</h2>
     <p>
-      Greg Hormann — <a href="mailto:ghormann@gmail.com">ghormann@gmail.com</a>.
+      Greg Hormann - <a href="mailto:ghormann@gmail.com">ghormann@gmail.com</a>.
       For visiting details, see <a href="/christmas/visit/">Plan Your Visit</a>.
     </p>
 

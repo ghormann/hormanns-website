@@ -23,6 +23,7 @@ export const VENMO_URL = 'https://account.venmo.com/u/Verna-Heaney';
 
 export const CHARITY = {
   partner: "Southwest Ohio Valley Women's Club",
+  partnerUrl: 'https://www.facebook.com/gfwcswohiovallleywomensclub',
   beneficiary: 'local food banks',
   accepts: 'non-perishable food, grocery gift cards, or cash',
   treasurer: 'Verna',

@@ -3,7 +3,8 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import VisitFacts from '../../components/VisitFacts.astro';
 import DisplayMap from '../../components/DisplayMap.astro';
-import { season, SHOW_HOURS_TEXT, yearsOfDisplayWords } from '../../lib/displayYears';
+import ShowStats from '../../components/ShowStats.astro';
+import { season, SHOW_HOURS_TEXT, SHOW_DEFAULTS, yearsOfDisplayWords } from '../../lib/displayYears';
 import {
   DISPLAY, CHARITY, VENMO_URL, fullAddress, origin, absolute,
   touristAttraction, breadcrumbList, place, person, graph,
@@ -95,7 +96,8 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
     </p>
     <p>
       Songs play back to back continuously, so there's no set showtime to catch. Most visitors
-      stay for three to five songs, but you are very welcome to stay for the whole hour-plus show
+      stay for three to five songs, but you are very welcome to stay for the whole
+      <span data-show-stat="minutes-adj">{SHOW_DEFAULTS.minutes} minute</span> show
       if you want to see all of it. Christmas
       Eve is our busiest and best night — the neighborhood gathers to watch the
       <a href="/technology/clock/">countdown clock</a> hit zero at midnight.
@@ -155,7 +157,7 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
     <h2 class="text-2xl font-bold mt-8 mb-3">Admission is free — but bring a can of food</h2>
     <p>
       There is never a charge to see the display. In partnership with the
-      {CHARITY.partner}, we collect {CHARITY.accepts} for {CHARITY.beneficiary}. There's a
+      <a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a>, we collect {CHARITY.accepts} for {CHARITY.beneficiary}. There's a
       donation booth to the left of the display, open every night the show is on, and you can
       give online through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a>
       ({CHARITY.treasurer} is the treasurer).
@@ -178,5 +180,7 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
     </p>
 
   </div>
+
+  <ShowStats />
 
 </PageLayout>

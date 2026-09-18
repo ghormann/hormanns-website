@@ -108,10 +108,7 @@ const description = `Visitors to the Hormann Christmas light display in Liberty 
       We have never charged anyone to see the lights and we never will. What we do ask is that
       if the display made your evening a little better, you bring something for a neighbor who
       needs it more.
-    </p>
-
-    <p>
-      In partnership with the <strong>{CHARITY.partner}</strong>, we collect
+      In partnership with the <strong><a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a></strong>, we collect
       {CHARITY.accepts} in support of {CHARITY.beneficiary}. There is a
       donation booth to the left of the display, open every night the show is on, and you can
       also give online through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a>
@@ -148,9 +145,8 @@ const description = `Visitors to the Hormann Christmas light display in Liberty 
 
     <h2 class="text-2xl font-bold mt-8 mb-3">How to give</h2>
     <ul>
-      <li><strong>At the display:</strong> the donation booth to the left of the show, open every night the lights are on.</li>
-      <li><strong>Online:</strong> through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a> — {CHARITY.treasurer} is the treasurer for the {CHARITY.partner}.</li>
-      <li><strong>Most useful right now:</strong> non-perishable food and grocery gift cards.</li>
+      <li><strong>At the display:</strong> the donation booth to the left of the show, open every night the lights are on. Accepting: {CHARITY.accepts}</li>
+      <li><strong>Online:</strong> through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a> — {CHARITY.treasurer} is the treasurer for the <a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a>.</li>
     </ul>
 
     <h2 class="text-2xl font-bold mt-8 mb-3">Come see it</h2>

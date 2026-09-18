@@ -8,6 +8,7 @@
 // Usage: <span data-show-stat="songs">28</span>
 //        <span data-show-stat="minutes">73</span>
 //        <span data-show-stat="summary">73 minutes of music across 28 songs</span>
+//        <span data-show-stat="minutes-adj">73 minute</span>
 ---
 
 <script is:inline>
@@ -32,6 +33,7 @@
           summary: minutes + ' minutes of music across ' + count + ' songs',
           'songs-word': count === 1 ? 'one song' : count + ' songs',
           'minutes-word': minutes === 1 ? 'one minute' : minutes + ' minutes',
+          'minutes-adj': minutes + ' minute',
         };
 
         nodes.forEach(function (el) {
