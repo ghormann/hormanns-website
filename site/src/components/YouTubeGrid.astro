@@ -1,4 +1,6 @@
 ---
+import { DISPLAY } from '../lib/site';
+
 interface Video {
   id: string;
   title: string;
@@ -28,7 +30,7 @@ const { videos, cols = 2 } = Astro.props;
           <div class="relative overflow-hidden aspect-video bg-gray-200">
             <img
               src={thumb}
-              alt={`${v.title} — Hormann Christmas light display video`}
+              alt={`${v.title} — ${DISPLAY.name}`}
               loading="lazy"
               decoding="async"
               width="640"

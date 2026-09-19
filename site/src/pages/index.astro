@@ -24,7 +24,7 @@ const websiteJsonLd = graph(
     name: 'The Hormanns',
     url: `${siteBase}/`,
     description:
-      'Greg and Mary Hormann of Liberty Township, Ohio — home of a free animated Christmas light display running since 2001.',
+      `Greg and Mary Hormann of Liberty Township, Ohio — home of ${DISPLAY.name}, a free animated Christmas light display running since 2001.`,
   },
   touristAttraction(siteBase, absolute(siteBase, homeImage)),
   person(siteBase, 'Greg Hormann', 'greg'),
@@ -35,7 +35,7 @@ const websiteJsonLd = graph(
 
 <PageLayout
   title="Greg and Mary Hormann — Liberty Township, Ohio"
-  description="The personal website of Greg and Mary Hormann — family, Christmas lights, and technology in Liberty Township, Ohio (Cincinnati area)."
+  description={`The personal website of Greg and Mary Hormann — family, ${DISPLAY.name}, and technology in Liberty Township, Ohio (Cincinnati area).`}
   ogImage="/christmas/2025/the_hormanns_2025.jpg"
   jsonLd={websiteJsonLd}
 >
@@ -97,7 +97,7 @@ const websiteJsonLd = graph(
         <img
           class="rounded-lg shadow w-full mb-4"
           src="https://cooldisplays.net/picture.php?v=1764536045&pictid=278&width=400"
-          alt="Hormann Christmas Display"
+          alt={DISPLAY.name}
         />
       </a>
       <YouTubeGrid videos={historyVideo} cols={1} />

@@ -1,5 +1,6 @@
 ---
 import Img from './Img.astro';
+import { DISPLAY } from '../lib/site';
 
 interface Photo {
   src: string;
@@ -14,7 +15,7 @@ interface Props {
   altFallback?: string;
 }
 
-const { photos, id = 'gallery', altFallback = 'Photo from the Hormann Christmas light display' } = Astro.props;
+const { photos, id = 'gallery', altFallback = `Photo from ${DISPLAY.name}` } = Astro.props;
 const abs = (p: string) => (p.startsWith('/') || p.startsWith('http') ? p : `/${p}`);
 
 // Normalize for the client-side script (absolute paths only)

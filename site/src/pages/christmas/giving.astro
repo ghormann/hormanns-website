@@ -51,7 +51,7 @@ const crumbs = [
 const jsonLd = graph(
   {
     '@type': 'DonateAction',
-    name: `Food and cash drive at the Hormann Christmas Light Display`,
+    name: `Food and cash drive at ${DISPLAY.name}`,
     description: `Visitors to the display donate ${CHARITY.accepts} for ${CHARITY.beneficiary}, collected in partnership with the ${CHARITY.partner}.`,
     url: `${base}/christmas/giving/`,
     recipient: { '@type': 'Organization', name: CHARITY.partner },
@@ -62,7 +62,7 @@ const jsonLd = graph(
   breadcrumbList(base, [...crumbs, { name: 'Giving Back', path: '/christmas/giving/' }]),
 );
 
-const description = `Visitors to the Hormann Christmas light display in Liberty Township, Ohio have donated ${totalFood > 0 ? `${totalFood.toLocaleString()} lbs of food and ` : ''}${usd(totalCash)} to local food banks. Admission is always free.`;
+const description = `Visitors to ${DISPLAY.name} in Liberty Township, Ohio have donated ${totalFood > 0 ? `${totalFood.toLocaleString()} lbs of food and ` : ''}${usd(totalCash)} to local food banks. Admission is always free.`;
 ---
 
 <PageLayout

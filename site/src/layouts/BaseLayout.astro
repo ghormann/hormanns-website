@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import LightboxModal from '../components/LightboxModal.astro';
+import { DISPLAY } from '../lib/site';
 
 interface Props {
   title: string;
@@ -26,7 +27,7 @@ const defaultOgImage = new URL('/christmas/2025/the_hormanns_2025.jpg', siteUrl)
 const resolvedOgImage = ogImage
   ? (ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl).href)
   : defaultOgImage;
-const resolvedOgImageAlt = ogImageAlt ?? 'The Hormann animated Christmas light display in Liberty Township, Ohio';
+const resolvedOgImageAlt = ogImageAlt ?? `${DISPLAY.name}, an animated Christmas light display in Liberty Township, Ohio`;
 ---
 <!doctype html>
 <html lang="en">

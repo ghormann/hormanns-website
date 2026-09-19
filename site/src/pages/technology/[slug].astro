@@ -6,7 +6,7 @@ import Img from '../../components/Img.astro';
 import YouTubeGrid from '../../components/YouTubeGrid.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import FavDisplays from '../../components/FavDisplays.astro';
-import { origin, absolute, person, breadcrumbList, graph } from '../../lib/site';
+import { DISPLAY, origin, absolute, person, breadcrumbList, graph } from '../../lib/site';
 
 export async function getStaticPaths() {
   const entries = await getCollection('technology', ({ data }) => !data.draft);
@@ -75,7 +75,7 @@ const clientSidebars = sectionSidebars.map(s => ({
 ---
 
 <PageLayout
-  title={`${title} — Hormann Christmas Light Display Technology`}
+  title={`${title} — ${DISPLAY.name} Technology`}
   description={description}
   ogImage={ogImage}
   ogImageAlt={heroAlt}
@@ -112,7 +112,7 @@ const clientSidebars = sectionSidebars.map(s => ({
   {photos.length > 0 && (
     <>
       <h2 class="text-xl font-semibold mt-8 mb-2" style="color: var(--color-heading);">Photos</h2>
-      <PhotoGallery photos={photos} altFallback={`${title} — Hormann Christmas light display`} />
+      <PhotoGallery photos={photos} altFallback={`${title} — ${DISPLAY.name}`} />
     </>
   )}
 

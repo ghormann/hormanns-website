@@ -6,6 +6,7 @@
 // do not guess one in, since these values also feed structured data.
 
 import { isoDate } from './displayYears';
+import { DISPLAY } from './site';
 
 export type CoverageType = 'segment' | 'article' | 'social';
 
@@ -128,7 +129,7 @@ export function coverageSchema(items: Coverage[], fallbackImage?: string) {
       : { datePublished: isoDate(c.date) }),
     publisher: { '@type': 'Organization', name: c.outlet },
     ...(c.type === 'segment' && fallbackImage
-      ? { thumbnailUrl: fallbackImage, description: `${c.outlet} coverage of the Hormann Christmas light display.` }
+      ? { thumbnailUrl: fallbackImage, description: `${c.outlet} coverage of ${DISPLAY.name}.` }
       : {}),
   }));
 }

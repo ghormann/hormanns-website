@@ -22,7 +22,7 @@ const organizer = person(base, 'Greg Hormann', 'greg');
 const event = {
   '@type': 'Event',
   '@id': `${base}/christmas/visit/#event-${s.year}`,
-  name: `Hormann Christmas Light Display ${s.year}`,
+  name: `${DISPLAY.name}, ${s.year}`,
   description: `A free drive-up Christmas light show in Liberty Township, Ohio. Tens of thousands of RGB pixels synchronized to music, heard on ${DISPLAY.fmFrequency} from your car or on outdoor speakers if you walk around. Open nightly ${SHOW_HOURS_TEXT} from ${s.openText} through ${s.closeText}.`,
   image,
   startDate: s.startDateIso,

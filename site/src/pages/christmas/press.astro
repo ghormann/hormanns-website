@@ -30,7 +30,7 @@ const factSheet: { label: string; value: string | null; href?: string }[] = [
   { label: 'Interactive', value: 'Song voting, name texting, and a button-controlled walk-through tunnel' },
   // Link text, not a bare URL: a raw URL is one unbreakable word and forces
   // the whole page to scroll sideways on a phone.
-  { label: 'Facebook', value: 'The Hormann Christmas Display', href: DISPLAY.facebookUrl },
+  { label: 'Facebook', value: DISPLAY.name, href: DISPLAY.facebookUrl },
   { label: 'Contact', value: 'Greg Hormann - ghormann@gmail.com', href: 'mailto:ghormann@gmail.com' },
 ];
 
@@ -54,13 +54,13 @@ const pressPhotos = [
     src: '/christmas/2025/the_hormanns_2025.jpg',
     year: 2025,
     caption: 'The full display on the 25th anniversary season. The sign at right shows the FM frequency and live power draw.',
-    alt: 'The Hormann Christmas light display lit up for its 25th anniversary season, with a "25th Anniversary" message across the pixel grid',
+    alt: 'Christmas at the Hormanns lit up for its 25th anniversary season, with a "25th Anniversary" message across the pixel grid',
   },
   {
     src: '/christmas/2024/the_hormanns_zoom.png',
     year: 2024,
     caption: 'The 2024 display in white, showing the arches, mini trees and the grid above the front door.',
-    alt: 'Wide view of the 2024 Hormann Christmas light display in white, with arches and stars filling the front yard',
+    alt: `Wide view of the 2024 season of ${DISPLAY.name} in white, with arches and stars filling the front yard`,
   },
   {
     src: '/christmas/2025/IMG_7581_zoom.JPG',
@@ -129,8 +129,8 @@ const jsonLd = graph(
 ---
 
 <PageLayout
-  title="Press & Media Kit — Hormann Christmas Light Display"
-  description={`Media information for the Hormann Christmas light display in Liberty Township, Ohio — dates, hours, photos, statistics, and contact for reporters covering ${s.year} holiday displays.`}
+  title={`Press & Media Kit — ${DISPLAY.name}`}
+  description={`Media information for ${DISPLAY.name} in Liberty Township, Ohio — dates, hours, photos, statistics, and contact for reporters covering ${s.year} holiday displays.`}
   ogImage={heroImage}
   jsonLd={jsonLd}
 >

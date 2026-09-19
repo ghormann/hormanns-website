@@ -1,11 +1,12 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
 import FavDisplays from '../components/FavDisplays.astro';
+import { DISPLAY } from '../lib/site';
 ---
 
 <PageLayout
   title="Mary Hormann — The Hormanns, Liberty Township, Ohio"
-  description="Mary Hormann — Greg's wife and partner in all things Christmas at the Hormann light display in Liberty Township, Ohio."
+  description={`Mary Hormann — Greg's wife and partner in all things ${DISPLAY.name}, in Liberty Township, Ohio.`}
 >
 
   <div class="rounded-lg px-6 py-4 mb-8 -mx-2" style="background-color: var(--color-accent);">

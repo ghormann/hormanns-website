@@ -44,8 +44,8 @@ const pixelCount = typeof stats?.pixel_count === 'number' ? stats.pixel_count : 
 const description: string =
   entry.data.description ??
   (pixelCount
-    ? `Hormann Christmas Light Display ${year} — ${pixelCount.toLocaleString()} pixels synchronized to music in Liberty Township, Ohio.`
-    : (entry.data.short_description ?? `Hormann animated Christmas light display, ${year}, Liberty Township, Ohio.`));
+    ? `${DISPLAY.name}, ${year} — ${pixelCount.toLocaleString()} pixels synchronized to music in Liberty Township, Ohio.`
+    : (entry.data.short_description ?? `${DISPLAY.name}, ${year}, Liberty Township, Ohio.`));
 
 // The <title> targets how people search for the display; the <h1> keeps the
 // friendlier wording from the content file.
@@ -75,7 +75,7 @@ const isCurrentSeason = isLatestYear && year >= currentSeason.year;
 const creativeWork: Record<string, unknown> = {
   '@type': 'CreativeWork',
   '@id': `${pageUrl}#display`,
-  name: `Hormann Christmas Light Display ${year}`,
+  name: `${DISPLAY.name}, ${year}`,
   description,
   datePublished: isoDate(`${year}-12-01`),
   contentLocation: place,
@@ -91,7 +91,7 @@ const currentEvent = isCurrentSeason
   ? {
       '@type': 'Event',
       '@id': `${siteBase}/christmas/visit/#event-${currentSeason.year}`,
-      name: `Hormann Christmas Light Display ${currentSeason.year}`,
+      name: `${DISPLAY.name}, ${currentSeason.year}`,
       description: `Free Christmas light show in Liberty Township, Ohio, with music on ${DISPLAY.fmFrequency} or outdoor speakers. Open nightly ${SHOW_HOURS_TEXT} from ${currentSeason.openText} through ${currentSeason.closeText}.`,
       startDate: currentSeason.startDateIso,
       endDate: currentSeason.endDateIso,
@@ -118,8 +118,8 @@ const currentEvent = isCurrentSeason
 // are the least contested rich result available to this site.
 const videoObjects = videos.map(v => ({
   '@type': 'VideoObject',
-  name: `${v.title} — Hormann Christmas Light Display ${year}`,
-  description: `${v.title}, sequenced to the Hormann animated Christmas light display in Liberty Township, Ohio (${year} season).`,
+  name: `${v.title} — ${DISPLAY.name}, ${year}`,
+  description: `${v.title}, sequenced to ${DISPLAY.name} in Liberty Township, Ohio (${year} season).`,
   thumbnailUrl: v.thumb ?? `https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`,
   uploadDate: isoDate(`${year}-12-01`),
   contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
@@ -230,7 +230,7 @@ const jsonLd = graph(
   {photos.length > 0 && (
     <>
       <h2 class="text-xl font-semibold mt-8 mb-2" style="color: var(--color-heading);">Photos</h2>
-      <PhotoGallery photos={photos} altFallback={`The Hormann Christmas light display, ${year}`} />
+      <PhotoGallery photos={photos} altFallback={`${DISPLAY.name}, ${year}`} />
     </>
   )}
 

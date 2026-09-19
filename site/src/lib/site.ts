@@ -4,7 +4,7 @@
 export const SITE_ORIGIN = 'https://thehormanns.net';
 
 export const DISPLAY = {
-  name: 'The Hormann Christmas Light Display',
+  name: 'Christmas at the Hormanns',
   streetAddress: '6656 Devon Drive',
   addressLocality: 'Liberty Township',
   addressRegion: 'OH',
