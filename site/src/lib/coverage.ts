@@ -3,7 +3,9 @@
 // Lives here rather than on the press page because each year's page also shows
 // the stories from that season. Every `date` was verified against the source
 // (article datePublished, YouTube uploadDate, or the date in the URL path) —
-// do not guess one in, since these values also feed structured data.
+// do not guess one in, since these values also feed structured data. The same
+// goes for `byline` and `image`: both were read off the story itself (its
+// byline and og:image, or the YouTube thumbnail), never inferred.
 
 import { isoDate } from './displayYears';
 import { DISPLAY } from './site';
@@ -55,6 +57,9 @@ export const coverage: Coverage[] = [
     url: 'https://www.cincinnati.com/story/entertainment/2024/12/21/christmas-lights-near-me-cincinnati-homes-decorated-for-the-holidays/77104341007/',
     date: '2024-12-21',
     type: 'article',
+    byline: 'Jordan Kellogg',
+    image:
+      'https://www.cincinnati.com/gcdn/authoring/authoring-images/2024/12/20/PCIN/77104549007-img-6736.jpeg?crop=4025,2262,x0,y0&width=3200&height=1799&format=pjpg&auto=webp',
   },
   {
     outlet: 'WKRC Local 12',
@@ -62,6 +67,8 @@ export const coverage: Coverage[] = [
     url: 'https://www.youtube.com/watch?v=sJhgrT7oHVo',
     date: '2023-12-21',
     type: 'segment',
+    byline: 'Bob Herzog',
+    image: 'https://i.ytimg.com/vi/sJhgrT7oHVo/hqdefault.jpg',
   },
   {
     outlet: 'WLWT 5',
@@ -69,6 +76,9 @@ export const coverage: Coverage[] = [
     url: 'https://www.wlwt.com/article/christmas-lights-cincinnati-list/45975101',
     date: '2023-12-04',
     type: 'article',
+    byline: 'Emily Sanderson',
+    image:
+      'https://kubrick.htvapps.com/htv-prod-media.s3.amazonaws.com/images/lights-656e0bdde7d99.png?crop=1.00xw%3A1.00xh%3B0%2C0&resize=1200%3A*',
   },
   {
     outlet: 'WLWT 5',
@@ -76,6 +86,7 @@ export const coverage: Coverage[] = [
     url: 'https://www.youtube.com/watch?v=KFL8tMQSX0Q',
     date: '2023-12-01',
     type: 'segment',
+    image: 'https://i.ytimg.com/vi/KFL8tMQSX0Q/maxresdefault.jpg',
   },
   {
     outlet: 'FOX19 NOW',
@@ -83,6 +94,8 @@ export const coverage: Coverage[] = [
     url: 'https://www.youtube.com/watch?v=CzXgFfJLD0k',
     date: '2023-11-22',
     type: 'segment',
+    byline: 'Catherine Bodak',
+    image: 'https://i.ytimg.com/vi/CzXgFfJLD0k/maxresdefault.jpg',
   },
   {
     outlet: 'FOX19 NOW',
@@ -90,6 +103,8 @@ export const coverage: Coverage[] = [
     url: 'https://www.youtube.com/watch?v=cqIseHP-Axw',
     date: '2023-11-22',
     type: 'segment',
+    byline: 'Catherine Bodak',
+    image: 'https://i.ytimg.com/vi/cqIseHP-Axw/hqdefault.jpg',
   },
   {
     outlet: 'WLWT 5',
@@ -97,6 +112,8 @@ export const coverage: Coverage[] = [
     url: 'https://www.wlwt.com/article/you-get-to-control-the-show-at-this-christmas-lights-display-in-liberty-township/38398417',
     date: '2021-12-01',
     type: 'article',
+    image:
+      'https://kubrick.htvapps.com/htv-prod-media.s3.amazonaws.com/images/xmas-1638360056.jpg?crop=0.944xw%3A1.00xh%3B0.0288xw%2C0&resize=1200%3A*',
   },
 ];
 
