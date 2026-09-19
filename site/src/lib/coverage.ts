@@ -123,13 +123,17 @@ export function coverageSchema(items: Coverage[], fallbackImage?: string) {
     '@type':
       c.type === 'segment' ? 'VideoObject' : c.type === 'social' ? 'SocialMediaPosting' : 'NewsArticle',
     name: c.title,
+    ...(c.type === 'segment' ? {} : { headline: c.title }),
     url: c.url,
     ...(c.type === 'segment'
       ? { uploadDate: isoDate(c.date), contentUrl: c.url, ...(youtubeEmbedUrl(c.url) ? { embedUrl: youtubeEmbedUrl(c.url) } : {}) }
       : { datePublished: isoDate(c.date) }),
+    author: { '@type': 'Organization', name: c.outlet },
     publisher: { '@type': 'Organization', name: c.outlet },
-    ...(c.type === 'segment' && fallbackImage
-      ? { thumbnailUrl: fallbackImage, description: `${c.outlet} coverage of ${DISPLAY.name}.` }
+    ...(fallbackImage
+      ? c.type === 'segment'
+        ? { thumbnailUrl: fallbackImage, description: `${c.outlet} coverage of ${DISPLAY.name}.` }
+        : { image: fallbackImage }
       : {}),
   }));
 }
