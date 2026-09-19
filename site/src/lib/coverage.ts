@@ -18,6 +18,10 @@ export interface Coverage {
   date: string;
   type: CoverageType;
   note?: string;
+  /** The journalist's byline, when the story carries one. Feeds schema.org author. */
+  byline?: string;
+  /** The story's own lead image, when it has one. Preferred over the page hero. */
+  image?: string;
 }
 
 export const COVERAGE_LABEL: Record<CoverageType, string> = {
@@ -34,6 +38,8 @@ export const coverage: Coverage[] = [
     date: '2025-12-29',
     type: 'article',
     note: 'A long-form student feature by Madison Cline on how the display came together.',
+    byline: 'Madison Cline',
+    image: 'https://lakotaeastsparkonline.com/wp-content/uploads/2025/12/lightsyay-1200x531.jpg',
   },
   {
     outlet: 'Cincy Xmas Lights',
@@ -119,21 +125,26 @@ function youtubeEmbedUrl(url: string): string | undefined {
 
 /** schema.org nodes for a set of stories, for use in a page's @graph. */
 export function coverageSchema(items: Coverage[], fallbackImage?: string) {
-  return items.map(c => ({
-    '@type':
-      c.type === 'segment' ? 'VideoObject' : c.type === 'social' ? 'SocialMediaPosting' : 'NewsArticle',
-    name: c.title,
-    ...(c.type === 'segment' ? {} : { headline: c.title }),
-    url: c.url,
-    ...(c.type === 'segment'
-      ? { uploadDate: isoDate(c.date), contentUrl: c.url, ...(youtubeEmbedUrl(c.url) ? { embedUrl: youtubeEmbedUrl(c.url) } : {}) }
-      : { datePublished: isoDate(c.date) }),
-    author: { '@type': 'Organization', name: c.outlet },
-    publisher: { '@type': 'Organization', name: c.outlet },
-    ...(fallbackImage
-      ? c.type === 'segment'
-        ? { thumbnailUrl: fallbackImage, description: `${c.outlet} coverage of ${DISPLAY.name}.` }
-        : { image: fallbackImage }
-      : {}),
-  }));
+  return items.map(c => {
+    const image = c.image ?? fallbackImage;
+    return {
+      '@type':
+        c.type === 'segment' ? 'VideoObject' : c.type === 'social' ? 'SocialMediaPosting' : 'NewsArticle',
+      name: c.title,
+      ...(c.type === 'segment' ? {} : { headline: c.title }),
+      url: c.url,
+      ...(c.type === 'segment'
+        ? { uploadDate: isoDate(c.date), contentUrl: c.url, ...(youtubeEmbedUrl(c.url) ? { embedUrl: youtubeEmbedUrl(c.url) } : {}) }
+        : { datePublished: isoDate(c.date) }),
+      author: c.byline
+        ? { '@type': 'Person', name: c.byline }
+        : { '@type': 'Organization', name: c.outlet },
+      publisher: { '@type': 'Organization', name: c.outlet },
+      ...(image
+        ? c.type === 'segment'
+          ? { thumbnailUrl: image, description: `${c.outlet} coverage of ${DISPLAY.name}.` }
+          : { image }
+        : {}),
+    };
+  });
 }
