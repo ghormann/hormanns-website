@@ -49,7 +49,7 @@ By the time we wanted to test using this level of control in our display, multip
 
 For most of our display elements (grid, bushes, mega tree, and arches), we use [WS2811 IP68-rated RGB pixels](https://www.wiredwatts.com/products/sn12v50bkp3). We use different form factors depending on the application: the grids, trees, and house outlines all use Bullet Nodes; for the arches, we use high-density [Flex Strip](https://www.holidaycoro.com/Smart-Pixel-LED-RGB-Strip-60-LEDs-m-20-Pixels-m-p/708-wp.htm); the bushes (prior to [2025](/christmas/2025/)) used [Brilliant Bulbs](https://www.holidaycoro.com/Brilliant-Bulb-p/709.htm) with the same 5050 RGB LEDs as the strip.
 
-We leverage a mixture of 5V and 12V pixels. Our 5V elements include the windows, the tunnel, the [snowmen](/technology/snowmen/), and the small sign under the [clock](/technology/clock/). All other elements are 12V.  Going forward, our default is 5v pixels as we've had far less issues with them and 5V pixels cost less and are more power efficient, but require more frequent power injection to avoid issues from voltage drop.
+We leverage a mixture of 5V and 12V pixels. Our 5V elements include the windows, the tunnel, the [snowmen](/technology/snowmen/), and the small sign under the [clock](/technology/clock/). All other elements are 12V.  Going forward, our default is 5v pixels as we've had far fewer issues with them and 5V pixels cost less and are more power efficient, but require more frequent power injection to avoid issues from voltage drop.
 
 ## Controllers
 

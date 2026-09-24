@@ -140,7 +140,7 @@ const jsonLd = graph(
   <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Press &amp; Media</h1>
     <p class="mt-2 text-sm" style="color: var(--color-link); font-family: var(--font-sans);">
-      Everything a reporter needs in one place. We're happy to host a crew — just email first.
+      We're happy to host a camera crew. Just email first.
     </p>
   </div>
 
@@ -167,23 +167,24 @@ const jsonLd = graph(
     <h2 class="text-2xl font-bold mt-8 mb-3">The story angles</h2>
     <ul>
       <li>
-        <strong>A quarter century of one family's Christmas.</strong> The display started in 2001
-        with two homemade parallel-port controllers running 8 circuits each. It now runs 75,805
-        individually addressable pixels. <a href="/christmas/our-story/">The full history →</a>
+        <strong>{yearsOfDisplay} years.</strong> The display started in 2001 with two homemade controllers
+        running 8 circuits each. It now has 75,805 individually controlled pixels.
+        <a href="/christmas/our-story/">The full history →</a>
       </li>
       <li>
-        <strong>It feeds people.</strong> Visitors donate food and cash to local food banks every
-        season through the <a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a>. <a href="/christmas/giving/">Totals by year →</a>
+        <strong>Food bank drive.</strong> Every season, visitors donate food and cash for local food
+        banks through the <a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a>. <a href="/christmas/giving/">Totals by year →</a>
       </li>
       <li>
-        <strong>The audience runs the show.</strong> Visitors vote for the next song from their
-        phones, text their names onto an 18ft × 8ft light grid over the front door, and press buttons inside a
-        walk-through tunnel — 39,661 presses last season alone.
+        <strong>Visitors control parts of the show.</strong> They vote for the next song from their
+        phones, text their names onto the 18ft × 8ft grid over the front door, and press buttons in
+        the walk-through tunnel (39,661 presses last season).
         <a href="/technology/">How it works →</a>
       </li>
       <li>
-        <strong>It is all built by hand.</strong> Greg and Mary take two weeks off work every November to install with 
-        support from children on the weekends. Sequencing, repairs, and construction of new elements are all done by hand year-round.
+        <strong>A family project.</strong> Greg and Mary take two weeks off work every November to
+        set it up, and the kids help on weekends. The rest of the year goes to programming songs,
+        repairs, and building new pieces.
       </li>
     </ul>
 
@@ -210,7 +211,7 @@ const jsonLd = graph(
     <p>
       More is available: our <a href="/pictures/">photo galleries</a> hold {totalPhotos} photos
       across every season, and the <a href="/christmas/">season pages</a> link {totalVideos}
-      videos &mdash; individual songs, day-by-day setup and takedown, and
+      videos: individual songs, day-by-day setup and takedown, and
       {' '}{droneVideos.length} aerial drone shots of the show across
       {' '}{droneYears.length} seasons between {droneYears[0]} and
       {' '}{droneYears[droneYears.length - 1]}. The
@@ -222,8 +223,8 @@ const jsonLd = graph(
 
     <h2 class="text-2xl font-bold mt-8 mb-3">Coverage</h2>
     <p>
-      Local stations have broadcast live from the display, and we're regularly included in the
-      area's holiday lights round-ups and community pages.
+      Local TV stations have broadcast live from the display, and it shows up in the area's
+      holiday lights lists most years.
     </p>
 
     {grouped.map(({ year, items }) => (

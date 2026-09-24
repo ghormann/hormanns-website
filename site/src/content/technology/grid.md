@@ -42,4 +42,4 @@ The grid is constructed using:
 - Loads of 4" zip ties to secure the sheets together
 - Multiple spools of 14-gauge underground landscape wiring to supply power
 - A [professional lighting truss](https://shop.solotech.com/collections/lighting-truss) *(the first year, galvanized pipe was used — not a good choice)*
-- 16" ground anchors with  stainless steel guide wires that hold the truss in place
+- 16" ground anchors with  stainless steel guy wires that hold the truss in place

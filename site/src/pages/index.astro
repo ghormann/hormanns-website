@@ -78,16 +78,20 @@ const websiteJsonLd = graph(
     <div class="sm:col-span-2 brown-links">
       <h2 class="text-xl font-semibold mb-3" style="color: var(--color-heading);">Christmas Display</h2>
       <p class="leading-relaxed mb-3">
-        Both of us are big on <a href="/christmas/">Christmas</a>.
-        Mary likes the shopping and interior decorating, and Greg is big on outside Christmas displays.
-        In <a href="/christmas/2001/">2001</a>, Greg
-        started experimenting with animated displays controlled by a computer. {yearsOfDisplayWords} years later, we have over 75,000 lights synchronized to 
-        <span data-show-stat="summary">{SHOW_DEFAULTS.minutes} minutes of music across {SHOW_DEFAULTS.songs} songs</span> leveraging <a href="https://xlights.org" target="_blank" rel="noopener noreferrer">xLights</a>,
-        <a href="https://github.com/FalconChristmas/fpp" target="_blank" rel="noopener noreferrer">FPP</a>,
-        and <a href="/technology/dmx/">pixels controlled by E1.31</a>.
+        Every year since <a href="/christmas/2001/">2001</a> we've turned our front yard into a
+        <a href="/christmas/">Christmas light show</a>, and you're welcome to come see it.
+        Mary likes the shopping and decorating inside, and Greg has always been the one outside with the lights.
+        That first year, a homemade controller switched 16 circuits of lights on and off from a PC.
+        {yearsOfDisplayWords} years later, we have over 75,000 lights synchronized to
+        <span data-show-stat="summary">{SHOW_DEFAULTS.minutes} minutes of music across {SHOW_DEFAULTS.songs} songs</span>.
         Tune to {DISPLAY.fmFrequency} when you visit to hear the show.
-        If you are curious about the history of our display, we've captured <a href="/christmas/our-story/">our story</a>
-        which is also summarized in a <a href="https://www.youtube.com/watch?v=Nd7ADGezo3s">2021 on stage presentation</a>.
+      </p>
+      <p class="leading-relaxed mb-3">
+        If you're curious how it grew, read <a href="/christmas/our-story/">our story</a> or watch the
+        <a href="https://www.youtube.com/watch?v=Nd7ADGezo3s">2021 on-stage presentation</a>. For the
+        nuts and bolts (<a href="https://xlights.org" target="_blank" rel="noopener noreferrer">xLights</a>,
+        <a href="https://github.com/FalconChristmas/fpp" target="_blank" rel="noopener noreferrer">FPP</a>, and
+        <a href="/technology/dmx/">E1.31 pixels</a>), see the <a href="/technology/">technology pages</a>.
       </p>
       <p id="car-count" class="leading-relaxed mb-3" hidden></p>
       <RecentDisplays />

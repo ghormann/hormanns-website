@@ -79,9 +79,6 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
 
   <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Plan Your Visit</h1>
-    <p class="mt-2 text-sm" style="color: var(--color-link); font-family: var(--font-sans);">
-      Everything you need to know before you come see the lights.
-    </p>
   </div>
 
   <VisitFacts />
@@ -90,16 +87,16 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
 
     <h2 class="text-2xl font-bold mt-8 mb-3">When we're open</h2>
     <p>
-      Our display opens <strong>two days before Thanksgiving</strong> — {s.openText} this
-      season — and runs every single night through <strong>New Year's Day</strong>, {s.closeText}.
-      The show is on from <strong>{SHOW_HOURS_TEXT}</strong> nightly, rain, snow, or clear skies.
+      We open <strong>two days before Thanksgiving</strong> ({s.openText} this season) and run
+      every night through <strong>New Year's Day</strong>, {s.closeText}. The show is on from
+      <strong>{SHOW_HOURS_TEXT}</strong>, whatever the weather.
     </p>
     <p>
       Songs play back to back continuously, so there's no set showtime to catch. Most visitors
       stay for three to five songs, but you are very welcome to stay for the whole
       <span data-show-stat="minutes-adj">{SHOW_DEFAULTS.minutes} minute</span> show
       if you want to see all of it. Christmas
-      Eve is our busiest and best night — the neighborhood gathers to watch the
+      Eve is our busiest and best night. The neighborhood gathers to watch the
       <a href="/technology/clock/">countdown clock</a> hit zero at midnight.
     </p>
 
@@ -107,7 +104,7 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
     <p>
       We're at
       <a href={DISPLAY.mapUrl} target="_blank" rel="noopener noreferrer">{fullAddress}</a>,
-      in Liberty Township — about 25 minutes north of downtown Cincinnati and just off
+      in Liberty Township, about 25 minutes north of downtown Cincinnati and just off
       the Liberty Way exit of I-75. There are
       <a href={DISPLAY.coolDisplaysUrl} target="_blank" rel="noopener noreferrer">several other
       displays</a> worth seeing in the surrounding neighborhoods on the same trip.
@@ -115,32 +112,43 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
 
     <DisplayMap />
 
+    <h2 class="text-2xl font-bold mt-8 mb-3">Where to park</h2>
+    <p>
+      If you want to watch from your car, park on the <strong>opposite side of the street from
+      the house</strong> or along <strong>Stonington Drive</strong>. Both give you a good view from
+      inside the car. If you plan to get out and walk around, park further up
+      <strong>Devon Drive</strong> so you're out of the way of the cars watching. Please don't park
+      in front of the traffic cones; they keep the lane open.
+    </p>
+    <p>
+      Traffic is lightest on school nights, especially from 5:00 to 6:30 and from 10:00 to 11:00.
+      It picks up the closer we get to Christmas.
+    </p>
+
     <h2 class="text-2xl font-bold mt-8 mb-3">How to hear the music</h2>
     <p>
       There are two ways to hear the show. If you're watching from your car, tune the radio to
-      <strong>{DISPLAY.fmFrequency}</strong> &mdash; also shown on the
-      <a href="/technology/info-board/">information sign above the garage</a> &mdash; and the
-      music plays through your own speakers. If you'd rather get out and walk around, we run
+      <strong>{DISPLAY.fmFrequency}</strong> and the music plays through your own speakers. If you'd rather get out and walk around, we run
       <strong>outdoor speakers</strong> at the display, so you don't need a radio at all.
     </p>
     <p>
-      A few vehicles — some newer Lexus and Cadillac models in particular — buffer the analog FM
-      signal, which puts the audio slightly behind the lights. If your radio has a "live mode"
-      option, turning it on fixes it. If you see one of us outside, ask: we usually have a
-      portable radio in a pocket you can borrow.
+      Some newer cars (Lexus and Cadillac in particular) buffer the FM signal, which puts the
+      audio slightly behind the lights. If your radio has a "live mode" option, turning it on
+      fixes it. If you see one of us outside, just ask. We usually have a portable radio in a
+      pocket you can borrow.
     </p>
 
     <h2 class="text-2xl font-bold mt-8 mb-3">Watch from your car, or get out and walk</h2>
     <p>
-      You're welcome to stay in your car and watch from the street — most people do, and it's
+      You're welcome to stay in your car and watch from the street. Most people do, and it's
       the warmest option. If you'd rather walk around, you can get out and go through
       <a href="/technology/tunnel/">the light tunnel</a>, which has buttons inside that let you
       change what it does. Visitors pressed those buttons 39,661 times last season.
     </p>
     <p>
       Please be considerate of our neighbors: keep headlights and music down, don't block
-      driveways, and take your trash with you. Their patience is the only reason we've been able
-      to keep this going for {yearsOfDisplayWords} years.
+      driveways, and take your trash with you. They've put up with the traffic for
+      {yearsOfDisplayWords} years, and we couldn't do this without them.
     </p>
 
     <h2 class="text-2xl font-bold mt-8 mb-3">Control the show from your phone</h2>
@@ -150,13 +158,13 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
       to <a href="/technology/voting/">vote for the next song</a>, pick which
       <a href="/technology/snowmen/">snowmen</a> appear, and see what's playing. You can also
       <a href="/technology/text-message/">text your first name</a> to have it appear in lights
-      on the grid — names show up below the clock within seconds and in the main display every
+      on the grid. Names show up below the clock within seconds and in the main display every
       8–12 minutes, depending on how long the queue is.
     </p>
 
-    <h2 class="text-2xl font-bold mt-8 mb-3">Admission is free — but bring a can of food</h2>
+    <h2 class="text-2xl font-bold mt-8 mb-3">Admission is free</h2>
     <p>
-      There is never a charge to see the display. In partnership with the
+      There's never a charge to see the display. If you'd like to bring something, in partnership with the
       <a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a>, we collect {CHARITY.accepts} for {CHARITY.beneficiary}. There's a
       donation booth to the left of the display, open every night the show is on, and you can
       give online through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a>
@@ -164,19 +172,12 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
       <a href="/christmas/giving/">See what visitors have donated so far →</a>
     </p>
 
-    <h2 class="text-2xl font-bold mt-8 mb-3">Enjoyed the display?</h2>
+    <h2 class="text-2xl font-bold mt-8 mb-3">After your visit</h2>
     <p>
-      The best thing you can do for us is tell someone.
-      <a href={DISPLAY.facebookUrl} target="_blank" rel="noopener noreferrer">Share your photos and
-      say hello on Facebook</a>, find us on our
-      <a href={DISPLAY.coolDisplaysUrl} target="_blank" rel="noopener noreferrer">CoolDisplays.net
-      listing</a>, bring a friend next time, or take a look at
-      <a href="/christmas/our-story/">how the display came to be</a> and
-      <a href="/technology/">the technology that runs it</a>.
-    </p>
-
-    <p class="mt-8">
-      Still have a question? <a href="/christmas/faq/">Read the FAQ →</a>
+      Got a good photo? We'd love to see it on
+      <a href={DISPLAY.facebookUrl} target="_blank" rel="noopener noreferrer">Facebook</a>.
+      If you want to know more, here's <a href="/christmas/our-story/">how the display got started</a>,
+      <a href="/technology/">how it works</a>, and <a href="/christmas/faq/">answers to common questions</a>.
     </p>
 
   </div>
