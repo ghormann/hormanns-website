@@ -60,10 +60,10 @@
     border: none;
     cursor: pointer;
     color: #fff;
-    font-size: 1rem;
+    font-size: 1.125rem;
     line-height: 1;
-    width: 2rem;
-    height: 2rem;
+    width: 2.75rem; /* 44px: comfortable touch target */
+    height: 2.75rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -176,6 +176,25 @@
     currentIndex = (currentIndex + 1) % photos.length;
     updateSlide();
   });
+
+  // Swipe navigation for touch screens. Only a mostly-horizontal drag of
+  // meaningful length counts, so vertical scrolls and taps are left alone.
+  let touchX = 0;
+  let touchY = 0;
+  dialog.addEventListener('touchstart', (e) => {
+    touchX = e.changedTouches[0].clientX;
+    touchY = e.changedTouches[0].clientY;
+  }, { passive: true });
+  dialog.addEventListener('touchend', (e) => {
+    if (photos.length < 2) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    const dy = e.changedTouches[0].clientY - touchY;
+    if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    currentIndex = dx < 0
+      ? (currentIndex + 1) % photos.length
+      : (currentIndex - 1 + photos.length) % photos.length;
+    updateSlide();
+  }, { passive: true });
 
   // Keyboard navigation (only when dialog is open)
   dialog.addEventListener('keydown', (e) => {

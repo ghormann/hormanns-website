@@ -5,6 +5,9 @@ const videoSchema = z.object({
   id: z.string(),
   title: z.string(),
   thumb: z.string().optional(), // override YouTube auto-thumb if needed
+  // Year pages group videos into Songs and Construction. Normally inferred from
+  // the title (see lib/videos.ts); set this only to override that guess.
+  category: z.enum(['song', 'construction']).optional(),
 });
 
 const photoSchema = z.object({

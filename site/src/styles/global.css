@@ -64,6 +64,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
+/* The nav bar is fixed, so in-page links (#house_address etc.) would scroll
+   their target underneath it. Leave room for the bar. */
+html {
+  scroll-padding-top: 4.5rem;
+}
+
 /* Smooth focus ring */
 :focus-visible {
   outline: 2px solid var(--color-heading);

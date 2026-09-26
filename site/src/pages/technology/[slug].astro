@@ -108,7 +108,7 @@ const clientSidebars = sectionSidebars.map(s => ({
   {videos.length > 0 && (
     <>
       <h2 class="text-xl font-semibold mt-8 mb-2" style="color: var(--color-heading);">Videos</h2>
-      <YouTubeGrid videos={videos} />
+      <YouTubeGrid videos={videos} limit={8} />
     </>
   )}
 

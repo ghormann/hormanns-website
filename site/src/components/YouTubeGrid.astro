@@ -1,55 +1,127 @@
 ---
 import { DISPLAY } from '../lib/site';
-
-interface Video {
-  id: string;
-  title: string;
-  thumb?: string;
-}
+import type { Video } from '../lib/videos';
 
 interface Props {
   videos: Video[];
   cols?: 1 | 2;
+  /** Show only this many until the visitor asks for the rest. */
+  limit?: number;
 }
 
-const { videos, cols = 2 } = Astro.props;
+const { videos, cols = 2, limit } = Astro.props;
+const collapsible = limit !== undefined && videos.length > limit;
 ---
 
 {videos.length > 0 && (
-  <div class={`grid gap-3 my-4 ${cols === 1 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-2'}`}>
-    {videos.map(v => {
-      const thumb = v.thumb ?? `https://img.youtube.com/vi/${v.id}/sddefault.jpg`;
-      return (
-        <a
-          href={`https://www.youtube.com/watch?v=${v.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group flex flex-col rounded overflow-hidden shadow hover:shadow-md transition-shadow"
-          style="background-color: var(--color-card-bg);"
-        >
-          <div class="relative overflow-hidden aspect-video bg-gray-200">
-            <img
-              src={thumb}
-              alt={`${v.title} — ${DISPLAY.name}`}
-              loading="lazy"
-              decoding="async"
-              width="640"
-              height="480"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
-            />
-            <!-- Play overlay -->
-            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
-                 style="background: rgba(107,63,31,0.3);">
-              <svg class="w-12 h-12 text-white drop-shadow" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
+  <div class={`video-grid${collapsible ? ' is-collapsed' : ''}`}>
+    <div class={`grid gap-3 my-4 ${cols === 1 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-2'}`}>
+      {videos.map((v, i) => {
+        const thumb = v.thumb ?? `https://img.youtube.com/vi/${v.id}/sddefault.jpg`;
+        return (
+          <a
+            href={`https://www.youtube.com/watch?v=${v.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group flex flex-col rounded overflow-hidden shadow hover:shadow-md transition-shadow"
+            style="background-color: var(--color-card-bg);"
+            data-extra={collapsible && i >= limit ? '' : undefined}
+          >
+            <div class="relative overflow-hidden aspect-video bg-gray-200">
+              <img
+                src={thumb}
+                alt={`${v.title} — ${DISPLAY.name}`}
+                loading="lazy"
+                decoding="async"
+                width="640"
+                height="480"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+              />
+              <!-- Play marker: always shown so thumbnails read as videos on touch
+                   screens, which never see a hover state. -->
+              <div class="absolute inset-0 flex items-center justify-center" aria-hidden="true">
+                <span class="play-badge">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+              </div>
             </div>
-          </div>
-          <p class="text-sm px-2 py-1 leading-snug" style="font-family: var(--font-sans); color: var(--color-heading);">
-            {v.title}
-          </p>
-        </a>
-      );
-    })}
+            <p class="text-sm px-2 py-1 leading-snug" style="font-family: var(--font-sans); color: var(--color-heading);">
+              {v.title}
+            </p>
+          </a>
+        );
+      })}
+    </div>
+    {collapsible && (
+      <button type="button" class="video-more" data-video-more hidden>
+        Show all {videos.length} videos
+      </button>
+    )}
   </div>
 )}
+
+<style>
+  .play-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.55);
+    border: 2px solid rgba(255, 255, 255, 0.9); /* stands out on dark night shots */
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  .play-badge svg {
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: 0.2rem; /* optically centre the triangle */
+  }
+  a:hover .play-badge,
+  a:focus-visible .play-badge {
+    background: var(--color-heading);
+    transform: scale(1.08);
+  }
+
+  /* Collapsing only happens once the script has shown the button, so without
+     JavaScript every video stays visible. */
+  .video-grid.is-collapsed.is-ready [data-extra] {
+    display: none;
+  }
+
+  .video-more {
+    display: block;
+    margin: 0 auto 1rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-accent);
+    background: var(--color-card-bg);
+    color: var(--color-link);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .video-more:hover {
+    background: var(--color-accent);
+    color: var(--color-heading);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.video-grid.is-collapsed').forEach((grid) => {
+    const btn = grid.querySelector<HTMLButtonElement>('[data-video-more]');
+    if (!btn) return;
+    grid.classList.add('is-ready');
+    btn.hidden = false;
+    btn.addEventListener('click', () => {
+      grid.classList.remove('is-collapsed');
+      btn.remove();
+      // Move focus to the first newly revealed video so keyboard users land
+      // where the new content starts.
+      grid.querySelector<HTMLElement>('[data-extra]')?.focus();
+    });
+  });
+</script>

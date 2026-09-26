@@ -9,6 +9,7 @@ import DisplayMap from '../../components/DisplayMap.astro';
 import CoverageList from '../../components/CoverageList.astro';
 import { coverageFor, coverageSchema } from '../../lib/coverage';
 import YouTubeGrid from '../../components/YouTubeGrid.astro';
+import { videoCategory } from '../../lib/videos';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import StatBlock from '../../components/StatBlock.astro';
 import FavDisplays from '../../components/FavDisplays.astro';
@@ -39,6 +40,13 @@ export async function getStaticPaths() {
 const { entry, prev, next, isLatestYear } = Astro.props;
 const { Content } = await render(entry);
 const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisplays } = entry.data;
+
+// Song videos first, then setup and take-down, each trimmed to a first screenful.
+const VIDEO_LIMIT = 8;
+const videoSections = [
+  { heading: 'Songs', videos: videos.filter(v => videoCategory(v) === 'song') },
+  { heading: 'Construction', videos: videos.filter(v => videoCategory(v) === 'construction') },
+].filter(s => s.videos.length > 0);
 
 // Build a unique meta description for this year's page.
 const pixelCount = typeof stats?.pixel_count === 'number' ? stats.pixel_count : undefined;
@@ -208,7 +216,14 @@ const jsonLd = graph(
   {videos.length > 0 && (
     <>
       <h2 class="text-xl font-semibold mt-8 mb-2" style="color: var(--color-heading);">Videos</h2>
-      <YouTubeGrid videos={videos} />
+      {videoSections.map(s => (
+        <section>
+          <h3 class="text-lg font-semibold mt-4" style="color: var(--color-heading);">
+            {s.heading} <span class="text-sm font-normal" style="color: var(--color-link); font-family: var(--font-sans);">({s.videos.length})</span>
+          </h3>
+          <YouTubeGrid videos={s.videos} limit={VIDEO_LIMIT} />
+        </section>
+      ))}
     </>
   )}
 
