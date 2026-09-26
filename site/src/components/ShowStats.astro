@@ -1,9 +1,9 @@
 ---
 // Live show statistics.
 //
-// Pages render last season's figures from content at build time, then this
-// script refreshes every [data-show-stat] element from the live playlist once
-// the page loads. If the request fails the built-in numbers simply stand.
+// Pages render the current season's figures from content at build time (see
+// lib/showFacts.ts), then this script refreshes every [data-show-stat] element
+// from the live playlist once the page loads. If the request fails the built-in numbers simply stand.
 //
 // Usage: <span data-show-stat="songs">28</span>
 //        <span data-show-stat="minutes">73</span>

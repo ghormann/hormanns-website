@@ -6,7 +6,9 @@ import FavDisplays from '../components/FavDisplays.astro';
 import VisitFacts from '../components/VisitFacts.astro';
 import ShowStats from '../components/ShowStats.astro';
 import Img from '../components/Img.astro';
-import { yearsOfDisplayWords, season, SHOW_DEFAULTS, inVisitWindow } from '../lib/displayYears';
+import LiveCarCount from '../components/LiveCarCount.astro';
+import { yearsOfDisplayWords, season, inVisitWindow } from '../lib/displayYears';
+import { showFacts } from '../lib/showFacts';
 import { DISPLAY, origin, absolute, touristAttraction, breadcrumbList, person, graph } from '../lib/site';
 
 const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display' }];
@@ -15,6 +17,7 @@ const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display'
 // drift from the canonical/sitemap URLs.
 const siteBase = origin(Astro.site);
 const s = season();
+const show = await showFacts();
 const homeImage = '/christmas/2025/the_hormanns_2025.jpg';
 
 const websiteJsonLd = graph(
@@ -82,8 +85,8 @@ const websiteJsonLd = graph(
         <a href="/christmas/">Christmas light show</a>, and you're welcome to come see it.
         Mary likes the shopping and decorating inside, and Greg has always been the one outside with the lights.
         That first year, a homemade controller switched 16 circuits of lights on and off from a PC.
-        {yearsOfDisplayWords} years later, we have over 75,000 lights synchronized to
-        <span data-show-stat="summary">{SHOW_DEFAULTS.minutes} minutes of music across {SHOW_DEFAULTS.songs} songs</span>.
+        {yearsOfDisplayWords} years later, we have over {show.pixelsFloor.toLocaleString('en-US')} lights synchronized to
+        <span data-show-stat="summary">{show.minutes} minutes of music across {show.songs} songs</span>.
         Tune to {DISPLAY.fmFrequency} when you visit to hear the show.
       </p>
       <p class="leading-relaxed mb-3">
@@ -93,7 +96,7 @@ const websiteJsonLd = graph(
         <a href="https://github.com/FalconChristmas/fpp" target="_blank" rel="noopener noreferrer">FPP</a>, and
         <a href="/technology/dmx/">E1.31 pixels</a>), see the <a href="/technology/">technology pages</a>.
       </p>
-      <p id="car-count" class="leading-relaxed mb-3" hidden></p>
+      <LiveCarCount />
       <RecentDisplays />
     </div>
     <div>
@@ -142,25 +145,5 @@ const websiteJsonLd = graph(
   <FavDisplays wide />
 
   <ShowStats />
-
-  <script>
-    // Live car count for visitors deciding whether to head over right now.
-    fetch('https://vote-now.org/api/model')
-      .then((res) => res.json())
-      .then((data) => {
-        const totalCars = data?.model?.cars?.['total-cars'];
-        const carEl = document.getElementById('car-count');
-        if (carEl && typeof totalCars === 'number' && totalCars > 0) {
-          carEl.textContent =
-            totalCars === 1
-              ? 'Right now, we estimate 1 car is parked outside watching our display!'
-              : `Right now, we estimate ${totalCars} cars are parked outside watching our display!`;
-          carEl.hidden = false;
-        }
-      })
-      .catch(() => {
-        // Leave the page as rendered if the request fails.
-      });
-  </script>
 
 </PageLayout>

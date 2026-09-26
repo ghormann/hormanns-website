@@ -4,6 +4,7 @@ import ChristmasLayout from '../../layouts/ChristmasLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Img from '../../components/Img.astro';
 import VisitFacts from '../../components/VisitFacts.astro';
+import LiveCarCount from '../../components/LiveCarCount.astro';
 import DisplayMap from '../../components/DisplayMap.astro';
 import CoverageList from '../../components/CoverageList.astro';
 import { coverageFor, coverageSchema } from '../../lib/coverage';
@@ -12,7 +13,7 @@ import PhotoGallery from '../../components/PhotoGallery.astro';
 import StatBlock from '../../components/StatBlock.astro';
 import FavDisplays from '../../components/FavDisplays.astro';
 import { season, SHOW_HOURS_TEXT, isoDate } from '../../lib/displayYears';
-import { DISPLAY, origin, absolute, place, person, breadcrumbList, touristAttraction, graph } from '../../lib/site';
+import { DISPLAY, origin, absolute, place, person, breadcrumbList, touristAttraction, seasonEvent, graph } from '../../lib/site';
 
 export async function getStaticPaths() {
   const entries = await getCollection('christmas', ({ data }) => !data.draft);
@@ -71,13 +72,21 @@ const absHero = heroImage ? absolute(siteBase, heroImage) : undefined;
 const currentSeason = season();
 const isCurrentSeason = isLatestYear && year >= currentSeason.year;
 
+// Year pages are dated December 1 of their season, but a page for a season
+// that hasn't reached December yet can't claim a publish date in the future.
+const pageDate = (() => {
+  const dec1 = `${year}-12-01`;
+  const today = new Date().toISOString().slice(0, 10);
+  return isoDate(dec1 < today ? dec1 : today);
+})();
+
 // Every year page is an archival CreativeWork describing that season's display.
 const creativeWork: Record<string, unknown> = {
   '@type': 'CreativeWork',
   '@id': `${pageUrl}#display`,
   name: `${DISPLAY.name}, ${year}`,
   description,
-  datePublished: isoDate(`${year}-12-01`),
+  datePublished: pageDate,
   contentLocation: place,
   author,
   url: pageUrl,
@@ -86,33 +95,8 @@ const creativeWork: Record<string, unknown> = {
 };
 
 // The live Event is canonically on /christmas/visit/; the current season's page
-// references that node rather than declaring a competing copy of it.
-const currentEvent = isCurrentSeason
-  ? {
-      '@type': 'Event',
-      '@id': `${siteBase}/christmas/visit/#event-${currentSeason.year}`,
-      name: `${DISPLAY.name}, ${currentSeason.year}`,
-      description: `Free Christmas light show in Liberty Township, Ohio, with music on ${DISPLAY.fmFrequency} or outdoor speakers. Open nightly ${SHOW_HOURS_TEXT} from ${currentSeason.openText} through ${currentSeason.closeText}.`,
-      startDate: currentSeason.startDateIso,
-      endDate: currentSeason.endDateIso,
-      eventStatus: 'https://schema.org/EventScheduled',
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      location: place,
-      organizer: author,
-      performer: author,
-      isAccessibleForFree: true,
-      url: `${siteBase}/christmas/visit/`,
-      ...(absHero ? { image: absHero } : {}),
-      offers: {
-        '@type': 'Offer',
-        price: '0',
-        priceCurrency: 'USD',
-        availability: 'https://schema.org/InStock',
-        validFrom: currentSeason.startDateIso,
-        url: `${siteBase}/christmas/visit/`,
-      },
-    }
-  : null;
+// carries the identical node (same @id, same builder) so the two never disagree.
+const currentEvent = isCurrentSeason ? seasonEvent(siteBase, currentSeason, SHOW_HOURS_TEXT) : null;
 
 // Each song video becomes a VideoObject. There are dozens per season and they
 // are the least contested rich result available to this site.
@@ -121,7 +105,7 @@ const videoObjects = videos.map(v => ({
   name: `${v.title} — ${DISPLAY.name}, ${year}`,
   description: `${v.title}, sequenced to ${DISPLAY.name} in Liberty Township, Ohio (${year} season).`,
   thumbnailUrl: v.thumb ?? `https://img.youtube.com/vi/${v.id}/maxresdefault.jpg`,
-  uploadDate: isoDate(`${year}-12-01`),
+  uploadDate: pageDate,
   contentUrl: `https://www.youtube.com/watch?v=${v.id}`,
   embedUrl: `https://www.youtube.com/embed/${v.id}`,
   creator: author,
@@ -212,6 +196,8 @@ const jsonLd = graph(
       sizes="(max-width: 896px) 100vw, 896px"
     />
   )}
+
+  {isCurrentSeason && <LiveCarCount class="leading-relaxed mb-6 font-semibold" />}
 
   <!-- Prose intro -->
   <div class="prose max-w-none mb-6 leading-relaxed">

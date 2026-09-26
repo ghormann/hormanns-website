@@ -2,7 +2,8 @@
 import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import { season, SHOW_HOURS_TEXT, yearsOfDisplay, SHOW_DEFAULTS } from '../../lib/displayYears';
+import { season, lastSeasonYear, SHOW_HOURS_TEXT, yearsOfDisplay } from '../../lib/displayYears';
+import { showFacts } from '../../lib/showFacts';
 import ShowStats from '../../components/ShowStats.astro';
 import CoverageList from '../../components/CoverageList.astro';
 import Img from '../../components/Img.astro';
@@ -11,6 +12,7 @@ import { DISPLAY, CHARITY, fullAddress, origin, absolute, breadcrumbList, touris
 
 const base = origin(Astro.site);
 const s = season();
+const show = await showFacts();
 const heroImage = '/christmas/2025/the_hormanns_2025.jpg';
 
 const grouped = coverageByYear();
@@ -23,7 +25,7 @@ const factSheet: { label: string; value: string | null; href?: string }[] = [
   { label: 'Hours', value: `Nightly, ${SHOW_HOURS_TEXT}` },
   { label: 'Admission', value: 'Free' },
   { label: 'Running since', value: `2001 - ${yearsOfDisplay} seasons` },
-  { label: 'Scale', value: '75,805 individually controlled RGB pixels' },
+  { label: 'Scale', value: `${show.pixels.toLocaleString('en-US')} individually controlled RGB pixels` },
   { label: 'Show length', value: null },
   { label: 'Audio', value: `Low-power FM broadcast on ${DISPLAY.fmFrequency}, plus outdoor speakers for visitors on foot` },
   { label: 'Charity', value: `${CHARITY.accepts} for ${CHARITY.beneficiary}, with the <a href="${CHARITY.partnerUrl}" target="_blank" rel="noopener noreferrer">${CHARITY.partner}</a>` },
@@ -40,7 +42,9 @@ const allYears = (await getCollection('christmas', ({ data }) => !data.draft))
   .sort((a, b) => b.data.year - a.data.year);
 const totalPhotos = allYears.reduce((n, y) => n + (y.data.photos?.length ?? 0), 0);
 const totalVideos = allYears.reduce((n, y) => n + (y.data.videos?.length ?? 0), 0);
-const latestSeason = allYears[0];
+// The newest year file can exist before its season opens, so point at the last
+// finished season rather than whichever year sorts first.
+const latestSeason = allYears.find(y => y.data.year <= lastSeasonYear()) ?? allYears[0];
 
 // Aerial footage is spread across several seasons, so count it rather than
 // naming a year that will go stale.
@@ -153,7 +157,7 @@ const jsonLd = graph(
           <dt>{f.label}</dt>
           <dd>
             {f.value === null ? (
-              <span data-show-stat="summary">{SHOW_DEFAULTS.minutes} minutes of music across {SHOW_DEFAULTS.songs} songs</span>
+              <span data-show-stat="summary">{show.minutes} minutes of music across {show.songs} songs</span>
             ) : f.href ? (
               <a href={f.href} target="_blank" rel="noopener noreferrer">{f.value}</a>
             ) : (
@@ -168,7 +172,7 @@ const jsonLd = graph(
     <ul>
       <li>
         <strong>{yearsOfDisplay} years.</strong> The display started in 2001 with two homemade controllers
-        running 8 circuits each. It now has 75,805 individually controlled pixels.
+        running 8 circuits each. It now has {show.pixels.toLocaleString('en-US')} individually controlled pixels.
         <a href="/christmas/our-story/">The full history →</a>
       </li>
       <li>

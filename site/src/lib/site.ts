@@ -19,6 +19,9 @@ export const DISPLAY = {
   coolDisplaysUrl: 'https://cooldisplays.net/index.php?page=single&id=1',
 } as const;
 
+/** A photo of the lit display, for the season Event (the upcoming season's own photos may not exist yet). */
+export const SEASON_EVENT_IMAGE = '/christmas/2025/the_hormanns_2025.jpg';
+
 export const VENMO_URL = 'https://account.venmo.com/u/Verna-Heaney';
 
 export const CHARITY = {
@@ -82,6 +85,44 @@ export function touristAttraction(base: string, image?: string) {
     touristType: ['Families', 'Christmas light enthusiasts'],
     sameAs: [DISPLAY.facebookUrl, DISPLAY.coolDisplaysUrl].filter(Boolean),
     ...(image ? { image } : {}),
+  };
+}
+
+/**
+ * The schema.org Event for a season. Built in one place so every page that
+ * carries it (Plan Your Visit, and the season's own year page) emits an
+ * identical node under the same @id.
+ */
+export function seasonEvent(
+  base: string,
+  s: { year: number; openText: string; closeText: string; startDateIso: string; endDateIso: string },
+  hoursText: string,
+) {
+  const organizer = person(base, 'Greg Hormann', 'greg');
+  return {
+    '@type': 'Event',
+    '@id': `${base}/christmas/visit/#event-${s.year}`,
+    name: `${DISPLAY.name}, ${s.year}`,
+    description: `A free drive-up Christmas light show in Liberty Township, Ohio. Tens of thousands of RGB pixels synchronized to music, heard on ${DISPLAY.fmFrequency} from your car or on outdoor speakers if you walk around. Open nightly ${hoursText} from ${s.openText} through ${s.closeText}.`,
+    image: absolute(base, SEASON_EVENT_IMAGE),
+    startDate: s.startDateIso,
+    endDate: s.endDateIso,
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    location: place,
+    organizer,
+    performer: organizer,
+    isAccessibleForFree: true,
+    url: `${base}/christmas/visit/`,
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      validFrom: s.startDateIso,
+      url: `${base}/christmas/visit/`,
+      category: 'Free',
+    },
   };
 }
 

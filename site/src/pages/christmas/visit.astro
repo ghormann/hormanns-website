@@ -3,47 +3,24 @@ import PageLayout from '../../layouts/PageLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import VisitFacts from '../../components/VisitFacts.astro';
 import DisplayMap from '../../components/DisplayMap.astro';
+import LiveCarCount from '../../components/LiveCarCount.astro';
 import ShowStats from '../../components/ShowStats.astro';
-import { season, SHOW_HOURS_TEXT, SHOW_DEFAULTS, yearsOfDisplayWords } from '../../lib/displayYears';
+import { season, SHOW_HOURS_TEXT, SHOW_OPEN_HOUR, SHOW_CLOSE_HOUR, yearsOfDisplayWords } from '../../lib/displayYears';
+import { showFacts } from '../../lib/showFacts';
 import {
   DISPLAY, CHARITY, VENMO_URL, fullAddress, origin, absolute,
-  touristAttraction, breadcrumbList, place, person, graph,
+  touristAttraction, breadcrumbList, seasonEvent, graph,
 } from '../../lib/site';
 
 const base = origin(Astro.site);
 const s = season();
+const show = await showFacts();
 const heroImage = '/christmas/2025/the_hormanns_2025.jpg';
 const image = absolute(base, heroImage);
 
-const organizer = person(base, 'Greg Hormann', 'greg');
-
 // The canonical Event for the season lives here, on a URL that does not change
 // from year to year, rather than on the newest /christmas/<year>/ page.
-const event = {
-  '@type': 'Event',
-  '@id': `${base}/christmas/visit/#event-${s.year}`,
-  name: `${DISPLAY.name}, ${s.year}`,
-  description: `A free drive-up Christmas light show in Liberty Township, Ohio. Tens of thousands of RGB pixels synchronized to music, heard on ${DISPLAY.fmFrequency} from your car or on outdoor speakers if you walk around. Open nightly ${SHOW_HOURS_TEXT} from ${s.openText} through ${s.closeText}.`,
-  image,
-  startDate: s.startDateIso,
-  endDate: s.endDateIso,
-  eventStatus: 'https://schema.org/EventScheduled',
-  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-  location: place,
-  organizer,
-  performer: organizer,
-  isAccessibleForFree: true,
-  url: `${base}/christmas/visit/`,
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-    availability: 'https://schema.org/InStock',
-    validFrom: s.startDateIso,
-    url: `${base}/christmas/visit/`,
-    category: 'Free',
-  },
-};
+const event = seasonEvent(base, s, SHOW_HOURS_TEXT);
 
 const attraction = {
   ...touristAttraction(base, image),
@@ -70,7 +47,10 @@ const jsonLd = graph(
 );
 
 const title = `Plan Your Visit — Christmas Lights in Liberty Township, Ohio (${s.year})`;
-const description = `Free Christmas light show at ${fullAddress}. Open nightly ${SHOW_HOURS_TEXT}, ${s.openText} through ${s.closeText}. Music on ${DISPLAY.fmFrequency} or outdoor speakers, song voting, and a walk-through light tunnel.`;
+// Kept under ~160 characters so search results show it whole: short dates, no
+// weekdays, and the town rather than the full street address.
+const shortDate = (d: Date) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+const description = `Free Christmas light show in Liberty Township, Ohio, open nightly ${SHOW_OPEN_HOUR - 12}–${SHOW_CLOSE_HOUR - 12} PM from ${shortDate(s.open)} to ${shortDate(s.close)}. Music on ${DISPLAY.fmFrequency}, song voting, and a light tunnel.`;
 ---
 
 <PageLayout title={title} description={description} ogImage={heroImage} jsonLd={jsonLd}>
@@ -94,7 +74,7 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
     <p>
       Songs play back to back continuously, so there's no set showtime to catch. Most visitors
       stay for three to five songs, but you are very welcome to stay for the whole
-      <span data-show-stat="minutes-adj">{SHOW_DEFAULTS.minutes} minute</span> show
+      <span data-show-stat="minutes-adj">{show.minutes} minute</span> show
       if you want to see all of it. Christmas
       Eve is our busiest and best night. The neighborhood gathers to watch the
       <a href="/technology/clock/">countdown clock</a> hit zero at midnight.
@@ -123,6 +103,10 @@ const description = `Free Christmas light show at ${fullAddress}. Open nightly $
     <p>
       Traffic is lightest on school nights, especially from 5:00 to 6:30 and from 10:00 to 11:00.
       It picks up the closer we get to Christmas.
+    </p>
+    <LiveCarCount class="" />
+    <p class="text-sm">
+      Curious how we count? See <a href="/technology/car-counter/">how the car counter works</a>.
     </p>
 
     <h2 class="text-2xl font-bold mt-8 mb-3">How to hear the music</h2>

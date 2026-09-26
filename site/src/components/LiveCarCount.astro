@@ -1,0 +1,44 @@
+---
+// Live estimate of how many cars are parked out front watching the show, for
+// visitors deciding whether to head over right now. Counts come from the
+// car counter (/technology/car-counter/) via vote-now.org.
+//
+// Only checked while the season is running (by date, not show hours): outside
+// it the cameras would just be counting everyday parked cars. Renders nothing
+// visible until the request succeeds with at least one car. Safe to use more
+// than once on a page.
+interface Props {
+  class?: string;
+}
+
+const { class: className = 'leading-relaxed mb-3' } = Astro.props;
+---
+
+<p class={className} data-live-car-count hidden></p>
+
+<script>
+  import { isSeasonActive } from '../lib/displayYears';
+
+  // Checked in the browser, not at build time, so a stale build can't show it
+  // out of season.
+  const nodes = document.querySelectorAll<HTMLElement>('[data-live-car-count]');
+  if (nodes.length && isSeasonActive()) {
+    fetch('https://vote-now.org/api/model')
+      .then((res) => res.json())
+      .then((data) => {
+        const totalCars = data?.model?.cars?.['total-cars'];
+        if (typeof totalCars !== 'number' || totalCars <= 0) return;
+        const text =
+          totalCars === 1
+            ? 'Right now, we estimate 1 car is parked outside watching our display!'
+            : `Right now, we estimate ${totalCars} cars are parked outside watching our display!`;
+        nodes.forEach((el) => {
+          el.textContent = text;
+          el.hidden = false;
+        });
+      })
+      .catch(() => {
+        // Leave the page as rendered if the request fails.
+      });
+  }
+</script>

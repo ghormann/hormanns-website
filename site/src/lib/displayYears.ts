@@ -56,6 +56,15 @@ export function currentSeasonYear(now: Date = new Date()): number {
   return y;
 }
 
+/**
+ * The most recent season that has finished. Its figures (videos, stats) are
+ * complete, unlike the upcoming or running season whose year page may exist
+ * before the show has even opened.
+ */
+export function lastSeasonYear(now: Date = new Date()): number {
+  return currentSeasonYear(now) - 1;
+}
+
 /** True while the display is actually running (date range, not time of day). */
 export function isSeasonActive(now: Date = new Date()): boolean {
   const y = currentSeasonYear(now);
@@ -120,13 +129,6 @@ export function season(now: Date = new Date()): Season {
     active: isSeasonActive(now),
   };
 }
-
-/**
- * Build-time fallbacks for the show size. <ShowStats> replaces these with live
- * figures from the playlist API once a page loads; they only need to be right
- * enough to be correct if that request never completes.
- */
-export const SHOW_DEFAULTS = { songs: 28, minutes: 73 } as const;
 
 /**
  * Whether the homepage should surface the "Come See the Lights" block.

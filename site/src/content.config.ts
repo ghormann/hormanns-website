@@ -51,6 +51,7 @@ const technology = defineCollection({
     sectionSidebars: z.array(sectionSidebarSchema).default([]),
     draft: z.boolean().default(false),
     showFavDisplays: z.boolean().default(false),
+    showLiveCarCount: z.boolean().default(false),
   }),
 });
 

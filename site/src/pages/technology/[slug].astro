@@ -6,6 +6,7 @@ import Img from '../../components/Img.astro';
 import YouTubeGrid from '../../components/YouTubeGrid.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import FavDisplays from '../../components/FavDisplays.astro';
+import LiveCarCount from '../../components/LiveCarCount.astro';
 import { DISPLAY, origin, absolute, person, breadcrumbList, graph } from '../../lib/site';
 
 export async function getStaticPaths() {
@@ -32,7 +33,7 @@ export async function getStaticPaths() {
 
 const { entry, relatedYears } = Astro.props;
 const { Content } = await render(entry);
-const { title, description, heroImage, heroImageAlt, videos, photos, sectionSidebars, showFavDisplays } = entry.data;
+const { title, description, heroImage, heroImageAlt, videos, photos, sectionSidebars, showFavDisplays, showLiveCarCount } = entry.data;
 const ogImage = heroImage ?? undefined;
 const abs = (p: string) => (p.startsWith('/') || p.startsWith('http') ? p : `/${p}`);
 const heroSrc = heroImage ?? (photos?.[0]?.src ? abs(photos[0].src) : null);
@@ -97,6 +98,8 @@ const clientSidebars = sectionSidebars.map(s => ({
       sizes="(max-width: 896px) 100vw, 896px"
     />
   )}
+
+  {showLiveCarCount && <LiveCarCount class="leading-relaxed mb-6 font-semibold" />}
 
   <div class="prose max-w-none mb-6 leading-relaxed">
     <Content />
