@@ -31,6 +31,31 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
 }
 
+/* Paragraph spacing for content sections. Tailwind's preflight zeroes <p>
+   margins and there's no typography plugin, so .prose needs this to match the
+   space-y-4 spacing used on the home and bio pages; lists get bullets and a
+   gap between items. Kept in the base layer so
+   margin utilities on individual paragraphs still win. */
+@layer base {
+  .prose p {
+    margin-bottom: 1rem;
+  }
+  .prose ul,
+  .prose ol {
+    padding-left: 1.5em;
+    margin-bottom: 1rem;
+  }
+  .prose ul {
+    list-style-type: disc;
+  }
+  .prose ol {
+    list-style-type: decimal;
+  }
+  .prose li {
+    margin-bottom: 0.5rem;
+  }
+}
+
 /* Link styling for content sections */
 .brown-links a,
 .prose a {
