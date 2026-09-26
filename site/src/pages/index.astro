@@ -7,6 +7,8 @@ import VisitFacts from '../components/VisitFacts.astro';
 import ShowStats from '../components/ShowStats.astro';
 import Img from '../components/Img.astro';
 import LiveCarCount from '../components/LiveCarCount.astro';
+import ShowStatus from '../components/ShowStatus.astro';
+import { existsSync } from 'node:fs';
 import { yearsOfDisplayWords, season, inVisitWindow } from '../lib/displayYears';
 import { showFacts } from '../lib/showFacts';
 import { DISPLAY, origin, absolute, touristAttraction, breadcrumbList, person, graph } from '../lib/site';
@@ -19,6 +21,13 @@ const siteBase = origin(Astro.site);
 const s = season();
 const show = await showFacts();
 const homeImage = '/christmas/2025/the_hormanns_2025.jpg';
+
+// The sidebar photo is picked on cooldisplays.net and downloaded at build time
+// (scripts/fetch-remote-images.mjs). Only if no copy has ever been fetched do
+// we fall back to hot-linking it.
+const displayPhoto = existsSync('public/_remote/home-display.png')
+  ? '/_remote/home-display.png'
+  : 'https://cooldisplays.net/picture.php?pictid=278&width=800';
 
 const websiteJsonLd = graph(
   {
@@ -57,6 +66,7 @@ const websiteJsonLd = graph(
   -->
   <section id="visit-cta" class="mb-10" hidden={!inVisitWindow()}>
     <h2 class="text-xl font-semibold mb-3" style="color: var(--color-heading);">Come See the Lights</h2>
+    <ShowStatus class="mb-3" />
     <VisitFacts compact />
     <p class="brown-links text-sm" style="font-family: var(--font-sans);">
       <a href="/christmas/visit/"><strong>Plan your visit</strong></a> &middot;
@@ -101,10 +111,11 @@ const websiteJsonLd = graph(
     </div>
     <div>
       <a href="/christmas/">
-        <img
+        <Img
           class="rounded-lg shadow w-full mb-4"
-          src="https://cooldisplays.net/picture.php?v=1764536045&pictid=278&width=400"
+          src={displayPhoto}
           alt={DISPLAY.name}
+          sizes="(max-width: 640px) 100vw, 280px"
         />
       </a>
       <YouTubeGrid videos={historyVideo} cols={1} />

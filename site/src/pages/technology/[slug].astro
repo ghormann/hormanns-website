@@ -130,7 +130,7 @@ const clientSidebars = sectionSidebars.map(s => ({
           <a
             href={`/christmas/${y}/`}
             class="font-medium px-3 py-1 rounded-full text-sm transition-opacity hover:opacity-80"
-            style="background-color: var(--color-accent); color: var(--color-heading); font-family: var(--font-sans);"
+            style="background-color: var(--color-accent); color: var(--color-heading-on-accent); font-family: var(--font-sans);"
           >
             {y}
           </a>
@@ -250,7 +250,7 @@ const clientSidebars = sectionSidebars.map(s => ({
   .prose img { max-width: 100%; border-radius: 0.5rem; }
   :global(.prose table) { border-collapse: collapse; width: 100%; margin-bottom: 1em; font-size: 0.9em; }
   :global(.prose th), :global(.prose td) { border: 1px solid var(--color-accent); padding: 0.4em 0.75em; text-align: left; }
-  :global(.prose th) { background-color: var(--color-accent); font-weight: 600; color: var(--color-heading); }
+  :global(.prose th) { background-color: var(--color-accent); font-weight: 600; color: var(--color-heading-on-accent); }
   :global(.prose tr:nth-child(even) td) { background-color: color-mix(in srgb, var(--color-accent) 40%, transparent); }
 
   :global(.section-with-sidebar) {

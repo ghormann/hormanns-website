@@ -52,14 +52,14 @@ const description = `Answers to common questions about visiting ${DISPLAY.name} 
 
   <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Frequently Asked Questions</h1>
-    <p class="mt-2 text-sm" style="color: var(--color-link); font-family: var(--font-sans);">
+    <p class="mt-2 text-sm" style="color: var(--color-link-on-accent); font-family: var(--font-sans);">
       Planning a visit? Start with <a href="/christmas/visit/" style="text-decoration: underline;">Plan Your Visit</a>.
     </p>
   </div>
 
   <div class="space-y-3" id="faq-list">
     {faqs.map((f, i) => (
-      <details class="group rounded-lg overflow-hidden" style="background-color: var(--color-card-bg);" open={i < 3} data-faq-id={f.id}>
+      <details class="group rounded-lg overflow-hidden" style="background-color: var(--color-card-bg);" open={i < 3} data-faq-id={f.id} id={f.id}>
         <summary
           class="cursor-pointer list-none px-4 py-3 font-semibold flex items-start justify-between gap-3"
           style="color: var(--color-heading); font-family: var(--font-sans);"
@@ -67,7 +67,10 @@ const description = `Answers to common questions about visiting ${DISPLAY.name} 
           <h2 class="text-base font-semibold m-0" data-faq-question>{f.question}</h2>
           <span class="shrink-0 transition-transform group-open:rotate-45" aria-hidden="true">+</span>
         </summary>
-        <div class="px-4 pb-4 leading-relaxed brown-links" data-faq-answer set:html={f.answer} />
+        <div class="px-4 pb-2 leading-relaxed brown-links" data-faq-answer set:html={f.answer} />
+        <p class="px-4 pb-3 text-xs brown-links" style="font-family: var(--font-sans);">
+          <a href={`#${f.id}`} class="faq-permalink" data-faq-permalink>Copy link to this answer</a>
+        </p>
       </details>
     ))}
   </div>
@@ -102,6 +105,8 @@ const description = `Answers to common questions about visiting ${DISPLAY.name} 
 
       function fill(el, faq) {
         el.setAttribute('data-faq-id', faq.id);
+        el.id = faq.id;
+        el.querySelector('[data-faq-permalink]').setAttribute('href', '#' + faq.id);
         el.querySelector('[data-faq-question]').textContent = faq.question;
         el.querySelector('[data-faq-answer]').innerHTML = faq.answer;
       }
@@ -132,10 +137,42 @@ const description = `Answers to common questions about visiting ${DISPLAY.name} 
 
           // Anything the API no longer carries has been retired.
           Object.keys(existing).forEach(function (id) { existing[id].remove(); });
+          openFromHash();
         })
         .catch(function () {
           /* Keep the text rendered at build time. */
         });
+
+      // Deep links (/christmas/faq/#location) open that answer, so a single
+      // question can be shared, e.g. on Facebook.
+      function openFromHash() {
+        var id = decodeURIComponent(location.hash.slice(1));
+        if (!id) return;
+        var el = document.getElementById(id);
+        if (!el || el.tagName !== 'DETAILS' || !list.contains(el)) return;
+        el.open = true;
+        el.dataset.touched = '1';
+        el.scrollIntoView();
+      }
+      openFromHash();
+      window.addEventListener('hashchange', openFromHash);
+
+      // Copy the full URL rather than just jumping to it; the link still works
+      // as a plain anchor if the clipboard isn't available.
+      list.addEventListener('click', function (e) {
+        var a = e.target.closest('[data-faq-permalink]');
+        if (!a || !navigator.clipboard) return;
+        e.preventDefault();
+        var url = location.origin + location.pathname + a.getAttribute('href');
+        navigator.clipboard.writeText(url).then(function () {
+          history.replaceState(null, '', a.getAttribute('href'));
+          var label = a.dataset.label || (a.dataset.label = a.textContent);
+          a.textContent = 'Link copied!';
+          setTimeout(function () { a.textContent = label; }, 2000);
+        }, function () {
+          location.hash = a.getAttribute('href');
+        });
+      });
 
       list.addEventListener('toggle', function (e) {
         if (e.target.tagName === 'DETAILS') e.target.dataset.touched = '1';

@@ -13,7 +13,7 @@
     "deploy-dev": "npm run build && rsync -avz -e \"ssh -p 7777\" --chmod=a+rX dist/ .htaccess ghormann@ns2.thehormanns.net:/var/www/ghormann-dev/",
     "deploy-prod": "npm run build && rsync -avz -e \"ssh -p 7777\" --chmod=a+rX dist/ .htaccess ghormann@lin1.thehormanns.net:/var/www/ghormann/",
     "optimize:images": "node scripts/optimize-images.mjs",
-    "prebuild": "node scripts/optimize-images.mjs"
+    "prebuild": "node scripts/fetch-remote-images.mjs && node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.2",

@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 # Generated image derivatives (npm run build regenerates these)
 public/_opt/
+# Build-time copies of remote images (scripts/fetch-remote-images.mjs)
+public/_remote/

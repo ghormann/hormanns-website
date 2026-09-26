@@ -1,0 +1,109 @@
+---
+// "Is the show on right now?" — the first question a visitor deciding whether
+// to head over has. Worked out in the browser (a static build can't know the
+// time) and always against the clock in Liberty Township, so a visitor whose
+// phone is set to another time zone still gets the right answer. Renders
+// nothing outside the season. Safe to use more than once on a page.
+interface Props {
+  class?: string;
+}
+
+const { class: className = 'mb-4' } = Astro.props;
+---
+
+<p class:list={['show-status', className]} data-show-status hidden>
+  <span class="show-status-dot" aria-hidden="true"></span>
+  <span data-show-status-text></span>
+</p>
+
+<style>
+  .show-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    background-color: var(--color-card-bg);
+    color: var(--color-heading);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  }
+  .show-status[hidden] {
+    display: none;
+  }
+  .show-status-dot {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 9999px;
+    background-color: #9ca3af;
+    flex-shrink: 0;
+  }
+  .show-status--live .show-status-dot {
+    background-color: #16a34a;
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.6);
+    animation: show-status-pulse 2s infinite;
+  }
+  @keyframes show-status-pulse {
+    70% { box-shadow: 0 0 0 0.5rem rgba(22, 163, 74, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(22, 163, 74, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .show-status--live .show-status-dot { animation: none; }
+  }
+</style>
+
+<script>
+  import {
+    isSeasonActive, seasonClose, currentSeasonYear, SHOW_OPEN_HOUR, SHOW_CLOSE_HOUR,
+  } from '../lib/displayYears';
+
+  // The season helpers build dates from local calendar fields, so feed them a
+  // Date whose local fields spell out the current wall-clock time at the house.
+  function houseTime(): Date {
+    const parts = Object.fromEntries(
+      new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        year: 'numeric', month: 'numeric', day: 'numeric',
+        hour: 'numeric', minute: 'numeric', hourCycle: 'h23',
+      }).formatToParts(new Date()).map((p) => [p.type, p.value]),
+    );
+    return new Date(+parts.year, +parts.month - 1, +parts.day, +parts.hour, +parts.minute);
+  }
+
+  const hour12 = (h: number) => `${h % 12 || 12} PM`;
+
+  function status(now: Date): { text: string; live: boolean } | null {
+    if (!isSeasonActive(now)) return null;
+    const h = now.getHours();
+    if (h >= SHOW_OPEN_HOUR && h < SHOW_CLOSE_HOUR) {
+      return { text: `The show is on now, until ${hour12(SHOW_CLOSE_HOUR)}`, live: true };
+    }
+    if (h < SHOW_OPEN_HOUR) {
+      return { text: `Opens tonight at ${hour12(SHOW_OPEN_HOUR)}`, live: false };
+    }
+    // After closing: tomorrow is another show night unless tonight was the last.
+    const close = seasonClose(currentSeasonYear(now));
+    const lastNight = now.getFullYear() === close.getFullYear()
+      && now.getMonth() === close.getMonth()
+      && now.getDate() === close.getDate();
+    return lastNight
+      ? { text: 'That’s a wrap for this season. Thanks for visiting!', live: false }
+      : { text: `Done for tonight. Back tomorrow at ${hour12(SHOW_OPEN_HOUR)}`, live: false };
+  }
+
+  function render() {
+    const s = status(houseTime());
+    document.querySelectorAll<HTMLElement>('[data-show-status]').forEach((el) => {
+      if (!s) { el.hidden = true; return; }
+      el.querySelector('[data-show-status-text]')!.textContent = s.text;
+      el.classList.toggle('show-status--live', s.live);
+      el.hidden = false;
+    });
+  }
+
+  render();
+  // Keep it right for anyone who leaves the page open across 5 or 11 PM.
+  setInterval(render, 60_000);
+</script>

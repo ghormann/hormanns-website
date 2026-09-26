@@ -12,7 +12,9 @@ export const DISPLAY = {
   addressCountry: 'US',
   latitude: 39.395325,
   longitude: -84.3991475,
-  mapUrl: 'https://goo.gl/maps/tZj7PPjBcjEFB1XM6',
+  // Full Google Maps place URL (what the old goo.gl short link resolved to);
+  // Google is retiring goo.gl links, so nothing should point at one.
+  mapUrl: 'https://www.google.com/maps/place/Christmas+@+the+Hormanns/@39.3953299,-84.3994264,18z/data=!4m5!3m4!1s0x88405b01adc3fe25:0xe69153dcc65684a9!8m2!3d39.395325!4d-84.3991475',
   interactUrl: 'https://vote-now.org/',
   fmFrequency: '106.7 FM',
   facebookUrl: 'https://www.facebook.com/HormannChristmas',
@@ -33,6 +35,12 @@ export const CHARITY = {
 } as const;
 
 export const fullAddress = `${DISPLAY.streetAddress}, ${DISPLAY.addressLocality}, ${DISPLAY.addressRegion} ${DISPLAY.postalCode}`;
+
+/** Turn-by-turn directions to the house, opened in the visitor's map app. */
+export const DIRECTIONS_URL = {
+  google: `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(fullAddress)}`,
+  apple: `https://maps.apple.com/?daddr=${encodeURIComponent(fullAddress)}`,
+} as const;
 
 export function origin(site: URL | undefined): string {
   return (site ?? new URL(SITE_ORIGIN)).origin;

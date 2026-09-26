@@ -7,9 +7,11 @@ interface Props {
   cols?: 1 | 2;
   /** Show only this many until the visitor asks for the rest. */
   limit?: number;
+  /** What the "Show all N …" button calls them, e.g. "construction videos". */
+  noun?: string;
 }
 
-const { videos, cols = 2, limit } = Astro.props;
+const { videos, cols = 2, limit, noun = 'videos' } = Astro.props;
 const collapsible = limit !== undefined && videos.length > limit;
 ---
 
@@ -54,7 +56,7 @@ const collapsible = limit !== undefined && videos.length > limit;
     </div>
     {collapsible && (
       <button type="button" class="video-more" data-video-more hidden>
-        Show all {videos.length} videos
+        Show all {videos.length} {noun}
       </button>
     )}
   </div>
@@ -106,7 +108,7 @@ const collapsible = limit !== undefined && videos.length > limit;
   }
   .video-more:hover {
     background: var(--color-accent);
-    color: var(--color-heading);
+    color: var(--color-heading-on-accent);
   }
 </style>
 

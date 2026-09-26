@@ -30,6 +30,16 @@ const technologyPages = (
     </h1>
   </div>
 
+  <!-- Jump links: the page holds every season's gallery, so let visitors skip
+       straight to the one they want. -->
+  <nav aria-label="Jump to a gallery" class="jump-nav">
+    {christmasYears.map((year) => (
+      <a href={`#year-${year.data.year}`}>{year.data.year}</a>
+    ))}
+    {technologyPages.length > 0 && <a href="#technology">Technology</a>}
+  </nav>
+
+
   <section class="mt-8">
     <h2 class="text-xl font-semibold mb-4" style="color: var(--color-heading);">
       Family Pictures
@@ -56,25 +66,9 @@ const technologyPages = (
     <br />
   </section>
 
-  <section class="mb-10">
-    <h2 class="text-xl font-semibold mb-2" style="color: var(--color-heading);">
-      Technology
-    </h2>
-    {
-      technologyPages.map((page) => (
-        <div class="mb-6">
-          <h3 class="text-base font-semibold mb-1" style="color: var(--color-heading);">
-            <a href={`/technology/${page.id}/`} class="brown-links">{page.data.title}</a>
-          </h3>
-          <PhotoGallery photos={page.data.photos} id={`gallery-tech-${page.id}`} altFallback={`${page.data.title} — ${DISPLAY.name}`} />
-        </div>
-      ))
-    }
-  </section>
-
   {
     christmasYears.map((year) => (
-      <section class="mb-10">
+      <section class="mb-10" id={`year-${year.data.year}`}>
         <h2
           class="text-xl font-semibold mb-2"
           style="color: var(--color-heading);"
@@ -90,4 +84,45 @@ const technologyPages = (
       </section>
     ))
   }
+  <section class="mb-10" id="technology">
+    <h2 class="text-xl font-semibold mb-2" style="color: var(--color-heading);">
+      Technology
+    </h2>
+    {
+      technologyPages.map((page) => (
+        <div class="mb-6">
+          <h3 class="text-base font-semibold mb-1" style="color: var(--color-heading);">
+            <a href={`/technology/${page.id}/`} class="brown-links">{page.data.title}</a>
+          </h3>
+          <PhotoGallery photos={page.data.photos} id={`gallery-tech-${page.id}`} altFallback={`${page.data.title} — ${DISPLAY.name}`} />
+        </div>
+      ))
+    }
+  </section>
+
 </PageLayout>
+
+<style>
+  .jump-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-family: var(--font-sans);
+  }
+  .jump-nav a {
+    padding: 0.35rem 0.8rem;
+    border-radius: 9999px;
+    border: 1px solid var(--color-accent);
+    background-color: var(--color-card-bg);
+    color: var(--color-link);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .jump-nav a:hover,
+  .jump-nav a:focus-visible {
+    background-color: var(--color-accent);
+    color: var(--color-heading-on-accent);
+  }
+</style>

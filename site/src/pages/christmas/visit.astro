@@ -4,11 +4,12 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import VisitFacts from '../../components/VisitFacts.astro';
 import DisplayMap from '../../components/DisplayMap.astro';
 import LiveCarCount from '../../components/LiveCarCount.astro';
+import ShowStatus from '../../components/ShowStatus.astro';
 import ShowStats from '../../components/ShowStats.astro';
 import { season, SHOW_HOURS_TEXT, SHOW_OPEN_HOUR, SHOW_CLOSE_HOUR, yearsOfDisplayWords } from '../../lib/displayYears';
 import { showFacts } from '../../lib/showFacts';
 import {
-  DISPLAY, CHARITY, VENMO_URL, fullAddress, origin, absolute,
+  DISPLAY, CHARITY, VENMO_URL, DIRECTIONS_URL, fullAddress, origin, absolute,
   touristAttraction, breadcrumbList, seasonEvent, graph,
 } from '../../lib/site';
 
@@ -61,7 +62,18 @@ const description = `Free Christmas light show in Liberty Township, Ohio, open n
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Plan Your Visit</h1>
   </div>
 
+  <ShowStatus />
+
   <VisitFacts />
+
+  <div class="directions">
+    <a href={DIRECTIONS_URL.google} target="_blank" rel="noopener noreferrer" class="directions-primary">
+      Get Directions
+    </a>
+    <a href={DIRECTIONS_URL.apple} target="_blank" rel="noopener noreferrer" class="directions-secondary">
+      Apple Maps
+    </a>
+  </div>
 
   <div class="prose brown-links" style="max-width: none;">
 
@@ -169,3 +181,37 @@ const description = `Free Christmas light show in Liberty Township, Ohio, open n
   <ShowStats />
 
 </PageLayout>
+
+<style>
+  /* A big tap target near the top: most people read this page on a phone,
+     often from the car. */
+  .directions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    margin: 0 0 1.5rem;
+    font-family: var(--font-sans);
+  }
+  .directions-primary {
+    flex: 1 1 16rem;
+    display: block;
+    padding: 0.8rem 1.25rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    color: #fff;
+    background-color: var(--color-link);
+    text-decoration: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  .directions-primary:hover {
+    background-color: var(--color-footer-bg);
+  }
+  .directions-secondary {
+    font-size: 0.875rem;
+    color: var(--color-link);
+    text-decoration: underline;
+  }
+</style>

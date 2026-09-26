@@ -52,7 +52,7 @@ export function seasonClose(year: number): Date {
 export function currentSeasonYear(now: Date = new Date()): number {
   const y = now.getFullYear();
   // Jan 1 still belongs to the previous November's season.
-  if (now < seasonClose(y - 1)) return y - 1;
+  if (now <= endOfDay(seasonClose(y - 1))) return y - 1;
   return y;
 }
 

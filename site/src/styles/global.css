@@ -13,6 +13,10 @@
   --color-nav-text: #F5EDD0;     /* warm cream — text on green nav */
   --color-card-bg: #FDFAF3;
   --color-text: #1C1410;
+  /* Small text on the gold accent. The regular red and green fall short of
+     WCAG AA there (4.0:1 and 2.8:1); these darker shades clear it. */
+  --color-heading-on-accent: #6B1414; /* 5.3:1 on gold */
+  --color-link-on-accent: #1A3C2A;    /* 5.3:1 on gold */
 
   /* Typography */
   --font-serif: "Lora", Georgia, serif;

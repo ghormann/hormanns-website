@@ -5,6 +5,7 @@ import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Img from '../../components/Img.astro';
 import VisitFacts from '../../components/VisitFacts.astro';
 import LiveCarCount from '../../components/LiveCarCount.astro';
+import ShowStatus from '../../components/ShowStatus.astro';
 import DisplayMap from '../../components/DisplayMap.astro';
 import CoverageList from '../../components/CoverageList.astro';
 import { coverageFor, coverageSchema } from '../../lib/coverage';
@@ -44,8 +45,8 @@ const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisp
 // Song videos first, then setup and take-down, each trimmed to a first screenful.
 const VIDEO_LIMIT = 8;
 const videoSections = [
-  { heading: 'Songs', videos: videos.filter(v => videoCategory(v) === 'song') },
-  { heading: 'Construction', videos: videos.filter(v => videoCategory(v) === 'construction') },
+  { heading: 'Songs', noun: 'videos', videos: videos.filter(v => videoCategory(v) === 'song') },
+  { heading: 'Construction', noun: 'construction videos', videos: videos.filter(v => videoCategory(v) === 'construction') },
 ].filter(s => s.videos.length > 0);
 
 // Build a unique meta description for this year's page.
@@ -153,7 +154,7 @@ const jsonLd = graph(
         <a
           href={`/christmas/${prev.year}/`}
           class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80 w-fit"
-          style="background-color: var(--color-accent); color: var(--color-heading);"
+          style="background-color: var(--color-accent); color: var(--color-heading-on-accent);"
         >
           ← {prev.year}
         </a>
@@ -175,7 +176,7 @@ const jsonLd = graph(
         <a
           href={`/christmas/${next.year}/`}
           class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80"
-          style="background-color: var(--color-accent); color: var(--color-heading);"
+          style="background-color: var(--color-accent); color: var(--color-heading-on-accent);"
         >
           {next.year} →
         </a>
@@ -185,6 +186,7 @@ const jsonLd = graph(
 
   {isCurrentSeason && (
     <>
+      <ShowStatus class="mb-3" />
       <VisitFacts compact />
       <p class="mb-6 text-sm brown-links" style="font-family: var(--font-sans);">
         <a href="/christmas/visit/">Plan your visit</a> &middot;
@@ -221,7 +223,7 @@ const jsonLd = graph(
           <h3 class="text-lg font-semibold mt-4" style="color: var(--color-heading);">
             {s.heading} <span class="text-sm font-normal" style="color: var(--color-link); font-family: var(--font-sans);">({s.videos.length})</span>
           </h3>
-          <YouTubeGrid videos={s.videos} limit={VIDEO_LIMIT} />
+          <YouTubeGrid videos={s.videos} limit={VIDEO_LIMIT} noun={s.noun} />
         </section>
       ))}
     </>
@@ -257,7 +259,7 @@ const jsonLd = graph(
   <p class="mb-2 brown-links" style="font-family: var(--font-sans);">
     Our display is located at
     <a
-      href="https://goo.gl/maps/tZj7PPjBcjEFB1XM6"
+      href={DISPLAY.mapUrl}
       target="_blank" rel="noopener noreferrer"
     >
       6656 Devon Drive in Liberty Township, OH
@@ -288,7 +290,7 @@ const jsonLd = graph(
         <a
           href={`/christmas/${prev.year}/`}
           class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80 w-fit"
-          style="background-color: var(--color-accent); color: var(--color-heading);"
+          style="background-color: var(--color-accent); color: var(--color-heading-on-accent);"
         >
           ← {prev.year}
         </a>
@@ -310,7 +312,7 @@ const jsonLd = graph(
         <a
           href={`/christmas/${next.year}/`}
           class="flex items-center gap-1 font-medium px-3 py-1 rounded-full transition-opacity hover:opacity-80"
-          style="background-color: var(--color-accent); color: var(--color-heading);"
+          style="background-color: var(--color-accent); color: var(--color-heading-on-accent);"
         >
           {next.year} →
         </a>
