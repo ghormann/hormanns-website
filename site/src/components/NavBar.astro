@@ -129,7 +129,7 @@ const inTechnology = currentPath.startsWith('/technology/');
       </button>
       <ul class="dropdown">
         <li><a href="/technology/" class={`dropdown-item${isActive('/technology/') ? ' dropdown-item--active' : ''}`}>Overview</a></li>
-        {techGroups.map((group, i) => (
+        {techGroups.map(group => (
           <>
             <li><hr style="border-color: var(--color-nav-hover);" /></li>
             {group.map(p => (
@@ -230,7 +230,7 @@ const inTechnology = currentPath.startsWith('/technology/');
 
 <script>
   function initNavDropdowns() {
-    const groups = document.querySelectorAll('nav .group.relative');
+    const groups = document.querySelectorAll<HTMLElement>('nav .group.relative');
 
     function closeAll() {
       groups.forEach(g => {
@@ -241,7 +241,7 @@ const inTechnology = currentPath.startsWith('/technology/');
     }
 
     groups.forEach(group => {
-      const btn = group.querySelector('.nav-btn');
+      const btn = group.querySelector<HTMLButtonElement>('.nav-btn');
       if (!btn) return;
 
       btn.addEventListener('click', () => {
@@ -262,14 +262,14 @@ const inTechnology = currentPath.startsWith('/technology/');
           btn.focus();
         } else if (e.key === 'ArrowDown') {
           e.preventDefault();
-          const first = group.querySelector('.dropdown-item');
+          const first = group.querySelector<HTMLElement>('.dropdown-item');
           if (first) first.focus();
           if (!group.classList.contains('is-open')) btn.click();
         }
       });
 
       group.addEventListener('focusout', (e) => {
-        if (!group.contains(e.relatedTarget)) {
+        if (!group.contains(e.relatedTarget as Node | null)) {
           group.classList.remove('is-open');
           btn.setAttribute('aria-expanded', 'false');
         }
@@ -286,7 +286,7 @@ const inTechnology = currentPath.startsWith('/technology/');
 
     // Click outside closes all
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('nav .group.relative')) {
+      if (!(e.target as Element | null)?.closest('nav .group.relative')) {
         closeAll();
       }
     });

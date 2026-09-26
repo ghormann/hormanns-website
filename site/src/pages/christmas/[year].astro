@@ -10,7 +10,7 @@ import DisplayMap from '../../components/DisplayMap.astro';
 import CoverageList from '../../components/CoverageList.astro';
 import { coverageFor, coverageSchema } from '../../lib/coverage';
 import YouTubeGrid from '../../components/YouTubeGrid.astro';
-import { videoCategory } from '../../lib/videos';
+import { videoCategory, sortConstruction } from '../../lib/videos';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import StatBlock from '../../components/StatBlock.astro';
 import FavDisplays from '../../components/FavDisplays.astro';
@@ -42,11 +42,11 @@ const { entry, prev, next, isLatestYear } = Astro.props;
 const { Content } = await render(entry);
 const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisplays } = entry.data;
 
-// Song videos first, then setup and take-down, each trimmed to a first screenful.
+// Show Time (song) videos first, then Construction, each trimmed to a first screenful.
 const VIDEO_LIMIT = 8;
 const videoSections = [
-  { heading: 'Songs', noun: 'videos', videos: videos.filter(v => videoCategory(v) === 'song') },
-  { heading: 'Construction', noun: 'construction videos', videos: videos.filter(v => videoCategory(v) === 'construction') },
+  { heading: 'Show Time', noun: 'videos', videos: videos.filter(v => videoCategory(v) === 'song') },
+  { heading: 'Construction', noun: 'construction videos', videos: sortConstruction(videos.filter(v => videoCategory(v) === 'construction')) },
 ].filter(s => s.videos.length > 0);
 
 // Build a unique meta description for this year's page.
@@ -324,7 +324,7 @@ const jsonLd = graph(
 
 <!-- Wire up prose image links to the lightbox -->
 {photos && photos.length > 0 && (
-  <script define:vars={{ photoSrcs: photos.map((p, i) => ({ src: p.src.startsWith('/') || p.src.startsWith('http') ? p.src : `/${p.src}`, caption: p.caption ?? '', i })) }}>
+  <script is:inline define:vars={{ photoSrcs: photos.map((p, i) => ({ src: p.src.startsWith('/') || p.src.startsWith('http') ? p.src : `/${p.src}`, caption: p.caption ?? '', i })) }}>
     document.addEventListener('click', (e) => {
       const anchor = e.target.closest('.prose a');
       if (!anchor) return;

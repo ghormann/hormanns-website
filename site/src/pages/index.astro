@@ -9,7 +9,7 @@ import Img from '../components/Img.astro';
 import LiveCarCount from '../components/LiveCarCount.astro';
 import ShowStatus from '../components/ShowStatus.astro';
 import { existsSync } from 'node:fs';
-import { yearsOfDisplayWords, season, inVisitWindow } from '../lib/displayYears';
+import { yearsOfDisplayWords, inVisitWindow } from '../lib/displayYears';
 import { showFacts } from '../lib/showFacts';
 import { DISPLAY, origin, absolute, touristAttraction, breadcrumbList, person, graph } from '../lib/site';
 
@@ -18,7 +18,6 @@ const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display'
 // Canonical host comes from astro.config.mjs (`site`) so structured data can never
 // drift from the canonical/sitemap URLs.
 const siteBase = origin(Astro.site);
-const s = season();
 const show = await showFacts();
 const homeImage = '/christmas/2025/the_hormanns_2025.jpg';
 
@@ -153,7 +152,7 @@ const websiteJsonLd = graph(
     to learn about everything this site has to offer.
   </p>
 
-  <FavDisplays wide />
+  <FavDisplays wide voter="us" />
 
   <ShowStats />
 

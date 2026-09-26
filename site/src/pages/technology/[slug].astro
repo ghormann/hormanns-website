@@ -139,6 +139,8 @@ const clientSidebars = sectionSidebars.map(s => ({
     </section>
   )}
 
+  {showFavDisplays && <FavDisplays />}
+
   <div class="mt-8 pt-4 border-t brown-links text-sm" style="border-color: var(--color-accent); font-family: var(--font-sans);">
     <a href="/technology/">← Back to Technology</a>
     <span class="mx-2" aria-hidden="true">·</span>
@@ -146,7 +148,7 @@ const clientSidebars = sectionSidebars.map(s => ({
   </div>
 
   {clientSidebars.length > 0 && (
-    <script define:vars={{ clientSidebars, allPhotos: clientPhotos }}>
+    <script is:inline define:vars={{ clientSidebars, allPhotos: clientPhotos }}>
       function buildSidebar(sidebarDef) {
         const col = document.createElement('div');
         col.className = 'section-sidebar';

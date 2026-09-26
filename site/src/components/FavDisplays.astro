@@ -3,27 +3,31 @@
 //
 // The list still comes live from cooldisplays.net's favToolV2 script, but we
 // only read its data (coolTool.displays) and draw the cards ourselves: its own
-// renderer and stylesheet produced a cramped, very long list, with a red
-// cross over every display that isn't running this year. Here inactive
-// displays are left out and only the top few show until asked for more.
+// renderer and stylesheet produced a cramped, very long list. Displays that
+// aren't running this year stay in the list, with cooldisplays.net's red-cross
+// photo and a label saying so; only the top few show until asked for more.
 //
 // wide: two columns of cards on wider screens.
 // token: the CoolDisplays.net user token (u= parameter). Defaults to Greg's.
 // limit: cards shown before the "Show all" button.
+// voter: whose picks these are — "us" on the family home page, "me" on a
+//   personal page (and anywhere else, where the list is Greg's).
 interface Props {
   wide?: boolean;
   token?: string;
   limit?: number;
+  voter?: 'us' | 'me';
 }
 const {
   wide = false,
   token = 'f2f814292ee8f9276575a81a8d6137e8i2i555fae263f725f3ad15c3a4dfaf7347137805780',
   limit = 6,
+  voter = 'me',
 } = Astro.props;
 const scriptSrc = `https://cooldisplays.net/favToolV2.php?u=${token}`;
 ---
 
-<section class="fav-displays" data-fav-displays data-src={scriptSrc} data-limit={limit}>
+<section class="fav-displays" data-fav-displays data-src={scriptSrc} data-limit={limit} data-voter={voter}>
   <h3 class="text-lg font-semibold mt-8 mb-3" style="color: var(--color-heading);">Our Favorite Light Displays</h3>
   <div class:list={['fav-grid', { 'fav-grid--wide': wide }]} data-fav-list></div>
   <button type="button" class="fav-more" data-fav-more hidden></button>
@@ -98,6 +102,22 @@ const scriptSrc = `https://cooldisplays.net/favToolV2.php?u=${token}`;
     color: var(--color-heading);
   }
 
+  .fav-grid :global(.fav-inactive) {
+    display: inline-block;
+    margin-top: 0.25rem;
+    padding: 0.05rem 0.45rem;
+    border-radius: 0.25rem;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: #fff;
+    background-color: #6b7280;
+  }
+  .fav-grid :global(.fav-card--inactive .fav-title) {
+    color: #4b5563;
+  }
+
   .fav-more {
     display: block;
     margin: 0.875rem auto 0;
@@ -162,7 +182,7 @@ const scriptSrc = `https://cooldisplays.net/favToolV2.php?u=${token}`;
     return loading;
   }
 
-  function card(d: CoolDisplay): HTMLAnchorElement {
+  function card(d: CoolDisplay, voter: string): HTMLAnchorElement {
     const url = `https://cooldisplays.net/index.php?page=single&id=${d.displayid}`;
     const a = document.createElement('a');
     a.className = 'fav-card';
@@ -172,7 +192,8 @@ const scriptSrc = `https://cooldisplays.net/favToolV2.php?u=${token}`;
 
     const img = document.createElement('img');
     img.className = 'fav-thumb';
-    img.src = `https://cooldisplays.net/picture.php?v=${encodeURIComponent(d.ldate)}&width=192&display=${d.displayid}`;
+    const inactive = d.active !== 'Y';
+    img.src = `https://cooldisplays.net/picture.php?v=${encodeURIComponent(d.ldate)}&width=192${inactive ? '&addCross=1' : ''}&display=${d.displayid}`;
     img.alt = '';
     img.loading = 'lazy';
     img.decoding = 'async';
@@ -189,8 +210,15 @@ const scriptSrc = `https://cooldisplays.net/favToolV2.php?u=${token}`;
     meta.textContent = `${d.city.trim()}, ${d.state.trim()}`;
     const votes = document.createElement('span');
     votes.className = 'fav-votes';
-    votes.textContent = `${d.weight} ${d.weight === 1 ? 'vote' : 'votes'}, ${d.myweight} from us`;
+    votes.textContent = `${d.weight} ${d.weight === 1 ? 'vote' : 'votes'}, ${d.myweight} from ${voter}`;
     body.append(title, meta, votes);
+    if (inactive) {
+      a.classList.add('fav-card--inactive');
+      const note = document.createElement('span');
+      note.className = 'fav-inactive';
+      note.textContent = 'Not running this season';
+      body.appendChild(note);
+    }
 
     a.append(img, body);
     return a;
@@ -203,21 +231,21 @@ const scriptSrc = `https://cooldisplays.net/favToolV2.php?u=${token}`;
 
     loadDisplays(section.dataset.src!)
       .then((all) => {
-        const active = all
-          .filter((d) => d.active === 'Y')
+        const displays = all
+          .slice()
           .sort((a, b) => b.myweight - a.myweight || b.weight - a.weight);
-        if (active.length === 0) return;
+        if (displays.length === 0) return;
 
-        active.forEach((d, i) => {
-          const el = card(d);
+        displays.forEach((d, i) => {
+          const el = card(d, section.dataset.voter ?? 'me');
           if (i >= limit) el.hidden = true;
           list.appendChild(el);
         });
         section.querySelector<HTMLElement>('[data-fav-fallback]')!.hidden = true;
         section.querySelector<HTMLElement>('[data-fav-credit]')!.hidden = false;
 
-        if (active.length > limit) {
-          more.textContent = `Show all ${active.length} displays`;
+        if (displays.length > limit) {
+          more.textContent = `Show all ${displays.length} displays`;
           more.hidden = false;
           more.addEventListener('click', () => {
             const firstHidden = list.querySelector<HTMLElement>('.fav-card[hidden]');

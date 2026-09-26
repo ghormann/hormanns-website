@@ -4,7 +4,7 @@ import { DISPLAY } from '../lib/site';
 
 interface Props {
   year: number;
-  heroImage?: string;
+  heroImage?: string | null; // content frontmatter allows null
   highlight?: string; // one key stat to show
 }
 

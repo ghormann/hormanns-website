@@ -16,7 +16,7 @@ const { title, description, ogImage, ogImageAlt, jsonLd, noindex } = Astro.props
 ---
 <BaseLayout title={title} description={description} ogImage={ogImage} ogImageAlt={ogImageAlt} jsonLd={jsonLd} noindex={noindex}>
   <NavBar />
-  <main class="max-w-4xl mx-auto px-4 pt-20 pb-8">
+  <main id="main" tabindex="-1" class="max-w-4xl mx-auto px-4 pt-20 pb-8 focus:outline-none">
     <slot />
   </main>
   <Footer />

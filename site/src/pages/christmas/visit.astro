@@ -194,9 +194,8 @@ const description = `Free Christmas light show in Liberty Township, Ohio, open n
     font-family: var(--font-sans);
   }
   .directions-primary {
-    flex: 1 1 16rem;
-    display: block;
-    padding: 0.8rem 1.25rem;
+    display: inline-block;
+    padding: 0.7rem 1.75rem;
     border-radius: 0.5rem;
     text-align: center;
     font-weight: 600;
@@ -208,6 +207,12 @@ const description = `Free Christmas light show in Liberty Township, Ohio, open n
   }
   .directions-primary:hover {
     background-color: var(--color-footer-bg);
+  }
+  /* On phones, a full-width button is the easiest thing to hit. */
+  @media (max-width: 639px) {
+    .directions-primary {
+      flex: 1 1 auto;
+    }
   }
   .directions-secondary {
     font-size: 0.875rem;

@@ -64,7 +64,7 @@ const resolvedOgImageAlt = ogImageAlt ?? `${DISPLAY.name}, an animated Christmas
   <title>{title}</title>
 
   <!-- JSON-LD Structured Data -->
-  {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+  {jsonLd && <script is:inline type="application/ld+json" set:html={jsonLd} />}
 
   <!-- Google Fonts: Lora (serif body) + Inter (sans UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -83,7 +83,7 @@ const resolvedOgImageAlt = ogImageAlt ?? `${DISPLAY.name}, an animated Christmas
   </noscript>
 
   <!-- Google Analytics GA4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KKDNTP0TWZ"></script>
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-KKDNTP0TWZ"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -92,6 +92,9 @@ const resolvedOgImageAlt = ogImageAlt ?? `${DISPLAY.name}, an animated Christmas
   </script>
 </head>
 <body>
+  <!-- Lets keyboard and screen-reader users jump past the ~30 nav links.
+       Invisible until it receives focus (the first Tab on the page). -->
+  <a href="#main" class="skip-link">Skip to main content</a>
   <slot />
   <LightboxModal />
 </body>
