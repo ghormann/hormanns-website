@@ -1,7 +1,9 @@
 ---
 title: "The Countdown Clock"
-description: "Our giant pixel countdown clock — now 7,000+ RGB pixels."
-heroImage: https://img.youtube.com/vi/z0MqBhNhmZU/maxresdefault.jpg
+description: "Our giant pixel countdown clock — now over 2,200 RGB pixels."
+heroImage: /images/clock_hero.jpg
+heroImageAlt: "The pixel countdown clock at dusk showing 2874611 seconds, with the grid below scrolling a message in blue"
+cardImage: /images/clock_card.jpg
 order: 1
 navGroup: 1
 videos:
@@ -48,7 +50,7 @@ photos:
     thumb: "christmas/2001/boxes/_ssrs.jpg"
 ---
 
-Introduced in [2002](/christmas/2002/), the clock is one of the oldest elements in our display, having been rebuilt a few times since the original design. The current design contains two small grids of RGB pixels controlled by [E1.31](/technology/dmx/) controllers. A [custom Linux program](https://github.com/ghormann/GregsLights) controls the clock and underlying grid, updating the color of each pixel up to 20 times per second.
+Introduced in [2002](/christmas/2002/), the clock is one of the oldest elements in our display, having been rebuilt a few times since the original design. The current design has two parts, both made of RGB pixels controlled by [E1.31](/technology/dmx/) controllers: seven large digits across the top (43 pixels each) and a 96 × 20 pixel grid underneath, for about 2,200 pixels in all. A [custom Linux program](https://github.com/ghormann/GregsLights) controls the clock and underlying grid, updating the color of each pixel up to 20 times per second.
 
 ## History
 
@@ -59,3 +61,9 @@ In [2014](https://www.youtube.com/watch?v=tCQ9uxtrXfQ), we replaced the static "
 In [2015](/christmas/2015/), we scrapped [the Hill 320 controller](/technology/parallel-320/) and started using Dumb RGB Controllers to [convert the DMX signals to 12V data](https://www.youtube.com/watch?v=mOmyryUlp3c) that could be directly fed into the Solid State relays that still switched the 110V AC current for the lights. This allowed the control signal for all lights to be supplied via a single CAT-5 cable. The Linux PC calculates the number of seconds remaining until Christmas, determines which segments need to light up, and sends the correct DMX signal.
 
 [In 2017](https://www.youtube.com/watch?v=z0MqBhNhmZU), we finally scrapped the pegboard and incandescent mini-lights and converted the top half to use pixels as well. Everything is still powered by [custom source code](https://github.com/ghormann/GregsLights).
+
+## What the Grid Shows
+
+Most of the time, the grid under the clock rotates through messages: how many minutes, hours, or days are left until Christmas, holiday greetings, a snowball fight, and the radio station. When someone [texts their name](/technology/text-message/), it jumps to the front of the line. The program always scrolls through every waiting name before showing anything else.
+
+As midnight approaches on Christmas Eve (and New Year's Eve), the grid asks "READY TO COUNT LOUD?" and then counts down the final 30 seconds along with the clock, with the [large grid](/technology/grid/) joining in. Strobe lights fire when the clock hits zero.

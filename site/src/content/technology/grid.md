@@ -43,3 +43,10 @@ The grid is constructed using:
 - Multiple spools of 14-gauge underground landscape wiring to supply power
 - A [professional lighting truss](https://shop.solotech.com/collections/lighting-truss) *(the first year, galvanized pipe was used — not a good choice)*
 - 16" ground anchors with  stainless steel guy wires that hold the truss in place
+
+## Controlling the Grid
+
+The grid's 106 × 46 pixels are driven by the Kulp K8-B controller running [FPP](https://falconchristmas.github.io/). Most of the time, that controller simply follows the main show: it plays its part of each [xLights](https://xlights.org/) sequence, kept in step with the rest of the display by FPP MultiSync. This is where the [names texted in by visitors](/technology/text-message/) appear.
+
+The exception is the countdown to midnight on Christmas Eve and New Year's Eve. Our [custom Linux program](https://github.com/ghormann/GregsLights), the same one that runs the [countdown clock](/technology/clock/), starts sending live pixel data to the grid using the DDP protocol about 45 seconds before midnight. It scrolls "READY TO COUNT LOUD?" and then counts down the last 30 seconds in giant numbers. The controller is configured to prefer DDP data over the sequence whenever both are present, so the countdown temporarily overrides the show. Once the countdown ends, the program stops sending and the grid goes back to following the sequence.
+

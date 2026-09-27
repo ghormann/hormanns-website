@@ -1,6 +1,8 @@
 ---
 title: "Texting Your Name"
 description: "Text your first name to have it displayed on the 18ft × 8ft grid during the show."
+heroImage: /images/grid_names_hero.jpg
+heroImageAlt: "A visitor standing in front of the display while the large grid shows \"Merry Christmas ADRIANA\""
 order: 5
 navGroup: 2
 videos:
@@ -29,7 +31,7 @@ In [2018](/christmas/2018/), we added the ability for viewers to supply their fi
 ## How it Works
 
 1. We use the Twilio service to convert inbound text messages to API calls on our web server.
-2. Our web server (python fastAPI) accepts the message from Twilio.
+2. Our web server (Python [Flask](https://flask.palletsprojects.com/)) accepts the message from Twilio.
 3. The Python code validates the name against a whitelist of valid first names provided by the [Social Security Administration](https://www.ssa.gov/oact/babynames/limits.html).
 4. If the name isn't in the whitelist, a text message is sent to the admin and the sender is notified that the name needs review.
 5. For valid names, an MQTT message is generated and sent to both the Clock Controller Service and the xLights Render Service where it will be added to a local queue.
@@ -43,7 +45,11 @@ In [2018](/christmas/2018/), we added the ability for viewers to supply their fi
 
 ## Midnight Christmas Eve Display
 
-At midnight on Christmas Eve, the system switches things up: instead of the usual 13-name sequence, it produces an extended display that scrolls through the last 300 names received. You can see it in action [on YouTube](https://www.youtube.com/watch?v=s9nfcFMzzqk).
+At midnight on Christmas Eve, the system switches things up: instead of the usual 13-name sequence, it produces an extended display that scrolls through the last 150 names received, sorted alphabetically. You can see it in action [on YouTube](https://www.youtube.com/watch?v=s9nfcFMzzqk). The same thing happens at midnight on New Year's Eve, with a "Happy New Year" greeting instead of "Merry Christmas".
+
+## Birthdays
+
+If a text message mentions a birthday, we get an alert. From the admin page, we can then generate a personalized "Happy Birthday" sequence with that name, which is rendered the same way as the name sequence and played as the next song.
 
 ## Admin Interfaces
 

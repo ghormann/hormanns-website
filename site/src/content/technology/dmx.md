@@ -1,6 +1,9 @@
 ---
 title: "DMX / E1.31 with Pixels"
 description: "How RGB pixels and the E1.31 protocol replaced AC circuits in our display."
+heroImage: /images/pixel_hero.jpg
+heroImageAlt: "A single 12V WS2811 bullet pixel node with its red, white, and blue wires"
+cardImage: /images/20151019_pixel.jpg
 order: 4
 navGroup: 2
 videos:
@@ -55,7 +58,9 @@ We leverage a mixture of 5V and 12V pixels. Our 5V elements include the windows,
 
 Regardless of the style of pixel, they all work basically the same. Each pixel requires 3 DMX channels — one each for the intensity of Red, Green, and Blue. (This means our Mega Tree with 2,400 nodes requires 7,200 DMX channels, and our 8×18ft grid takes 14,628 channels!)
 
-Although there are a number of Pixel Controllers on the market, we currently use Falcon Boards from [Kulp Lights](https://kulplights.com/) for any new construction. We still have 3 [Falcon F16v3](https://pixelcontroller.com/store/content/9-f16v3-pixel-controller) and a few [AlphaPix 4](https://www.holidaycoro.com/AlphaPix-4-V3-RGB-Pixel-Controller-p/722-v3.htm?srsltid=AfmBOoqlXgemmxcvId9n0Ag1HbbCuJ65S_RdyhqbmfInOHeRQafI_5JE) controllers. All types of controllers take DMX over IP Ethernet (E1.31) and convert the data to the WS2811 serial protocol that the pixels understand. These controllers sit outside, near the pixels in waterproof enclosures along with power supplies that convert 120V to either 5V or 12V for the pixels. The [FPP-based](https://github.com/FalconChristmas/fpp) controllers allow the sequence to be loaded into the controller, reducing network bandwidth during the show.
+Although there are a number of Pixel Controllers on the market, we currently use FPP controllers from [Kulp Lights](https://kulplights.com/) for any new construction. We still have a few [Falcon F16v3](https://pixelcontroller.com/store/content/9-f16v3-pixel-controller) controllers from Pixel Controllers and a few [AlphaPix 4](https://www.holidaycoro.com/AlphaPix-4-V3-RGB-Pixel-Controller-p/722-v3.htm?srsltid=AfmBOoqlXgemmxcvId9n0Ag1HbbCuJ65S_RdyhqbmfInOHeRQafI_5JE) controllers from HolidayCoro. All types of controllers take DMX over IP Ethernet (E1.31) and convert the data to the WS2811 serial protocol that the pixels understand. These controllers sit outside, near the pixels in waterproof enclosures along with power supplies that convert 120V to either 5V or 12V for the pixels. The [FPP-based](https://github.com/FalconChristmas/fpp) controllers allow the sequence to be loaded into the controller, reducing network bandwidth during the show.
+
+Most of the show is made of sequences designed in [xLights](https://xlights.org/) ahead of time and played back by FPP. A few elements are different: the [countdown clock](/technology/clock/) and the small grid under it, the [snowmen](/technology/snowmen/), the [information board](/technology/info-board/), and the midnight countdown on the [large grid](/technology/grid/) are drawn live by our [custom Linux program](https://github.com/ghormann/GregsLights). It calculates every frame on the fly and sends it straight to the controllers using E1.31 or the similar DDP protocol. That lets these elements react to things a pre-built sequence can't know about, like the number of seconds until Christmas, names texted in by visitors, and the current power usage.
 
 ## Dumb RGB
 

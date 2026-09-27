@@ -10,7 +10,7 @@ const pages = (await getCollection('technology', ({ data }) => !data.draft))
   {pages.map(p => {
     const abs = (s: string) => (s.startsWith('/') || s.startsWith('http') ? s : `/${s}`);
     const firstPhoto = p.data.photos?.[0];
-    const img = p.data.heroImage ?? (firstPhoto ? (firstPhoto.thumb ?? firstPhoto.src) : null);
+    const img = p.data.cardImage ?? p.data.heroImage ?? (firstPhoto ? (firstPhoto.thumb ?? firstPhoto.src) : null);
     const imgSrc = img ? abs(img) : null;
     return (
       <a

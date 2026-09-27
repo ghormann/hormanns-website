@@ -39,7 +39,7 @@ sectionSidebars:
     maxPhotos: 2
 ---
 
-The tunnel was added to our display in [2022](/christmas/2022/), on the right side of the yard after moving the [countdown clock](/technology/clock/) to the far left to make room. When fully assembled, it forms a 16x8 foot walk-through arch of RGB pixels, with lights on the sides, top, and back. With more pixels than [the snowmen](/technology/snowmen/) (13,256), the tunnel became the single largest element in our display with 22,754 pixels. Almost half of those pixels (8,930) make up the back of the tunnel where the pixels are spaced just 1" apart. (The sides and top are 2".)
+The tunnel was added to our display in [2022](/christmas/2022/), on the right side of the yard after moving the [countdown clock](/technology/clock/) to the far left to make room. When fully assembled, it forms a 16x8 foot walk-through arch of RGB pixels, with lights on the sides, top, and back. With more pixels than [the snowmen](/technology/snowmen/) (13,538), the tunnel became the single largest element in our display with 22,754 pixels. Almost half of those pixels (8,930) make up the back of the tunnel where the pixels are spaced just 1" apart. (The sides and top are 2".)
 
 ## Construction
 
@@ -55,6 +55,10 @@ To control the pixels, we use a 32-port controller from [Kulp Lights](https://ku
 
 ## Interactive Buttons (2024)
 
-In [2024](/christmas/2024/) we added push button controls mounted at the tunnel entrance. Visitors can press the buttons to select which sequence plays on the tunnel. The buttons are wired into a Raspberry Pi running [FPP](https://falconchristmas.github.io/), which sends MQTT messages that are picked up by both our stats server and the Kulp Lights controller running the pixels.
+In [2024](/christmas/2024/) we added push button controls mounted at the tunnel entrance. Visitors can press the buttons to select which sequence plays on the tunnel. There are five colored buttons (blue, green, red, white, and yellow), and each color has its own list of sequences to match. Every press plays the next sequence in that color's list. When nobody is pressing buttons, the tunnel works its way through all of the colors on its own.
+
+The buttons are wired into a Raspberry Pi running [FPP](https://falconchristmas.github.io/), which sends an MQTT message for each press. Our [scheduler](https://github.com/ghormann/fppscheduler) picks up the message and starts the matching sequence on the tunnel's Kulp Lights controller using FPP's REST API. Our stats server records every press as well.
+
+A P5 panel sign above the tunnel entrance scrolls button stats: how many times the buttons have been pressed today, which color has been the most popular, and the total for the season. Between stats updates, the sign plays its own sequence, such as the "Come inside" message in the photo. The scheduler draws the text using FPP's built-in text overlay, so no custom sign software is needed.
 
 The buttons were a hit right away. Visitors pressed them 40,846 times in [2024](/christmas/2024/) and 39,661 times in [2025](/christmas/2025/), so the novelty hasn't worn off.

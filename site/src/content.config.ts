@@ -50,6 +50,8 @@ const technology = defineCollection({
     navGroup: z.number().default(1),
     heroImage: z.string().nullish(),
     heroImageAlt: z.string().nullish(),
+    // 16:9 image for the Technology index card when the hero is cropped to a different shape
+    cardImage: z.string().nullish(),
     videos: z.array(videoSchema).default([]),
     photos: z.array(photoSchema).default([]),
     sectionSidebars: z.array(sectionSidebarSchema).default([]),
