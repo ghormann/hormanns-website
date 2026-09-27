@@ -109,7 +109,7 @@ const description = `Visitors to ${DISPLAY.name} in Liberty Township, Ohio have 
       In partnership with the <strong><a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a></strong>, we collect
       {CHARITY.accepts} in support of {CHARITY.beneficiary}. There is a
       donation booth to the left of the display, open every night the show is on, and you can
-      also give online through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a>
+      also give online through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer" data-ga-event="donate_click" data-ga-method="venmo">Venmo</a>
       ({CHARITY.treasurer} is the treasurer). Everything collected goes straight to the food banks.
     </p>
 
@@ -143,7 +143,7 @@ const description = `Visitors to ${DISPLAY.name} in Liberty Township, Ohio have 
     <h2 class="text-2xl font-bold mt-8 mb-3">How to give</h2>
     <ul>
       <li><strong>At the display:</strong> the donation booth to the left of the show, open every night the lights are on. Accepting: {CHARITY.accepts}</li>
-      <li><strong>Online:</strong> through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a>. {CHARITY.treasurer} is the treasurer for the <a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a>.</li>
+      <li><strong>Online:</strong> through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer" data-ga-event="donate_click" data-ga-method="venmo">Venmo</a>. {CHARITY.treasurer} is the treasurer for the <a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a>.</li>
     </ul>
 
     <h2 class="text-2xl font-bold mt-8 mb-3">Come see it</h2>

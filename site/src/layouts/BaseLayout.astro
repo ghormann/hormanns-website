@@ -82,13 +82,40 @@ const resolvedOgImageAlt = ogImageAlt ?? `${DISPLAY.name}, an animated Christmas
     />
   </noscript>
 
-  <!-- Google Analytics GA4 -->
-  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-KKDNTP0TWZ"></script>
+  <!-- Google Analytics GA4. Only production builds load the tag, so dev and
+       preview visits stay out of the reports; there gtag() logs to the console
+       instead, which is handy for checking events. -->
+  {import.meta.env.PROD ? (
+    <>
+      <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-KKDNTP0TWZ"></script>
+      <script is:inline>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KKDNTP0TWZ');
+      </script>
+    </>
+  ) : (
+    <script is:inline>
+      function gtag(){console.debug('[gtag]', ...arguments);}
+    </script>
+  )}
+
+  <!-- Any element with data-ga-event="name" sends that event when clicked.
+       Other data-ga-* attributes become parameters:
+       data-ga-video-id="abc" is sent as video_id: "abc". -->
   <script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-KKDNTP0TWZ');
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest && e.target.closest('[data-ga-event]');
+      if (!el) return;
+      var params = {};
+      Object.keys(el.dataset).forEach(function (key) {
+        if (key === 'gaEvent' || !/^ga[A-Z]/.test(key)) return;
+        var name = key.slice(2).replace(/[A-Z]/g, function (c) { return '_' + c.toLowerCase(); }).slice(1);
+        params[name] = el.dataset[key];
+      });
+      gtag('event', el.dataset.gaEvent, params);
+    });
   </script>
 </head>
 <body>

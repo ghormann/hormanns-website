@@ -45,8 +45,8 @@ const { title, year, heroImage, heroImageAlt, stats, videos, photos, showFavDisp
 // Show Time (song) videos first, then Construction, each trimmed to a first screenful.
 const VIDEO_LIMIT = 8;
 const videoSections = [
-  { heading: 'Show Time', noun: 'videos', videos: videos.filter(v => videoCategory(v) === 'song') },
-  { heading: 'Construction', noun: 'construction videos', videos: sortConstruction(videos.filter(v => videoCategory(v) === 'construction')) },
+  { heading: 'Show Time', noun: 'videos', category: 'song' as const, videos: videos.filter(v => videoCategory(v) === 'song') },
+  { heading: 'Construction', noun: 'construction videos', category: 'construction' as const, videos: sortConstruction(videos.filter(v => videoCategory(v) === 'construction')) },
 ].filter(s => s.videos.length > 0);
 
 // Build a unique meta description for this year's page.
@@ -223,7 +223,7 @@ const jsonLd = graph(
           <h3 class="text-lg font-semibold mt-4" style="color: var(--color-heading);">
             {s.heading} <span class="text-sm font-normal" style="color: var(--color-link); font-family: var(--font-sans);">({s.videos.length})</span>
           </h3>
-          <YouTubeGrid videos={s.videos} limit={VIDEO_LIMIT} noun={s.noun} />
+          <YouTubeGrid videos={s.videos} limit={VIDEO_LIMIT} noun={s.noun} category={s.category} />
         </section>
       ))}
     </>

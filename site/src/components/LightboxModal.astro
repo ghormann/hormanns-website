@@ -93,6 +93,10 @@
 </style>
 
 <script>
+  declare global {
+    interface Window { gtag?: (...args: unknown[]) => void; }
+  }
+
   const dialog   = document.getElementById('lightbox') as HTMLDialogElement;
   const inner    = document.getElementById('lightbox-inner') as HTMLDivElement;
   const imgEl    = document.getElementById('lightbox-img') as HTMLImageElement;
@@ -148,6 +152,8 @@
     opener = op ?? null;
     updateSlide();
     dialog.showModal();
+    // Counted once per opening; prev/next would only inflate the number.
+    window.gtag?.('event', 'photo_view');
   });
 
   // Close button

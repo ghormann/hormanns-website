@@ -67,10 +67,10 @@ const description = `Free Christmas light show in Liberty Township, Ohio, open n
   <VisitFacts />
 
   <div class="directions">
-    <a href={DIRECTIONS_URL.google} target="_blank" rel="noopener noreferrer" class="directions-primary">
+    <a href={DIRECTIONS_URL.google} target="_blank" rel="noopener noreferrer" class="directions-primary" data-ga-event="get_directions" data-ga-provider="google">
       Get Directions
     </a>
-    <a href={DIRECTIONS_URL.apple} target="_blank" rel="noopener noreferrer" class="directions-secondary">
+    <a href={DIRECTIONS_URL.apple} target="_blank" rel="noopener noreferrer" class="directions-secondary" data-ga-event="get_directions" data-ga-provider="apple">
       Apple Maps
     </a>
   </div>
@@ -150,7 +150,7 @@ const description = `Free Christmas light show in Liberty Township, Ohio, open n
     <h2 class="text-2xl font-bold mt-8 mb-3">Control the show from your phone</h2>
     <p>
       While you're parked out front, open
-      <a href={DISPLAY.interactUrl} target="_blank" rel="noopener noreferrer">vote-now.org</a>
+      <a href={DISPLAY.interactUrl} target="_blank" rel="noopener noreferrer" data-ga-event="interact_click">vote-now.org</a>
       to <a href="/technology/voting/">vote for the next song</a>, pick which
       <a href="/technology/snowmen/">snowmen</a> appear, and see what's playing. You can also
       <a href="/technology/text-message/">text your first name</a> to have it appear in lights
@@ -163,7 +163,7 @@ const description = `Free Christmas light show in Liberty Township, Ohio, open n
       There's never a charge to see the display. If you'd like to bring something, in partnership with the
       <a href={CHARITY.partnerUrl} target="_blank" rel="noopener noreferrer">{CHARITY.partner}</a>, we collect {CHARITY.accepts} for {CHARITY.beneficiary}. There's a
       donation booth to the left of the display, open every night the show is on, and you can
-      give online through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer">Venmo</a>
+      give online through <a href={VENMO_URL} target="_blank" rel="noopener noreferrer" data-ga-event="donate_click" data-ga-method="venmo">Venmo</a>
       ({CHARITY.treasurer} is the treasurer).
       <a href="/christmas/giving/">See what visitors have donated so far →</a>
     </p>

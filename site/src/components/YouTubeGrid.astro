@@ -1,6 +1,6 @@
 ---
 import { DISPLAY } from '../lib/site';
-import type { Video } from '../lib/videos';
+import type { VideoCategory, Video } from '../lib/videos';
 
 interface Props {
   videos: Video[];
@@ -9,9 +9,11 @@ interface Props {
   limit?: number;
   /** What the "Show all N …" button calls them, e.g. "construction videos". */
   noun?: string;
+  /** Sent to analytics as video_category, to tell the grids apart. */
+  category: VideoCategory | 'technology';
 }
 
-const { videos, cols = 2, limit, noun = 'videos' } = Astro.props;
+const { videos, cols = 2, limit, noun = 'videos', category } = Astro.props;
 const collapsible = limit !== undefined && videos.length > limit;
 ---
 
@@ -28,6 +30,10 @@ const collapsible = limit !== undefined && videos.length > limit;
             class="group flex flex-col rounded overflow-hidden shadow hover:shadow-md transition-shadow"
             style="background-color: var(--color-card-bg);"
             data-extra={collapsible && i >= limit ? '' : undefined}
+            data-ga-event="video_click"
+            data-ga-video-id={v.id}
+            data-ga-video-title={v.title}
+            data-ga-video-category={category}
           >
             <div class="relative overflow-hidden aspect-video bg-gray-200">
               <img
@@ -55,7 +61,7 @@ const collapsible = limit !== undefined && videos.length > limit;
       })}
     </div>
     {collapsible && (
-      <button type="button" class="video-more" data-video-more hidden>
+      <button type="button" class="video-more" data-video-more hidden data-ga-event="video_show_all" data-ga-video-category={category}>
         Show all {videos.length} {noun}
       </button>
     )}
