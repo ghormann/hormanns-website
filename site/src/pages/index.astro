@@ -12,6 +12,7 @@ import { existsSync } from 'node:fs';
 import { yearsOfDisplayWords, inVisitWindow } from '../lib/displayYears';
 import { showFacts } from '../lib/showFacts';
 import { DISPLAY, origin, absolute, touristAttraction, breadcrumbList, person, graph } from '../lib/site';
+import { getCollection } from 'astro:content';
 
 const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display' }];
 
@@ -19,6 +20,11 @@ const historyVideo = [{ id: 'Nd7ADGezo3s', title: 'Video History of our Display'
 // drift from the canonical/sitemap URLs.
 const siteBase = origin(Astro.site);
 const show = await showFacts();
+// Newest published season page — during the visit window that's the season
+// about to open (or running).
+const latestYear = Math.max(
+  ...(await getCollection('christmas', ({ data }) => !data.draft)).map(e => e.data.year),
+);
 const homeImage = '/christmas/2025/the_hormanns_2025.jpg';
 
 // The sidebar photo is picked on cooldisplays.net and downloaded at build time
@@ -70,7 +76,8 @@ const websiteJsonLd = graph(
     <p class="brown-links text-sm" style="font-family: var(--font-sans);">
       <a href="/christmas/visit/"><strong>Plan your visit</strong></a> &middot;
       <a href="/christmas/faq/">FAQ</a> &middot;
-      <a href="/christmas/giving/">Giving back</a>
+      <a href="/christmas/giving/">Giving back</a> &middot;
+      <a href={`/christmas/${latestYear}/`}>What's new for {latestYear}</a>
     </p>
   </section>
 
