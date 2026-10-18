@@ -2,12 +2,21 @@
 import { getCollection } from 'astro:content';
 import PageLayout from '../../layouts/PageLayout.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Img from '../../components/Img.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
 import { season } from '../../lib/displayYears';
 import { DISPLAY, CHARITY, VENMO_URL, origin, absolute, breadcrumbList, touristAttraction, person, graph } from '../../lib/site';
 
 const base = origin(Astro.site);
 const s = season();
-const heroImage = '/christmas/2025/20251222_211104.jpg';
+const heroImage = '/christmas/giving/donate_here_sign_2024.jpg';
+
+const boothPhotos = [
+  { src: '/christmas/giving/donation_booth_2023.jpg', caption: 'The donation booth beside the display' },
+  { src: '/christmas/giving/donation_bin_2023.jpg', caption: 'Canned goods and the gift card & cash box' },
+  { src: '/christmas/giving/donation_bags_2025.jpg', caption: 'A full table of grocery bags, 2025' },
+  { src: '/christmas/giving/donation_wagon_2024.jpg', caption: 'One night\'s haul, headed to the food bank' },
+];
 
 // Donation totals are read straight from each year's stats block, so adding
 // `food_donated_lbs` / `cash_donated` to a year file is all it takes to appear here.
@@ -81,6 +90,15 @@ const description = `Visitors to ${DISPLAY.name} in Liberty Township, Ohio have 
     </p>
   </div>
 
+  <Img
+    src={heroImage}
+    alt="The lit Donate Here — Sharonville Food Bank sign above the car counter at the display"
+    class="w-full rounded-lg shadow mb-6"
+    loading="eager"
+    fetchpriority="high"
+    sizes="(max-width: 896px) 100vw, 896px"
+  />
+
   {giving.length > 0 && (
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
       {totalFood > 0 && (
@@ -113,6 +131,8 @@ const description = `Visitors to ${DISPLAY.name} in Liberty Township, Ohio have 
       ({CHARITY.treasurer} is the treasurer). Everything collected goes straight to the food banks.
     </p>
 
+    <PhotoGallery photos={boothPhotos} id="gallery-giving" altFallback="The donation booth at the display" />
+
     <h2 class="text-2xl font-bold mt-8 mb-3">What visitors have given</h2>
 
     {giving.length > 0 ? (
@@ -139,6 +159,18 @@ const description = `Visitors to ${DISPLAY.name} in Liberty Township, Ohio have 
     ) : (
       <p>We're still tallying this season's totals — check back in January.</p>
     )}
+
+    <figure class="my-6 mx-auto sm:w-2/3">
+      <Img
+        src="/christmas/giving/donate_here_lakota_2023.jpg"
+        alt="The Donate Here — Reach Out Lakota sign at night in 2023"
+        class="w-full rounded-lg shadow"
+        sizes="(max-width: 896px) 100vw, 896px"
+      />
+      <figcaption class="text-center text-xs mt-1" style="font-family: var(--font-sans); color: var(--color-link);">
+        The recipients change from year to year — in 2023, donations were split between Reach Out Lakota and The Princeton Closet.
+      </figcaption>
+    </figure>
 
     <h2 class="text-2xl font-bold mt-8 mb-3">How to give</h2>
     <ul>
