@@ -33,6 +33,7 @@ const factSheet: { label: string; value: string | null; href?: string }[] = [
   // Link text, not a bare URL: a raw URL is one unbreakable word and forces
   // the whole page to scroll sideways on a phone.
   { label: 'Facebook', value: DISPLAY.name, href: DISPLAY.facebookUrl },
+  { label: 'Pronunciation', value: 'Hormann is pronounced HOR-man' },
   { label: 'Contact', value: 'Greg Hormann - ghormann@gmail.com', href: 'mailto:ghormann@gmail.com' },
 ];
 
@@ -52,6 +53,11 @@ const droneVideos = allYears.flatMap(y => y.data.videos.filter(v => /drone/i.tes
 const droneYears = [...new Set(
   allYears.filter(y => y.data.videos.some(v => /drone/i.test(v.title))).map(y => y.data.year),
 )].sort((a, b) => a - b);
+
+// The newest season's stats are filled in after it closes, so take the figure
+// from the most recent season that actually reports it.
+const tunnelSeason = allYears.find(y => typeof y.data.stats?.tunnel_button_presses === 'number');
+const tunnelPresses = tunnelSeason?.data.stats?.tunnel_button_presses as number | undefined;
 
 const pressPhotos = [
   {
@@ -144,7 +150,7 @@ const jsonLd = graph(
   <div class="rounded-lg px-6 py-4 mb-6 -mx-2" style="background-color: var(--color-accent);">
     <h1 class="text-3xl font-bold m-0" style="color: var(--color-heading);">Press &amp; Media</h1>
     <p class="mt-2 text-sm" style="color: var(--color-link-on-accent); font-family: var(--font-sans);">
-      We're happy to host a camera crew. Just email first.
+      Reporters, photographers, and camera crews are always welcome. Here's everything you need for your story.
     </p>
   </div>
 
@@ -168,6 +174,57 @@ const jsonLd = graph(
       ))}
     </dl>
 
+    <h2 class="text-2xl font-bold mt-8 mb-3">About the display</h2>
+    <p>
+      Free to quote or adapt:
+    </p>
+    <blockquote>
+      {DISPLAY.name} is a family-run holiday light show in Liberty Township, Ohio.
+      Greg and Mary Hormann started it in 2001, and it has been computer controlled from the first
+      season. It has since grown to {show.pixels.toLocaleString('en-US')} individually controlled
+      pixels synchronized to <span data-show-stat="minutes-word">{show.minutes} minutes</span> of music on {DISPLAY.fmFrequency}.
+      Visitors vote for the next song from their phones, text their names onto the display, and
+      donate food and cash for local food banks. Admission is free, and the show runs nightly
+      through the holiday season.
+    </blockquote>
+
+    <h2 class="text-2xl font-bold mt-8 mb-3">How we can help</h2>
+    <p>
+      We love sharing the display and will work around your schedule and format. The show runs
+      nightly from {SHOW_HOURS_TEXT}, so it's lit for the early and late evening newscasts, and
+      we can do early-morning sessions on special request. There's plenty of room on the street
+      for news vans.
+    </p>
+    <ul>
+      <li>
+        <strong>Live shots.</strong> We're glad to host a live broadcast from the yard, with an
+        on-camera interview during the segment.
+      </li>
+      <li>
+        <strong>Pre-recorded interviews.</strong> Come out to shoot B-roll and sit down with us
+        for an interview you can cut into a package.
+      </li>
+      <li>
+        <strong>Build footage.</strong> Setup takes 14 days, and we have time-lapse videos of the
+        build and takedown you're welcome to use. They're on the <a href="/christmas/">season pages</a>,
+        or ask and we'll point you to the right one.
+      </li>
+      <li>
+        <strong>Comments for written stories.</strong> Writing a holiday lights roundup or a feature?
+        We're happy to answer questions by email or provide a quote.
+      </li>
+    </ul>
+    <p>
+      Feel free to show up anytime during show hours, though a heads-up helps us make sure someone
+      is available. Email <a href="mailto:ghormann@gmail.com">ghormann@gmail.com</a>, or for a
+      quicker reply, message us on
+      {' '}<a href={DISPLAY.facebookUrl} target="_blank" rel="noopener noreferrer">Facebook</a>.
+    </p>
+    <p>
+      You're welcome to talk with visitors at the display. Whether to be interviewed or filmed,
+      especially children, is up to each visitor and their parents.
+    </p>
+
     <h2 class="text-2xl font-bold mt-8 mb-3">The story angles</h2>
     <ul>
       <li>
@@ -182,7 +239,7 @@ const jsonLd = graph(
       <li>
         <strong>Visitors control parts of the show.</strong> They vote for the next song from their
         phones, text their names onto the 18ft × 8ft grid over the front door, and press buttons in
-        the walk-through tunnel (39,661 presses last season).
+        the walk-through tunnel{tunnelPresses && tunnelSeason && ` (${tunnelPresses.toLocaleString('en-US')} presses in ${tunnelSeason.data.year})`}.
         <a href="/technology/">How it works →</a>
       </li>
       <li>
@@ -192,9 +249,9 @@ const jsonLd = graph(
       </li>
     </ul>
 
-    <h2 class="text-2xl font-bold mt-8 mb-3">Photos</h2>
+    <h2 class="text-2xl font-bold mt-8 mb-3">Photos &amp; video</h2>
     <p>
-      These are cleared for editorial use with credit to <strong>Greg &amp; Mary Hormann</strong>.
+      These are cleared for editorial use with credit to <strong>{DISPLAY.name}</strong>.
       Click any image to open it full size. Even higher-resolution originals are available on request.
     </p>
 
@@ -220,8 +277,9 @@ const jsonLd = graph(
       {' '}{droneYears.length} seasons between {droneYears[0]} and
       {' '}{droneYears[droneYears.length - 1]}. The
       <a href={`/christmas/${latestSeason.data.year}/`}> {latestSeason.data.year} season page</a>
-      {' '}alone has {latestSeason.data.videos.length}. Email us if you need something specific
-      that isn't here.
+      {' '}alone has {latestSeason.data.videos.length}. You're welcome to air any of our YouTube
+      footage of the display, including the drone, setup, and takedown videos, with the same credit.
+      Email us if you need something specific that isn't here.
 
     </p>
 
@@ -249,7 +307,8 @@ const jsonLd = graph(
 
     <h2 class="text-2xl font-bold mt-8 mb-3">Contact</h2>
     <p>
-      Greg Hormann - <a href="mailto:ghormann@gmail.com">ghormann@gmail.com</a>.
+      Greg Hormann - <a href="mailto:ghormann@gmail.com">ghormann@gmail.com</a>, or message us on
+      {' '}<a href={DISPLAY.facebookUrl} target="_blank" rel="noopener noreferrer">Facebook</a> for a quicker reply.
       For visiting details, see <a href="/christmas/visit/">Plan Your Visit</a>.
     </p>
 
