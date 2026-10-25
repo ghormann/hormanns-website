@@ -170,7 +170,9 @@ const scriptSrc = `https://cooldisplays.net/favToolV2.php?u=${token}`;
   function loadDisplays(src: string): Promise<CoolDisplay[]> {
     loading ??= new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = src;
+      // A fresh copy every time: a phone once kept a broken cached copy that
+      // reloading didn't replace, leaving the list empty.
+      script.src = `${src}&_=${Date.now()}`;
       script.async = true;
       script.onload = () => {
         const displays = window.coolTool?.displays;
