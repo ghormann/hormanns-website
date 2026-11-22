@@ -22,7 +22,7 @@ export const DISPLAY = {
 } as const;
 
 /** A photo of the lit display, for the season Event (the upcoming season's own photos may not exist yet). */
-export const SEASON_EVENT_IMAGE = '/christmas/2025/the_hormanns_2025.jpg';
+export const SEASON_EVENT_IMAGE = '/christmas/2026/the_hormanns_2026.jpg';
 
 export const VENMO_URL = 'https://account.venmo.com/u/Verna-Heaney';
 

@@ -23,7 +23,7 @@ const {
 
 const siteUrl = Astro.site ?? new URL('https://thehormanns.net');
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
-const defaultOgImage = new URL('/christmas/2025/the_hormanns_2025.jpg', siteUrl).href;
+const defaultOgImage = new URL('/christmas/2026/the_hormanns_2026.jpg', siteUrl).href;
 const resolvedOgImage = ogImage
   ? (ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl).href)
   : defaultOgImage;

@@ -8,7 +8,6 @@ import ShowStats from '../components/ShowStats.astro';
 import Img from '../components/Img.astro';
 import LiveCarCount from '../components/LiveCarCount.astro';
 import ShowStatus from '../components/ShowStatus.astro';
-import { existsSync } from 'node:fs';
 import { yearsOfDisplayWords, inVisitWindow } from '../lib/displayYears';
 import { showFacts } from '../lib/showFacts';
 import { DISPLAY, origin, absolute, touristAttraction, breadcrumbList, person, graph } from '../lib/site';
@@ -25,14 +24,7 @@ const show = await showFacts();
 const latestYear = Math.max(
   ...(await getCollection('christmas', ({ data }) => !data.draft)).map(e => e.data.year),
 );
-const homeImage = '/christmas/2025/the_hormanns_2025.jpg';
-
-// The sidebar photo is picked on cooldisplays.net and downloaded at build time
-// (scripts/fetch-remote-images.mjs). Only if no copy has ever been fetched do
-// we fall back to hot-linking it.
-const displayPhoto = existsSync('public/_remote/home-display.png')
-  ? '/_remote/home-display.png'
-  : 'https://cooldisplays.net/picture.php?pictid=278&width=800';
+const homeImage = '/christmas/2026/the_hormanns_2026.jpg';
 
 const websiteJsonLd = graph(
   {
@@ -53,7 +45,7 @@ const websiteJsonLd = graph(
 <PageLayout
   title="Greg and Mary Hormann — Liberty Township, Ohio"
   description={`The personal website of Greg and Mary Hormann — family, ${DISPLAY.name}, and technology in Liberty Township, Ohio (Cincinnati area).`}
-  ogImage="/christmas/2025/the_hormanns_2025.jpg"
+  ogImage="/christmas/2026/the_hormanns_2026.jpg"
   jsonLd={websiteJsonLd}
 >
 
@@ -119,7 +111,7 @@ const websiteJsonLd = graph(
       <a href="/christmas/">
         <Img
           class="rounded-lg shadow w-full mb-4"
-          src={displayPhoto}
+          src={homeImage}
           alt={DISPLAY.name}
           sizes="(max-width: 640px) 100vw, 280px"
         />
