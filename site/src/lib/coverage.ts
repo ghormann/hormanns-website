@@ -34,6 +34,27 @@ export const COVERAGE_LABEL: Record<CoverageType, string> = {
 
 export const coverage: Coverage[] = [
   {
+    outlet: 'WKRC Local 12',
+    title: 'Fiona tribute lights up Liberty Township',
+    url: 'https://www.facebook.com/reel/1494911859174511',
+    date: '2026-11-20',
+    type: 'segment',
+    note: 'Loving tributes to Fiona have poured in over the past two days, and one of the most unique is lighting up Liberty Township in Butler County for the holiday season.',
+    byline: 'Daniel Zivian',
+    // Facebook's own thumbnail URL expires, so a copy is hosted here.
+    image: 'https://thehormanns.net/christmas/2026/wkrc_fiona_tribute_reel.jpg',
+  },
+  {
+    outlet: 'WKRC Local 12',
+    title: 'Long-running Tri-State light display featuring Fiona to include special tribute',
+    url: 'https://local12.com/news/local/long-running-light-display-featuring-fiona-to-include-special-tribute-christmas-holiday-season-led-lights-hippo-iconic-cincinnati-liberty-township-butler-county-music-sync-radio-station-zoo',
+    date: '2026-11-20',
+    type: 'article',
+    byline: 'Daniel Zivian',
+    image:
+      'https://local12.com/resources/media2/16x9/1280/1320/center/90/88b3c4fd-f391-47ca-8681-8a8b9e0e32fc-ea70a8380a1d4a97b2c304b451921d0b.png',
+  },
+  {
     outlet: 'Lakota East Spark',
     title: 'Story Behind the Lights',
     url: 'https://lakotaeastsparkonline.com/story-behind-the-lights/',
