@@ -43,7 +43,7 @@ sectionSidebars:
     maxPhotos: 1
 ---
 
-> **Note:** The information on this page is rather old and was never fully completed. Although this can technically still be built and used today, there are much better solutions available. This page is kept for historical reference only. If you are looking for an inexpensive DIY AC solution that also supports dimming, check out the [Renard](http://doityourselfchristmas.com/wiki/index.php?title=Renard_Main_Page) set of solutions.
+> **Note:** The information on this page is rather old and was never fully completed. Although this can technically still be built and used today, there are much better solutions available. This page is kept for historical reference only. If you are looking for an inexpensive DIY AC solution that also supports dimming, check out [Light-O-Rama](https://store.lightorama.com/).
 
 > **Standard disclaimer:** I'm not responsible for anyone hooking these circuits up and the results that follow their use.
 

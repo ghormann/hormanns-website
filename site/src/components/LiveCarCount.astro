@@ -3,8 +3,9 @@
 // visitors deciding whether to head over right now. Counts come from the
 // car counter (/technology/car-counter/) via vote-now.org.
 //
-// Only checked while the season is running (by date, not show hours): outside
-// it the cameras would just be counting everyday parked cars. Renders nothing
+// Only checked during the season, from 30 minutes before the show until
+// midnight (12:30 AM after Christmas Eve): at other times the cameras would
+// just be counting everyday parked cars. Renders nothing
 // visible until the request succeeds with at least one car. Safe to use more
 // than once on a page.
 interface Props {
@@ -17,12 +18,12 @@ const { class: className = 'leading-relaxed mb-3' } = Astro.props;
 <p class={className} data-live-car-count hidden></p>
 
 <script>
-  import { isSeasonActive } from '../lib/displayYears';
+  import { isShowTime } from '../lib/displayYears';
 
   // Checked in the browser, not at build time, so a stale build can't show it
   // out of season.
   const nodes = document.querySelectorAll<HTMLElement>('[data-live-car-count]');
-  if (nodes.length && isSeasonActive()) {
+  if (nodes.length && isShowTime()) {
     fetch('https://vote-now.org/api/model')
       .then((res) => res.json())
       .then((data) => {

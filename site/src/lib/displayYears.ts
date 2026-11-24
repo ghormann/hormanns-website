@@ -71,6 +71,18 @@ export function isSeasonActive(now: Date = new Date()): boolean {
   return now >= seasonOpen(y) && now <= endOfDay(seasonClose(y));
 }
 
+/**
+ * True from 30 minutes before the show starts until midnight (and until 12:30 AM
+ * on Christmas morning, when we stay open for the countdown). Used to keep live
+ * stats like the car count from showing in the daytime.
+ */
+export function isShowTime(now: Date = new Date()): boolean {
+  if (!isSeasonActive(now) && !(now.getMonth() === 11 && now.getDate() === 25)) return false;
+  const minutes = now.getHours() * 60 + now.getMinutes();
+  if (minutes >= SHOW_OPEN_HOUR * 60 - 30) return true;
+  return now.getMonth() === 11 && now.getDate() === 25 && minutes < 30;
+}
+
 function endOfDay(d: Date): Date {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59);
 }
