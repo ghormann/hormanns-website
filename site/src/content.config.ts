@@ -61,14 +61,4 @@ const technology = defineCollection({
   }),
 });
 
-const people = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/people' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string().optional(),
-    heroImage: z.string().nullish(),
-    photos: z.array(photoSchema).default([]),
-  }),
-});
-
-export const collections = { christmas, technology, people };
+export const collections = { christmas, technology };
